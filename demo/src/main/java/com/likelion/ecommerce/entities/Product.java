@@ -19,7 +19,7 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_product_id_seq")
     @SequenceGenerator(name = "products_product_id_seq", sequenceName = "products_product_id_seq", allocationSize = 1)
-	private Integer id;
+	private Integer productId;
 	
 	@Column(name = "category_id")
 	private String categoryId;
@@ -39,16 +39,9 @@ public class Product {
 	@Column(name = "created_at")
 	private String createedAt;
 	
-	@Column(name = "deketed_at")
+	@Column(name = "deleted_at")
 	private String deletedAt;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getCategoryId() {
 		return categoryId;
@@ -105,7 +98,13 @@ public class Product {
 	public void setDeletedAt(String deletedAt) {
 		this.deletedAt = deletedAt;
 	}
-	
-	
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}	
 	
 }

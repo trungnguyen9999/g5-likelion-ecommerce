@@ -59,7 +59,7 @@ public class ProductService {
     }
 
     public Product updateProduct (Product product) {
-        Optional<Product> existingProduct = repo.findById(product.getId());
+        Optional<Product> existingProduct = repo.findById(product.getProductId());
         Product updatedProduct = repo.save(product);
         return updatedProduct;
     }

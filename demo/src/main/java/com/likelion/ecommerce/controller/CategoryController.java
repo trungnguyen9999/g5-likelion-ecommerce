@@ -1,6 +1,5 @@
 package com.likelion.ecommerce.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.entities.Category;
-import com.likelion.ecommerce.entities.User;
 import com.likelion.ecommerce.request.PaginateRequest;
 import com.likelion.ecommerce.response.PaginateResponse;
 import com.likelion.ecommerce.service.CategoryService;
-import com.likelion.ecommerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +28,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class CategoryController {
+	
+	/**
+	 * author: ntnguyen
+	 */
 	
 	@Autowired
 	private CategoryService categoryService;
