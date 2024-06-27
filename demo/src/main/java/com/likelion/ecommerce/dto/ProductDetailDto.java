@@ -1,51 +1,29 @@
-package com.likelion.ecommerce.entities;
+package com.likelion.ecommerce.dto;
 
 import java.util.Date;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "products")
-public class Product {
+public class ProductDetailDto {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_product_id_seq")
-    @SequenceGenerator(name = "products_product_id_seq", sequenceName = "products_product_id_seq", allocationSize = 1)
 	private Integer productId;
 	
-	@Column(name = "category_id")
-	private Integer categoryId;
-	
-	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "quantity")
-	private Integer quantity;
+	private String quantity;
 	
-	@Column(name = "description")
 	private String description;
 	
-	@Column(name = "price")
 	private Long price;
 	
-	@Column(name = "created_at")
+	private CategoryDto categoryDto;
+	
 	private Date createdAt;
 	
-	@Column(name = "deleted_at")
 	private Date deletedAt;
 	
-	@Column(name = "created")
-	private Date created;
+	private boolean inWishList;
+	
+	private List<String> imagesPath;
 
 	/**
 	 * @return the productId
@@ -59,20 +37,6 @@ public class Product {
 	 */
 	public void setProductId(Integer productId) {
 		this.productId = productId;
-	}
-
-	/**
-	 * @return the categoryId
-	 */
-	public Integer getCategoryId() {
-		return categoryId;
-	}
-
-	/**
-	 * @param categoryId the categoryId to set
-	 */
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
 	}
 
 	/**
@@ -92,14 +56,14 @@ public class Product {
 	/**
 	 * @return the quantity
 	 */
-	public Integer getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}
 
 	/**
 	 * @param quantity the quantity to set
 	 */
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 
@@ -132,6 +96,20 @@ public class Product {
 	}
 
 	/**
+	 * @return the categoryDto
+	 */
+	public CategoryDto getCategoryDto() {
+		return categoryDto;
+	}
+
+	/**
+	 * @param categoryDto the categoryDto to set
+	 */
+	public void setCategoryDto(CategoryDto categoryDto) {
+		this.categoryDto = categoryDto;
+	}
+
+	/**
 	 * @return the createdAt
 	 */
 	public Date getCreatedAt() {
@@ -160,18 +138,32 @@ public class Product {
 	}
 
 	/**
-	 * @return the created
+	 * @return the inWishList
 	 */
-	public Date getCreated() {
-		return created;
+	public boolean isInWishList() {
+		return inWishList;
 	}
 
 	/**
-	 * @param created the created to set
+	 * @param inWishList the inWishList to set
 	 */
-	public void setCreated(Date created) {
-		this.created = created;
+	public void setInWishList(boolean inWishList) {
+		this.inWishList = inWishList;
 	}
 
+	/**
+	 * @return the imagesPath
+	 */
+	public List<String> getImagesPath() {
+		return imagesPath;
+	}
+
+	/**
+	 * @param imagesPath the imagesPath to set
+	 */
+	public void setImagesPath(List<String> imagesPath) {
+		this.imagesPath = imagesPath;
+	}
+	
 	
 }

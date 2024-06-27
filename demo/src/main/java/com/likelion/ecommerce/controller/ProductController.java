@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.entities.Product;
-import com.likelion.ecommerce.request.PaginateRequest;
+import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.PaginateResponse;
 import com.likelion.ecommerce.service.ProductService;
 
@@ -36,9 +36,15 @@ public class ProductController {
 	private ProductService productService;
 
     @GetMapping("/paginate")
-    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateRequest request){
-    	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("categoryId").ascending());
-        return ResponseEntity.ok().body(productService.paginateProduct(pageable));
+    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request){
+    	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+        return ResponseEntity.ok().body(productService.paginateProduct(pageable, request));
+    }
+    
+    @GetMapping("/paginate/wishlist")
+    public ResponseEntity<PaginateResponse> getAllProductInWishList(@RequestBody PaginateProductRequest request){
+    	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+        return ResponseEntity.ok().body(productService.paginateProductInWishList(pageable, request));
     }
 
     @GetMapping("/{id}")

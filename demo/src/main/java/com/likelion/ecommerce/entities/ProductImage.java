@@ -24,8 +24,8 @@ public class ProductImage {
 	@Column(name = "product_id")
 	private Integer productId;
 	
-	@Column(name = "path")
-	private String path;
+	@Column(name = "image_path")
+	private String imagePath;
 	
 	@Column(name = "description")
 	private String description;
@@ -46,12 +46,12 @@ public class ProductImage {
 		this.productId = productId;
 	}
 
-	public String getPath() {
-		return path;
+	public String getImagePath() {
+		return imagePath;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public String getDescription() {

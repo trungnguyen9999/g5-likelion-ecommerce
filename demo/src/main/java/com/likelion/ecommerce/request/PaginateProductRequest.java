@@ -1,8 +1,10 @@
 package com.likelion.ecommerce.request;
 
-public class PaginateRequest {
+public class PaginateProductRequest {
 	
 	private Integer accountId;
+	
+	private Boolean inWishList;
 	
 	private Integer page;
 	
@@ -30,6 +32,20 @@ public class PaginateRequest {
 
 	public void setAccountId(Integer accountId) {
 		this.accountId = accountId;
+	}
+
+	/**
+	 * @return the inWishList
+	 */
+	public Boolean getInWishList() {
+		return inWishList;
+	}
+
+	/**
+	 * @param inWishList the inWishList to set
+	 */
+	public void setInWishList(Boolean inWishList) {
+		this.inWishList = inWishList;
 	}
 	
 	

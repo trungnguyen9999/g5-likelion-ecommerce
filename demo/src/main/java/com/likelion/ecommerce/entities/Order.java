@@ -13,29 +13,30 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
-@Table(name = "users")
-public class User {
+@Data
+@Table(name = "orders")
+public class Order {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_user_id_seq")
-    @SequenceGenerator(name = "users_user_id_seq", sequenceName = "users_user_id_seq", allocationSize = 1)
-	private Integer userId;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_order_id_seq")
+    @SequenceGenerator(name = "orders_order_id_seq", sequenceName = "orders_order_id_seq", allocationSize = 1)
+	private Integer orderId;
 	
 	@Column(name = "account_id")
-	private Integer accountId;
+	private String accountId;
 	
-	@Column(name = "fullname")
-	private String fullName;
+	@Column(name = "user_id")
+	private String usertId;
 	
-	@Column(name = "phonenumber")
-	private String phoneNumber;
+	@Column(name = "total_price")
+	private String totalPrice;
 	
-	@Column(name = "email")
-	private String email;		
+	@Column(name = "order_time")
+	private String orderTime;
 	
-	@Column(name = "birthdate")
-	private String birthdate;
+	@Column(name = "payment_type")
+	private String paymentType;
 	
 	@Column(name = "address_line1")
 	private String addressLine1;		
@@ -55,52 +56,52 @@ public class User {
 	@Column(name = "region")
 	private String region;
 
-	public Integer getUserId() {
-		return userId;
+	public Integer getOrderId() {
+		return orderId;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 
-	public Integer getAccountId() {
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(Integer accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public String getUsertId() {
+		return usertId;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setUsertId(String usertId) {
+		this.usertId = usertId;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getOrderTime() {
+		return orderTime;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setOrderTime(String orderTime) {
+		this.orderTime = orderTime;
 	}
 
-	public String getBirthdate() {
-		return birthdate;
+	public String getPaymentType() {
+		return paymentType;
 	}
 
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
 	}
 
 	public String getAddressLine1() {
@@ -149,9 +150,6 @@ public class User {
 
 	public void setRegion(String region) {
 		this.region = region;
-	}
-
+	}	
 	
-	
-		
 }
