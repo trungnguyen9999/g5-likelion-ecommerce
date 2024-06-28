@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ import com.likelion.ecommerce.response.PaginateResponse;
 import com.likelion.ecommerce.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -70,5 +74,12 @@ public class ProductController {
     {
     	productService.deleteProductById(id);
         return ResponseEntity.ok().body("Deleted product successfully");
+    }
+
+    @GetMapping("/paginate")
+    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request,
+            @Param("categoryId") Integer categoryId){
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+        return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryId, pageable, request));
     }
 }

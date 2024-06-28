@@ -83,6 +83,42 @@ public class ProductService {
     	}
     	return response;
     }
+
+	public PaginateResponse paginateProductGetByCategory(Integer categoryId, Pageable page, PaginateProductRequest request){
+		PaginateResponse response = new PaginateResponse();
+		try {
+			float totalElement = repo.count();
+			int totalPage = 0;
+			if(totalElement > 0) {
+				totalPage = (int) Math.ceil(totalElement / page.getPageSize());
+			}
+			response.setCurentPage(page.getPageNumber() + 1);
+			response.setPageSize(page.getPageSize());
+			response.setTotalPages(totalPage);
+			response.setTotalElements(Math.round(totalElement));
+
+			List<ProductDetailDto> listProductDeTail = repo.searchInCategory(categoryId, page).stream().map(product -> {
+				ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
+				CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+				dto.setCategoryDto(categoryDto);
+
+				boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
+				dto.setInWishList(isInWishList);
+
+				List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+						.stream()
+						.map(i -> i.getImagePath())
+						.collect(Collectors.toList());
+				dto.setImagesPath(listProductImagePath);
+				return dto;
+			}).collect(Collectors.toList());
+
+			response.setItems(listProductDeTail);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return response;
+	}
     
     public PaginateResponse paginateProductInWishList(Pageable page, PaginateProductRequest request) {
     	PaginateResponse response = new PaginateResponse();

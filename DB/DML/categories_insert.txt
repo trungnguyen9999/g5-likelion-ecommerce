@@ -1,0 +1,10 @@
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (1, 'Electronics', 'electronics', 'electronics.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (2, 'Camera & Photo', 'camera', 'camera.jpg', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (3, 'Computers', 'computers', 'computers.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (4, 'Cell Phones & Accessories', 'cellphones', 'cellphones.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (5, 'Desktops', 'desktop_computers', 'desktop computers.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (6, 'Laptops', 'laptop_computers', 'laptop computers.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (7, 'Tablets', 'tablet_computers', 'tablets.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (8, 'Computer Components', 'computer_components', 'computer components.png');
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (9, 'Bags & Cases', 'camera_bags_cases', 'bags_cases.png', true);
+INSERT INTO categories (id, name, alias, image, enabled) VALUES (10, 'Digital Cameras', 'digital_cameras', 'digital cameras.png', true);

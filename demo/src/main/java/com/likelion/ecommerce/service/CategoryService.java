@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryService {
 	@Autowired
 	private  CategoryRepo repo;
+    @Autowired
+    private CategoryRepo categoryRepo;
 
     public List<Category> getAllCategory(){
         return repo.findAll();
@@ -66,5 +68,9 @@ public class CategoryService {
 
     public void deleteCategoryById (Integer id) {
         repo.deleteById(id);
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryRepo.findAll();
     }
 }

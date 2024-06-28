@@ -1,0 +1,15 @@
+-- auto-generated definition
+create table categories
+(
+    id             int auto_increment
+        primary key,
+    name           varchar(128) not null,
+    alias          varchar(64)  not null,
+    image          varchar(128) not null,
+    enabled        bit          not null,
+    constraint UK_jx1ptm0r46dop8v0o7nmgfbeq
+        unique (alias),
+    constraint UK_t8o6pivur7nn124jehx7cygw5
+        unique (name),
+);
+

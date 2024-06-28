@@ -1,0 +1,31 @@
+-- auto-generated definition
+create table products
+(
+    id                int auto_increment
+        primary key,
+    name              varchar(256)       not null,
+    alias             varchar(256)       not null,
+    short_description varchar(512)       not null,
+    full_description  varchar(4096)      not null,
+    main_image        varchar(255)       not null,
+    created_time      datetime(6)        null,
+    updated_time      datetime(6)        null,
+    enabled           bit   default b'1' not null,
+    in_stock          bit   default b'1' null,
+    cost              float default 0    not null,
+    price             float default 0    not null,
+    discount_percent  float default 0    null,
+    length            float default 0    not null,
+    width             float default 0    not null,
+    height            float default 0    not null,
+    weight            float default 0    not null,
+    category_id       int                null,
+    constraint UK_8qwq8q3hk7cxkp9gruxupnif5
+        unique (alias),
+    constraint UK_o61fmio5yukmmiqgnxf8pnavn
+        unique (name),
+    constraint FKog2rp4qthbtt2lfyhfo32lsw9
+        foreign key (category_id) references categories (id)
+);
+
+

@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,7 +27,7 @@ public class Product {
 	
 	@Column(name = "category_id")
 	private Integer categoryId;
-	
+
 	@Column(name = "name")
 	private String name;
 	
@@ -158,5 +160,8 @@ public class Product {
 	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
 	}
-	
+
+	public Category getCategory() {
+		return category;
+	}
 }
