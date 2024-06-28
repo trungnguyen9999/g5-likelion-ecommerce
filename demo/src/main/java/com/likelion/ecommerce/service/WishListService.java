@@ -1,10 +1,12 @@
 package com.likelion.ecommerce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.repository.WishListRepo;
 
@@ -27,10 +29,24 @@ public class WishListService {
 	}
 	
 	public WishList findFirstByAccountIdAndProductId(Integer accountId, Integer productId){
-		return repo.findFirstByAccountIdAndProductIdOrderByWishlistId(null, null);
+		return repo.findFirstByAccountIdAndProductIdOrderByWishlistId(accountId, productId);
 	}
 	
 	public WishList findById(Integer id){
 		return repo.findById(id).orElse(null);
 	}
+	
+	 public WishList saveWishList (WishList wishlist){
+        WishList savedWishList = repo.save(wishlist);
+        return savedWishList;
+    }
+
+    public WishList updateWishList (WishList wishlist) {
+        WishList updatedWishList = repo.save(wishlist);
+        return updatedWishList;
+    }
+
+    public void deleteWishListById (Integer id) {
+        repo.deleteById(id);
+    }
 }

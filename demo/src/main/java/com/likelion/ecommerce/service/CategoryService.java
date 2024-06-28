@@ -60,7 +60,6 @@ public class CategoryService {
     }
 
     public Category updateCategory (Category category) {
-        Optional<Category> existingCategory = repo.findById(category.getCategoryId());
         Category updatedCategory = repo.save(category);
         return updatedCategory;
     }

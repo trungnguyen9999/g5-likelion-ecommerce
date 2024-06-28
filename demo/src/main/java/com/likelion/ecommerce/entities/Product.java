@@ -38,6 +38,9 @@ public class Product {
 	@Column(name = "price")
 	private Long price;
 	
+	@Column(name = "image_path")
+	private String imagePath;
+	
 	@Column(name = "created_at")
 	private Date createdAt;
 	

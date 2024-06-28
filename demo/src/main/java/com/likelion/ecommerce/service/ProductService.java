@@ -1,6 +1,7 @@
 package com.likelion.ecommerce.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -119,15 +120,28 @@ public class ProductService {
     	return response;
 	}
 
-    public Product getProductById(Integer id){
+    public ProductDetailDto getProductById(Integer id){
         Optional<Product> optionalProduct= repo.findById(id);
         if(optionalProduct.isPresent()){
-            return optionalProduct.get();
+        	Optional<ProductDetailDto> productDetails = optionalProduct.map(product -> {
+	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
+	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+	    	    dto.setCategoryDto(categoryDto);
+	    	    	    	    
+	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+	    	                                                    .stream()
+	    	                                                    .map(i -> i.getImagePath())
+	    	                                                    .collect(Collectors.toList());
+	    	    dto.setImagesPath(listProductImagePath);
+	    		return dto;
+	    	});
+        	return productDetails.orElse(null);
         }
         return null;
     }
 
     public Product saveProduct (Product product){
+    	product.setCreatedAt(new Date());
         Product savedProduct = repo.save(product);
         return savedProduct;
     }

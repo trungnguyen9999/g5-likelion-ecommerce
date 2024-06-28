@@ -23,13 +23,13 @@ public class Cart {
 	private Integer categoryId;
 	
 	@Column(name = "account_id")
-	private String accountId;
+	private Integer accountId;
 	
 	@Column(name = "product_id")
 	private String productId;	
 	
 	@Column(name = "quantity")
-	private String quantity;
+	private Integer quantity;
 
 	public Integer getCategoryId() {
 		return categoryId;
@@ -39,11 +39,11 @@ public class Cart {
 		this.categoryId = categoryId;
 	}
 
-	public String getAccountId() {
+	public Integer getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(String accountId) {
+	public void setAccountId(Integer accountId) {
 		this.accountId = accountId;
 	}
 
@@ -55,12 +55,19 @@ public class Cart {
 		this.productId = productId;
 	}
 
-	public String getQuantity() {
+	/**
+	 * @return the quantity
+	 */
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(String quantity) {
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
+	
 }
