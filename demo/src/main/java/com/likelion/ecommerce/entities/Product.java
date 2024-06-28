@@ -44,9 +44,6 @@ public class Product {
 	@Column(name = "deleted_at")
 	private Date deletedAt;
 	
-	@Column(name = "created")
-	private Date created;
-
 	/**
 	 * @return the productId
 	 */
@@ -158,20 +155,5 @@ public class Product {
 	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
 	}
-
-	/**
-	 * @return the created
-	 */
-	public Date getCreated() {
-		return created;
-	}
-
-	/**
-	 * @param created the created to set
-	 */
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
 	
 }

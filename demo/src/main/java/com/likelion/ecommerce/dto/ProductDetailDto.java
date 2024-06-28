@@ -9,7 +9,7 @@ public class ProductDetailDto {
 	
 	private String name;
 	
-	private String quantity;
+	private Integer quantity;
 	
 	private String description;
 	
@@ -56,14 +56,14 @@ public class ProductDetailDto {
 	/**
 	 * @return the quantity
 	 */
-	public String getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
 	/**
 	 * @param quantity the quantity to set
 	 */
-	public void setQuantity(String quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

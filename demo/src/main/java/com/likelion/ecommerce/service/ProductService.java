@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -59,17 +61,21 @@ public class ProductService {
 	    	response.setTotalElements(Math.round(totalElement));
 	    	
 	    	List<ProductDetailDto> listProductDeTail = repo.findAll(page).stream().map(product -> {
-	    		ProductDetailDto dto =  modelMapper.map(product, ProductDetailDto.class);
-	    		dto.setCategoryDto(modelMapper.map(categoryService.getCategoryById(Integer.valueOf(product.getCategoryId())), CategoryDto.class));
-	    		if(Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId())) ) {
-	    			dto.setInWishList(true);
-	    		}
-	    		List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-	    			.stream().map(i -> i.getImagePath()).collect(Collectors.toList());
-	    		dto.setImagesPath(listProductImagePath);
+	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
+	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+	    	    dto.setCategoryDto(categoryDto);
+	    	    
+	    	    boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
+	    	    dto.setInWishList(isInWishList);
+	    	    
+	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+	    	                                                    .stream()
+	    	                                                    .map(i -> i.getImagePath())
+	    	                                                    .collect(Collectors.toList());
+	    	    dto.setImagesPath(listProductImagePath);
 	    		return dto;
-	    	})
-			.collect(Collectors.toList());
+	    	}).collect(Collectors.toList());
+
 	    	response.setItems(listProductDeTail);
     	} catch(Exception e) {
     		e.printStackTrace();
