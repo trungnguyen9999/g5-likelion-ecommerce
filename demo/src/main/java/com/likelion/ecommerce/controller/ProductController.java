@@ -45,6 +45,13 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.paginateProduct(pageable, request));
     }
     
+    @GetMapping("/{categoryid}/paginate")
+    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request,
+            @PathVariable Integer categoryid){
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+        return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryid, pageable, request));
+    }
+    
     @GetMapping("/paginate/wishlist")
     public ResponseEntity<PaginateResponse> getAllProductInWishList(@RequestBody PaginateProductRequest request){
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
@@ -76,10 +83,4 @@ public class ProductController {
         return ResponseEntity.ok().body("Deleted product successfully");
     }
 
-    @GetMapping("/paginate")
-    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request,
-            @Param("categoryId") Integer categoryId){
-        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
-        return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryId, pageable, request));
-    }
 }

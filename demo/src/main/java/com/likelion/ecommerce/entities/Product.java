@@ -161,7 +161,4 @@ public class Product {
 		this.deletedAt = deletedAt;
 	}
 
-	public Category getCategory() {
-		return category;
-	}
 }

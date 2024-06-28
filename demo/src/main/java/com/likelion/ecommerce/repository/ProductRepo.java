@@ -16,6 +16,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 	countQuery = "SELECT count(product_id) FROM products ", nativeQuery = true)
 	Page<Product> findAll(Pageable pageable);
 
-	@Query("SELECT p FROM Product p WHERE p.categoryId = ?1")
-	public Page<Product> searchInCategory(Integer categoryId, Pageable pageable);
+	@Query(value =  "SELECT * FROM products where category_id = :categoryId",
+			countQuery = "SELECT count(product_id) FROM products where category_id = :categoryId", nativeQuery = true)
+	public Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);
 }

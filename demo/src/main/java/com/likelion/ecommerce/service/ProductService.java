@@ -97,7 +97,7 @@ public class ProductService {
 			response.setTotalPages(totalPage);
 			response.setTotalElements(Math.round(totalElement));
 
-			List<ProductDetailDto> listProductDeTail = repo.searchInCategory(categoryId, page).stream().map(product -> {
+			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page).stream().map(product -> {
 				ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
 				CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
 				dto.setCategoryDto(categoryDto);
