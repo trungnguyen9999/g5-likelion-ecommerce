@@ -2,13 +2,18 @@ package com.likelion.ecommerce.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.likelion.ecommerce.dto.CategoryDto;
+import com.likelion.ecommerce.dto.ProductDetailDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.CategoryRepo;
+import com.likelion.ecommerce.repository.ProductRepo;
 import com.likelion.ecommerce.response.PaginateResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryService {
 	@Autowired
 	private  CategoryRepo repo;
+	
+	@Autowired
+	private  ProductRepo repoProduct;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
     public List<Category> getAllCategory(){
         return repo.findAll();
@@ -68,7 +79,12 @@ public class CategoryService {
         repo.deleteById(id);
     }
 
-    public List<Category> getCategoryList() {
-        return repo.findAll();
+    public List<CategoryDto> getCategoryList() {
+    	List<CategoryDto> listcategoryDto = repo.findAll().stream().map(item -> {
+    		CategoryDto categoryDto = modelMapper.map(item, CategoryDto.class);
+    		categoryDto.setQuantityProduct(repoProduct.countByCategoryId(item.getCategoryId()));
+    		return categoryDto;
+    	}).collect(Collectors.toList());
+        return listcategoryDto;
     }
 }

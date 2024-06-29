@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.controller;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.entities.Product;
@@ -40,15 +42,23 @@ public class ProductController {
 	private ProductService productService;
 
     @GetMapping("/paginate")
-    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request){
-    	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+    public ResponseEntity<PaginateResponse> getAllProduct(
+    		@RequestParam(name = "page", required = true) Integer page,
+    		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId){
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
+    	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
         return ResponseEntity.ok().body(productService.paginateProduct(pageable, request));
     }
     
     @GetMapping("/{categoryid}/paginate")
-    public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request,
-            @PathVariable Integer categoryid){
-        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+    public ResponseEntity<PaginateResponse> getAllProduct(
+            @PathVariable Integer categoryid,
+            @RequestParam(name = "page", required = true) Integer page,
+    		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId){
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
+    	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);
         return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryid, pageable, request));
     }
     

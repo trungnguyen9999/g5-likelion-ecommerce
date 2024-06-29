@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.request.PaginateRequest;
 import com.likelion.ecommerce.response.PaginateResponse;
@@ -28,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
 @Validated
 public class CategoryController {
@@ -72,9 +73,9 @@ public class CategoryController {
         return ResponseEntity.ok().body("Deleted category successfully");
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getCategoryList() {
-        List<Category> listCategories = categoryService.getCategoryList();
+    @GetMapping("/all")
+    public ResponseEntity<List<CategoryDto>> getCategoryList() {
+        List<CategoryDto> listCategories = categoryService.getCategoryList();
         return ResponseEntity.ok().body(listCategories);
     }
 }
