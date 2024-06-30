@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.likelion.ecommerce.HeaderClass;
 import com.likelion.ecommerce.entities.Product;
 import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.PaginateResponse;
@@ -29,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://g5-likelion-ecommerce.onrender.com", allowedHeaders = "*")
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -43,7 +43,6 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@CrossOrigin
 	@GetMapping("/paginate")
     public ResponseEntity<PaginateResponse> getAllProduct(
     		@RequestParam(name = "page", required = true) Integer page,
@@ -51,11 +50,12 @@ public class ProductController {
     		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId){
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
-        return ResponseEntity.ok().body(productService.paginateProduct(pageable, request));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.paginateProduct(pageable, request));
     }
     
-	@CrossOrigin
-    @GetMapping("/{categoryid}/paginate")
+	@GetMapping("/{categoryid}/paginate")
     public ResponseEntity<PaginateResponse> getAllProduct(
             @PathVariable Integer categoryid,
             @RequestParam(name = "page", required = true) Integer page,
@@ -63,43 +63,50 @@ public class ProductController {
     		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId){
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);
-        return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryid, pageable, request));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.paginateProductGetByCategory(categoryid, pageable, request));
     }
     
-    @CrossOrigin
     @GetMapping("/paginate/wishlist")
     public ResponseEntity<PaginateResponse> getAllProductInWishList(@RequestBody PaginateProductRequest request){
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
-        return ResponseEntity.ok().body(productService.paginateProductInWishList(pageable, request));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.paginateProductInWishList(pageable, request));
     }
 
-    @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Integer id)
     {
-        return ResponseEntity.ok().body(productService.getProductById(id));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.getProductById(id));
     }
 
-    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product)
     {
-        return ResponseEntity.ok().body(productService.saveProduct(product));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.saveProduct(product));
     }
 
-    @CrossOrigin
     @PutMapping("/update")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product)
     {
-        return ResponseEntity.ok().body(productService.updateProduct(product));
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body(productService.updateProduct(product));
     }
     
-    @CrossOrigin
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProductById(@PathVariable Integer id)
     {
     	productService.deleteProductById(id);
-        return ResponseEntity.ok().body("Deleted product successfully");
+        return ResponseEntity.ok()
+        		.headers(HeaderClass.getHeader())
+        		.body("Deleted product successfully");
     }
 
 }
