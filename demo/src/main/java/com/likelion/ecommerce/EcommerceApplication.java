@@ -18,16 +18,5 @@ public class EcommerceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
-	
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/product").allowedOrigins("http://localhost:2004");
-				registry.addMapping("/categories").allowedOrigins("http://localhost:2004");
-			}
-		};
-	}
 
 }

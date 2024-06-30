@@ -1,13 +1,10 @@
 package com.likelion.ecommerce.controller;
 
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.likelion.ecommerce.HeaderClass;
 import com.likelion.ecommerce.entities.Product;
 import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.PaginateResponse;
@@ -30,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -51,7 +48,6 @@ public class ProductController {
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.paginateProduct(pageable, request));
     }
     
@@ -64,7 +60,6 @@ public class ProductController {
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.paginateProductGetByCategory(categoryid, pageable, request));
     }
     
@@ -72,7 +67,6 @@ public class ProductController {
     public ResponseEntity<PaginateResponse> getAllProductInWishList(@RequestBody PaginateProductRequest request){
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.paginateProductInWishList(pageable, request));
     }
 
@@ -80,7 +74,6 @@ public class ProductController {
     public ResponseEntity<?> getProductById(@PathVariable Integer id)
     {
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.getProductById(id));
     }
 
@@ -88,7 +81,6 @@ public class ProductController {
     public ResponseEntity<Product> saveProduct(@RequestBody Product product)
     {
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.saveProduct(product));
     }
 
@@ -96,7 +88,6 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@RequestBody Product product)
     {
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(productService.updateProduct(product));
     }
     
@@ -105,7 +96,6 @@ public class ProductController {
     {
     	productService.deleteProductById(id);
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body("Deleted product successfully");
     }
 

@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.likelion.ecommerce.HeaderClass;
 import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.request.PaginateRequest;
@@ -31,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -48,7 +45,6 @@ public class CategoryController {
     public ResponseEntity<PaginateResponse> paginateCategory(@RequestBody PaginateRequest request){
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("categoryId").ascending());
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(categoryService.paginateCategory(pageable));
     }
 
@@ -57,7 +53,6 @@ public class CategoryController {
     {
     	Category cate = categoryService.getCategoryById(id);
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(cate);
     }
 
@@ -65,7 +60,6 @@ public class CategoryController {
     public ResponseEntity<Category> saveCategory(@RequestBody Category category)
     {
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(categoryService.saveCategory(category));
     }
 
@@ -73,17 +67,14 @@ public class CategoryController {
     public ResponseEntity<Category> updateCategory(@RequestBody Category category)
     {
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(categoryService.updateCategory(category));
     }
     
-    @CrossOrigin
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategoryById(@PathVariable Integer id)
     {
     	categoryService.deleteCategoryById(id);
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body("Deleted category successfully");
     }
 
@@ -92,7 +83,6 @@ public class CategoryController {
         List<CategoryDto> listCategories = categoryService.getCategoryList();
         
         return ResponseEntity.ok()
-        		.headers(HeaderClass.getHeader())
         		.body(listCategories);
     }
 }
