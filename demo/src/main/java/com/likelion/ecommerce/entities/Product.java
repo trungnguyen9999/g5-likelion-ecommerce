@@ -161,4 +161,19 @@ public class Product {
 		this.deletedAt = deletedAt;
 	}
 
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	/**
+	 * @param imagePath the imagePath to set
+	 */
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	
 }
