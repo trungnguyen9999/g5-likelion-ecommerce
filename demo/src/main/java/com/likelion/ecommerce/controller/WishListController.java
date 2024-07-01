@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.entities.WishList;
@@ -57,6 +58,13 @@ public class WishListController {
     public ResponseEntity<String> deleteWishListById(@PathVariable Integer id)
     {
     	wishlistService.deleteWishListById(id);
+        return ResponseEntity.ok().body("Deleted category successfully");
+    }
+    
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteWishListByAccountIdAndProductId(@RequestParam Integer accountId, @RequestParam Integer productId)
+    {
+    	wishlistService.deleteWishListByAccountIdAndProductId(accountId, productId);
         return ResponseEntity.ok().body("Deleted category successfully");
     }
 }

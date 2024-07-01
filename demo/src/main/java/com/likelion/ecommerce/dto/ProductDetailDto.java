@@ -3,6 +3,9 @@ package com.likelion.ecommerce.dto;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class ProductDetailDto {
 	
 	private Integer productId;
@@ -22,6 +25,8 @@ public class ProductDetailDto {
 	private Date deletedAt;
 	
 	private boolean inWishList;
+	
+	private String imagePath;
 	
 	private List<String> imagesPath;
 
@@ -164,6 +169,22 @@ public class ProductDetailDto {
 	public void setImagesPath(List<String> imagesPath) {
 		this.imagesPath = imagesPath;
 	}
+
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	/**
+	 * @param imagePath the imagePath to set
+	 */
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	
 	
 	
 }
