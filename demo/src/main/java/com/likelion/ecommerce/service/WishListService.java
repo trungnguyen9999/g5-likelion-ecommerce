@@ -51,7 +51,7 @@ public class WishListService {
     }
 
 	public void deleteWishListByAccountIdAndProductId(Integer accountId, Integer productId) {
-		repo.deleteAllByAccountIdAndProductId(accountId, productId);
+		repo.deleteByAccountIdAndProductId(accountId, productId);
 		
 	}
 }

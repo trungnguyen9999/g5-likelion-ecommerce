@@ -58,13 +58,13 @@ public class WishListController {
     public ResponseEntity<String> deleteWishListById(@PathVariable Integer id)
     {
     	wishlistService.deleteWishListById(id);
-        return ResponseEntity.ok().body("Deleted category successfully");
+        return ResponseEntity.ok().body("Deleted wishlist successfully");
     }
     
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteWishListByAccountIdAndProductId(@RequestParam Integer accountId, @RequestParam Integer productId)
     {
     	wishlistService.deleteWishListByAccountIdAndProductId(accountId, productId);
-        return ResponseEntity.ok().body("Deleted category successfully");
+        return ResponseEntity.ok().body("Deleted wishlist successfully");
     }
 }
