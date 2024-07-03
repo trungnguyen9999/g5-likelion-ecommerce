@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.likelion.ecommerce.entities.User;
-import com.likelion.ecommerce.repository.UserRepo;
+import com.likelion.ecommerce.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 	
 	@Autowired
-	private  UserRepo userRepo;
+	private UserRepository userRepo;
 
     public List<User> getAllUsers(){
         return userRepo.findAll();
