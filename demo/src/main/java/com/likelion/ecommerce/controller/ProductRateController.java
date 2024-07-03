@@ -1,5 +1,7 @@
 package com.likelion.ecommerce.controller;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ public class ProductRateController {
 	@PostMapping("/create")
     public ResponseEntity<ProductRate> saveCategory(@RequestBody ProductRate productRate)
     {
+		productRate.setRateTime(new Date());
         return ResponseEntity.ok()
         		.body(productRateService.saveProductRate(productRate));
     }

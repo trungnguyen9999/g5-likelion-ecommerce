@@ -1,5 +1,7 @@
 package com.likelion.ecommerce.entities;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +37,7 @@ public class ProductRate {
 	private String comment;
 	
 	@Column(name = "rate_time")
-	private String rateTime;
+	private Date rateTime;
 
 	public Integer getId() {
 		return id;
@@ -80,14 +82,14 @@ public class ProductRate {
 	/**
 	 * @return the rateTime
 	 */
-	public String getRateTime() {
+	public Date getRateTime() {
 		return rateTime;
 	}
 
 	/**
 	 * @param rateTime the rateTime to set
 	 */
-	public void setRateTime(String rateTime) {
+	public void setRateTime(Date rateTime) {
 		this.rateTime = rateTime;
 	}
 	

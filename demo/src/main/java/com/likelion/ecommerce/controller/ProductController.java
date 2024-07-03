@@ -24,6 +24,7 @@ import com.likelion.ecommerce.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -80,6 +81,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    	product.setCreatedAt(new Date());
         return ResponseEntity.ok()
         		.body(productService.saveProduct(product));
     }
