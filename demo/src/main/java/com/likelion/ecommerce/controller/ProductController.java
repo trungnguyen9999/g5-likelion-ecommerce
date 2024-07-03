@@ -76,7 +76,7 @@ public class ProductController {
         return ResponseEntity.ok().body("Deleted product successfully");
     }
 
-    @GetMapping("/paginate")
+    @GetMapping("/paginate/categoryID")
     public ResponseEntity<PaginateResponse> getAllProduct(@RequestBody PaginateProductRequest request,
             @Param("categoryId") Integer categoryId){
         Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
