@@ -77,6 +77,9 @@ public class User {
 	
 	@Column(name = "region")
 	private String region;
+	
+	@Column(name = "avatar")
+	private String avatar;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles",
@@ -186,7 +189,19 @@ public class User {
 		this.region = region;
 	}
 
-	
-	
-		
+	/**
+	 * @return the avatar
+	 */
+	public String getAvatar() {
+		return avatar;
+	}
+
+	/**
+	 * @param avatar the avatar to set
+	 */
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+			
 }

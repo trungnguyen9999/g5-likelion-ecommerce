@@ -1,0 +1,10 @@
+https://github.com/TakiRahal/spring-boot-render?tab=readme-ov-file
+
+
+https://g5-likelion-ecommerce.onrender.com
+
+docker build -t spring-boot-render .
+
+docker run -p 2004:2004 spring-boot-render
+
+git push

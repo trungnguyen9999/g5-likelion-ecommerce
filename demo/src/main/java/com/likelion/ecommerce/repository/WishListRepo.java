@@ -11,4 +11,6 @@ public interface WishListRepo extends JpaRepository<WishList, Integer>{
 	List<WishList> findAllByAccountIdOrderByWishlistId(Integer accountId);
 	
 	WishList findFirstByAccountIdAndProductIdOrderByWishlistId(Integer accountId, Integer productId);
+	
+	void deleteByAccountIdAndProductId(Integer accountId, Integer productId);
 }

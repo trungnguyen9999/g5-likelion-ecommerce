@@ -2,7 +2,7 @@ package com.likelion.ecommerce.response;
 
 import java.util.List;
 
-public class PaginateResponse {
+public class ResponsePaginate {
 	private Integer curentPage;
 	
 	private Integer totalPages;

@@ -3,6 +3,9 @@ package com.likelion.ecommerce.dto;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class ProductDetailDto {
 	
 	private Integer productId;
@@ -15,6 +18,10 @@ public class ProductDetailDto {
 	
 	private Long price;
 	
+	private float ratingScore = 0;
+	
+	private Integer rateTotal = 0;
+	
 	private CategoryDto categoryDto;
 	
 	private Date createdAt;
@@ -22,6 +29,8 @@ public class ProductDetailDto {
 	private Date deletedAt;
 	
 	private boolean inWishList;
+	
+	private String imagePath;
 	
 	private List<String> imagesPath;
 
@@ -164,6 +173,50 @@ public class ProductDetailDto {
 	public void setImagesPath(List<String> imagesPath) {
 		this.imagesPath = imagesPath;
 	}
+
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	/**
+	 * @param imagePath the imagePath to set
+	 */
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	/**
+	 * @return the ratingScore
+	 */
+	public float getRatingScore() {
+		return ratingScore;
+	}
+
+	/**
+	 * @param ratingScore the ratingScore to set
+	 */
+	public void setRatingScore(float ratingScore) {
+		this.ratingScore = ratingScore;
+	}
+
+	/**
+	 * @return the rateTotal
+	 */
+	public Integer getRateTotal() {
+		return rateTotal;
+	}
+
+	/**
+	 * @param rateTotal the rateTotal to set
+	 */
+	public void setRateTotal(Integer rateTotal) {
+		this.rateTotal = rateTotal;
+	}
+
+	
 	
 	
 }

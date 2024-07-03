@@ -2,35 +2,39 @@ package com.likelion.ecommerce.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.CategoryRepo;
-import com.likelion.ecommerce.response.PaginateResponse;
+import com.likelion.ecommerce.repository.ProductRepo;
+import com.likelion.ecommerce.response.ResponsePaginate;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryService {
 	@Autowired
 	private  CategoryRepo repo;
-    @Autowired
-    private CategoryRepo categoryRepo;
+	
+	@Autowired
+	private  ProductRepo repoProduct;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
     public List<Category> getAllCategory(){
         return repo.findAll();
     }
     
-    public PaginateResponse paginateCategory(Pageable page){
-    	PaginateResponse response = new PaginateResponse();
+    public ResponsePaginate paginateCategory(Pageable page){
+    	ResponsePaginate response = new ResponsePaginate();
     	try {
 	    	float totalElement = repo.count();
 	    	int totalPage = 0;
@@ -70,7 +74,12 @@ public class CategoryService {
         repo.deleteById(id);
     }
 
-    public List<Category> getCategoryList() {
-        return categoryRepo.findAll();
+    public List<CategoryDto> getCategoryList() {
+    	List<CategoryDto> listcategoryDto = repo.findAll().stream().map(item -> {
+    		CategoryDto categoryDto = modelMapper.map(item, CategoryDto.class);
+    		categoryDto.setQuantityProduct(repoProduct.countByCategoryId(item.getCategoryId()));
+    		return categoryDto;
+    	}).collect(Collectors.toList());
+        return listcategoryDto;
     }
 }
