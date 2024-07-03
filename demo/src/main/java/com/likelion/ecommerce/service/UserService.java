@@ -29,29 +29,25 @@ public class UserService {
         if(optionalEmployee.isPresent()){
             return optionalEmployee.get();
         }
-//        log.info("User with id: {} doesn't exist", id);
         return null;
     }
 
     public User saveUser (User user){
         User savedUser = userRepo.save(user);
 
-//        log.info("User with id: {} saved successfully", user.getUserId());
         return savedUser;
     }
 
     public User updateUser (User user) {
-        Optional<User> existingUser = userRepo.findById(user.getUserId());
-//        employee.setCreatedAt(existingEmployee.get().getCreatedAt());
-//        employee.setUpdatedAt(LocalDateTime.now());
-
         User updatedUser = userRepo.save(user);
-
-//        log.info("User with id: {} updated successfully", user.getUserId());
         return updatedUser;
     }
 
     public void deleteUserById (Integer id) {
         userRepo.deleteById(id);
+    }
+    
+    public User findFirstByAccountId(Integer accountId) {
+    	return userRepo.findFirstByAccountId(accountId);
     }
 }

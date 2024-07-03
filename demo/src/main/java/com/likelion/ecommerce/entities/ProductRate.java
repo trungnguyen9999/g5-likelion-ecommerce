@@ -33,6 +33,9 @@ public class ProductRate {
 	
 	@Column(name = "comment")
 	private String comment;
+	
+	@Column(name = "rate_time")
+	private String rateTime;
 
 	public Integer getId() {
 		return id;
@@ -72,6 +75,20 @@ public class ProductRate {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the rateTime
+	 */
+	public String getRateTime() {
+		return rateTime;
+	}
+
+	/**
+	 * @param rateTime the rateTime to set
+	 */
+	public void setRateTime(String rateTime) {
+		this.rateTime = rateTime;
 	}
 	
 	

@@ -8,9 +8,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.likelion.ecommerce.dto.ProductRateDto;
+import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.entities.ProductRate;
 import com.likelion.ecommerce.service.ProductRateService;
 
@@ -26,9 +30,24 @@ public class ProductRateController {
 	@Autowired
 	private ProductRateService productRateService;
 	
+	@PostMapping("/create")
+    public ResponseEntity<ProductRate> saveCategory(@RequestBody ProductRate productRate)
+    {
+        return ResponseEntity.ok()
+        		.body(productRateService.saveProductRate(productRate));
+    }
+	
 	@GetMapping("/{productId}")
-    public ResponseEntity<List<ProductRate>> findAllByProductId(@PathVariable Integer productId) {
-        List<ProductRate> listProductRate = productRateService.findAllByProductId(productId);
+    public ResponseEntity<List<ProductRateDto>> findAllByProductId(@PathVariable Integer productId) {
+        List<ProductRateDto> listProductRate = productRateService.findAllByProductId(productId);
+        
+        return ResponseEntity.ok()
+        		.body(listProductRate);
+    }
+	
+	@GetMapping("/basic/{productId}")
+    public ResponseEntity<List<ProductRate>> findBasicAllByProductId(@PathVariable Integer productId) {
+        List<ProductRate> listProductRate = productRateService.findBasicAllByProductId(productId);
         
         return ResponseEntity.ok()
         		.body(listProductRate);
