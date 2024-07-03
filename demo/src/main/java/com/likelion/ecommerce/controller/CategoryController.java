@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.request.PaginateRequest;
-import com.likelion.ecommerce.response.PaginateResponse;
+import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	@GetMapping("/paginate")
-    public ResponseEntity<PaginateResponse> paginateCategory(@RequestBody PaginateRequest request){
+    public ResponseEntity<ResponsePaginate> paginateCategory(@RequestBody PaginateRequest request){
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("categoryId").ascending());
         return ResponseEntity.ok()
         		.body(categoryService.paginateCategory(pageable));

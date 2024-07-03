@@ -2,7 +2,9 @@ package com.likelion.ecommerce.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +22,7 @@ import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.repository.ProductRepo;
 import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.request.PaginateRequest;
-import com.likelion.ecommerce.response.PaginateResponse;
+import com.likelion.ecommerce.response.ResponsePaginate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,14 +44,17 @@ public class ProductService {
 	private ProductImagesService productImagesService;
 	
 	@Autowired
+	private ProductRateService productRateService;
+	
+	@Autowired
 	private ModelMapper modelMapper;
 
     public List<Product> getAllProduct(){
         return repo.findAll();
     }
     
-    public PaginateResponse paginateProduct(Pageable page, PaginateProductRequest request){
-    	PaginateResponse response = new PaginateResponse();
+    public ResponsePaginate paginateProduct(Pageable page, PaginateProductRequest request){
+    	ResponsePaginate response = new ResponsePaginate();
     	try {
 	    	float totalElement = repo.count();
 	    	int totalPage = 0; 
@@ -74,6 +79,8 @@ public class ProductService {
 	    	                                                    .map(i -> i.getImagePath())
 	    	                                                    .collect(Collectors.toList());
 	    	    dto.setImagesPath(listProductImagePath);
+	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
 	    		return dto;
 	    	}).collect(Collectors.toList());
 
@@ -84,8 +91,8 @@ public class ProductService {
     	return response;
     }
 
-	public PaginateResponse paginateProductGetByCategory(Integer categoryId, Pageable page, PaginateProductRequest request){
-		PaginateResponse response = new PaginateResponse();
+	public ResponsePaginate paginateProductGetByCategory(Integer categoryId, Pageable page, PaginateProductRequest request){
+		ResponsePaginate response = new ResponsePaginate();
 		try {
 			float totalElement = repo.countByCategoryId(categoryId);
 			int totalPage = 0;
@@ -110,6 +117,8 @@ public class ProductService {
 						.map(i -> i.getImagePath())
 						.collect(Collectors.toList());
 				dto.setImagesPath(listProductImagePath);
+				dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+				dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
 				return dto;
 			}).collect(Collectors.toList());
 
@@ -120,8 +129,8 @@ public class ProductService {
 		return response;
 	}
     
-    public PaginateResponse paginateProductInWishList(Pageable page, PaginateProductRequest request) {
-    	PaginateResponse response = new PaginateResponse();
+    public ResponsePaginate paginateProductInWishList(Pageable page, PaginateProductRequest request) {
+    	ResponsePaginate response = new ResponsePaginate();
     	try {
     		List<WishList> listWL = wishListService.findAllByAccountId(request.getAccountId());
 	    	float totalElement = listWL.size();
@@ -146,6 +155,8 @@ public class ProductService {
 	    		Product product = repo.findById(i.getProductId()).orElse(null);
 	    		ProductDetailDto dto =  modelMapper.map(product, ProductDetailDto.class);
 	    		dto.setInWishList(true);
+	    		dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+	    		dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
 	    		return dto;
 	    	}).collect(Collectors.toList());
 	    	
@@ -169,6 +180,8 @@ public class ProductService {
 	    	                                                    .map(i -> i.getImagePath())
 	    	                                                    .collect(Collectors.toList());
 	    	    dto.setImagesPath(listProductImagePath);
+	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
 	    		return dto;
 	    	});
         	return productDetails.orElse(null);
@@ -191,6 +204,46 @@ public class ProductService {
     public void deleteProductById (Integer id) {
         repo.deleteById(id);
     }
+
+	public List<ProductDetailDto> getProductsNewArrival() {
+		List<ProductDetailDto> listProductDeTail = repo.findNewArrival().stream().map(product -> {
+    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
+    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+    	    dto.setCategoryDto(categoryDto);
+    	    
+    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+    	                                                    .stream()
+    	                                                    .map(i -> i.getImagePath())
+    	                                                    .collect(Collectors.toList());
+    	    dto.setImagesPath(listProductImagePath);
+    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+    		return dto;
+    	}).collect(Collectors.toList());
+		return listProductDeTail;
+	}
+
+	public List<Map> getProductsBestSelling() {
+		List<Map> results = repo.findBestSelling().stream().map(p -> {
+			Map m = new HashMap();
+			m.put("total", p.get("total"));
+			Product product = repo.findById(Integer.valueOf(p.get("product_id").toString())).orElse(null);
+			ProductDetailDto dto = 		modelMapper.map(product, ProductDetailDto.class);
+    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+    	    dto.setCategoryDto(categoryDto);
+    	    
+    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+    	                                                    .stream()
+    	                                                    .map(i -> i.getImagePath())
+    	                                                    .collect(Collectors.toList());
+    	    dto.setImagesPath(listProductImagePath);
+    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+			m.put("item", dto);
+			return m;
+		}).collect(Collectors.toList());
+		return results;
+	}
 
 	
 }

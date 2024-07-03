@@ -10,20 +10,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.likelion.ecommerce.dto.CategoryDto;
-import com.likelion.ecommerce.dto.ProductDetailDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.CategoryRepo;
 import com.likelion.ecommerce.repository.ProductRepo;
-import com.likelion.ecommerce.response.PaginateResponse;
+import com.likelion.ecommerce.response.ResponsePaginate;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryService {
 	@Autowired
 	private  CategoryRepo repo;
@@ -38,8 +33,8 @@ public class CategoryService {
         return repo.findAll();
     }
     
-    public PaginateResponse paginateCategory(Pageable page){
-    	PaginateResponse response = new PaginateResponse();
+    public ResponsePaginate paginateCategory(Pageable page){
+    	ResponsePaginate response = new ResponsePaginate();
     	try {
 	    	float totalElement = repo.count();
 	    	int totalPage = 0;

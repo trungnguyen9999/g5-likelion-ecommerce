@@ -18,6 +18,10 @@ public class ProductDetailDto {
 	
 	private Long price;
 	
+	private float ratingScore = 0;
+	
+	private Integer rateTotal = 0;
+	
 	private CategoryDto categoryDto;
 	
 	private Date createdAt;
@@ -182,6 +186,34 @@ public class ProductDetailDto {
 	 */
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	/**
+	 * @return the ratingScore
+	 */
+	public float getRatingScore() {
+		return ratingScore;
+	}
+
+	/**
+	 * @param ratingScore the ratingScore to set
+	 */
+	public void setRatingScore(float ratingScore) {
+		this.ratingScore = ratingScore;
+	}
+
+	/**
+	 * @return the rateTotal
+	 */
+	public Integer getRateTotal() {
+		return rateTotal;
+	}
+
+	/**
+	 * @param rateTotal the rateTotal to set
+	 */
+	public void setRateTotal(Integer rateTotal) {
+		this.rateTotal = rateTotal;
 	}
 
 	
