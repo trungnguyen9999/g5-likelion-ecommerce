@@ -27,6 +27,8 @@ public class BannerImage {
 	
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
+	
+	private String alt = "";
 
 	/**
 	 * @return the id
@@ -68,5 +70,21 @@ public class BannerImage {
 	 */
 	public void setIsDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	/**
+	 * @return the alt
+	 */
+	public String getAlt() {
+		return alt;
+	}
+
+	/**
+	 * @param alt the alt to set
+	 */
+	public void setAlt(String alt) {
+		this.alt = alt;
 	}	
+	
+	
 }

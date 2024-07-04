@@ -29,7 +29,7 @@ public class BannerImageController {
 	@Autowired
 	private BannerImageService bannerImageService;
 	
-	@GetMapping("/all")
+	@GetMapping("/public/all")
     public ResponseEntity<List<BannerImage>> getBannerImageList() {
         List<BannerImage> listBannerImages = bannerImageService.findAllBannerImage();
         
