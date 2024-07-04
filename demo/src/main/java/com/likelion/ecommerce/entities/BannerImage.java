@@ -28,6 +28,7 @@ public class BannerImage {
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 	
+	@Column(name = "alt")
 	private String alt = "";
 
 	/**
