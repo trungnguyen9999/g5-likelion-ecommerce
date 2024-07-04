@@ -42,7 +42,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping("/paginate")
+	@GetMapping("/public/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(
     		@RequestParam(name = "page", required = true) Integer page,
     		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -54,7 +54,7 @@ public class ProductController {
         		.body(productService.paginateProduct(pageable, request));
     }
     
-	@GetMapping("/{categoryid}/paginate")
+	@GetMapping("/public/{categoryid}/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(
             @PathVariable Integer categoryid,
             @RequestParam(name = "page", required = true) Integer page,

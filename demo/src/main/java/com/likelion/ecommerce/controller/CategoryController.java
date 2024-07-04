@@ -78,7 +78,7 @@ public class CategoryController {
         		.body("Deleted category successfully");
     }
 
-    @GetMapping("/all")
+    @GetMapping("/public/all")
     public ResponseEntity<List<CategoryDto>> getCategoryList() {
         List<CategoryDto> listCategories = categoryService.getCategoryList();
         
