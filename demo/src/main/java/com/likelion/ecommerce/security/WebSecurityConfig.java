@@ -3,6 +3,9 @@ package com.likelion.ecommerce.security;
 import com.likelion.ecommerce.security.jwt.AuthEntryPointJwt;
 import com.likelion.ecommerce.security.jwt.AuthTokenFilter;
 import com.likelion.ecommerce.security.services.UserDetailsServiceImpl;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +29,8 @@ public class WebSecurityConfig {
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
+  
+  private static final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -57,10 +62,12 @@ public class WebSecurityConfig {
     http.csrf(csrf -> csrf.disable())
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> 
+        .authorizeHttpRequests(auth ->        
           auth
               .requestMatchers("/api/auth/**").permitAll()
               .requestMatchers("/api/test/**").permitAll()
+              .requestMatchers("/swagger-ui/**").permitAll()
+              .requestMatchers("/v3/api-docs/**").permitAll()
               .anyRequest().authenticated()
         );
     

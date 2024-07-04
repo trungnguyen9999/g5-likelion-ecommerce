@@ -41,13 +41,13 @@ public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
 
-  private final UserRepository userRepository;
+  private UserRepository userRepository;
 
-  private final RoleRepository roleRepository;
+  private RoleRepository roleRepository;
 
-  private final PasswordEncoder encoder;
+  private PasswordEncoder encoder;
 
-  private final JwtUtils jwtUtils;
+  private JwtUtils jwtUtils;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
