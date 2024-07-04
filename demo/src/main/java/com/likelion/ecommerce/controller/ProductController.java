@@ -23,6 +23,7 @@ import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.service.ProductService;
 
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
@@ -104,15 +105,15 @@ public class ProductController {
         return ResponseEntity.ok()
         		.body("Deleted product successfully");
     }
-    
-    @GetMapping("/new-arrival")
+   
+    @GetMapping("/public/new-arrival")
     public ResponseEntity<?> getProductsNewArrival()
     {
         return ResponseEntity.ok()
         		.body(productService.getProductsNewArrival());
     }
 
-    @GetMapping("/best-selling")
+    @GetMapping("/public/best-selling")
     public ResponseEntity<?> getProductsBestSelling()
     {
         return ResponseEntity.ok()
