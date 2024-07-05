@@ -223,10 +223,8 @@ public class ProductService {
 		return listProductDeTail;
 	}
 
-	public List<Map> getProductsBestSelling() {
-		List<Map> results = repo.findBestSelling().stream().map(p -> {
-			Map m = new HashMap();
-			m.put("total", p.get("total"));
+	public List<ProductDetailDto> getProductsBestSelling() {
+		List<ProductDetailDto> results = repo.findBestSelling().stream().map(p -> {
 			Product product = repo.findById(Integer.valueOf(p.get("product_id").toString())).orElse(null);
 			ProductDetailDto dto = 		modelMapper.map(product, ProductDetailDto.class);
     		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
@@ -239,8 +237,7 @@ public class ProductService {
     	    dto.setImagesPath(listProductImagePath);
     	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
     	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-			m.put("item", dto);
-			return m;
+			return dto;
 		}).collect(Collectors.toList());
 		return results;
 	}
