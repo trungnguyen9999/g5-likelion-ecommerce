@@ -12,13 +12,17 @@ import org.springframework.stereotype.Repository;
 import com.likelion.ecommerce.entities.Product;
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product, Integer> {
+public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRepositoryCustom {
 
 
-	@Query(value =  "SELECT * FROM products ",
-	countQuery = "SELECT count(product_id) FROM products ", nativeQuery = true)
-	Page<Product> findAll(Pageable pageable);
-
+	@Query(value =  "SELECT * FROM products where name ilike %:name% and price between :fromPrice and :toPrice",
+	countQuery = "SELECT count(product_id) FROM products where name ilike %:name% and price between :fromPrice and :toPrice", nativeQuery = true)
+	Page<Product> findByNameContainingIgnoreCase(Pageable pageable, String name, Long fromPrice, Long toPrice);
+	
+	@Query(value =  "SELECT count(1) FROM products where name ilike %:name% "
+			+ " and price between :fromPrice and :toPrice ", nativeQuery = true)
+	Integer countFilterProduct(String name, Long fromPrice, Long toPrice);
+	
 	@Query(value =  "SELECT * FROM products p where category_id = :categoryId",
 			countQuery = "SELECT count(product_id) FROM products where category_id = :categoryId", nativeQuery = true)
 	public Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);
@@ -28,13 +32,10 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 	@Query(value =  "SELECT * FROM products p ORDER BY created_at DESC LIMIT 8 ",  nativeQuery = true)
 	List<Product> findNewArrival();
 	
-	@Query(value =  " SELECT product_id, SUM(op.quantity) AS total "
+	@Query(value =  " SELECT product_id, quantity_sold AS total "
 			+ " FROM products p "
-			+ " LEFT JOIN orders_products op USING (product_id) "
-			+ " LEFT JOIN orders o USING (order_id) "
 			+ " WHERE p.deleted_at ISNULL  "
-			+ " GROUP BY product_id "
-			+ " ORDER by total DESC, p.created_at DESC "
+			+ " ORDER by quantity_sold DESC, p.created_at DESC "
 			+ " LIMIT 4",  nativeQuery = true)
 	List<Map> findBestSelling();
 }

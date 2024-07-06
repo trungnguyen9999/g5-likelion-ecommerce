@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.dto.CategoryDto;
@@ -79,8 +80,8 @@ public class CategoryController {
     }
 
     @GetMapping("/public/all")
-    public ResponseEntity<List<CategoryDto>> getCategoryList() {
-        List<CategoryDto> listCategories = categoryService.getCategoryList();
+    public ResponseEntity<List<CategoryDto>> getCategoryList(@RequestParam(defaultValue = "") String keyWord) {
+        List<CategoryDto> listCategories = categoryService.getCategoryList(keyWord);
         
         return ResponseEntity.ok()
         		.body(listCategories);

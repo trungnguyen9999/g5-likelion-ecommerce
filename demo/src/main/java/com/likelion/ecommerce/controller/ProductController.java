@@ -45,14 +45,19 @@ public class ProductController {
 
 	@GetMapping("/public/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(
+    		@RequestParam(defaultValue = "") String keyWord,
     		@RequestParam(name = "page", required = true) Integer page,
     		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId) 
+    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId,
+    		@RequestParam(defaultValue = "0") Long fromPrice,
+    		@RequestParam(defaultValue = "1000000") Long toPrice, 
+    		@RequestParam(defaultValue = "1") Integer sortBy,//1: mới/cũ; 2: Giá; 3: Bán chạy
+    		@RequestParam(defaultValue = "ASC") String sortType) //ASC: tăng; DESC: Giảm
 	{		
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
         return ResponseEntity.ok()
-        		.body(productService.paginateProduct(pageable, request));
+        		.body(productService.paginateProduct(pageable, request, keyWord, fromPrice, toPrice, sortBy, sortType));
     }
     
 	@GetMapping("/public/{categoryid}/paginate")

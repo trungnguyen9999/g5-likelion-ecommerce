@@ -53,10 +53,15 @@ public class ProductService {
         return repo.findAll();
     }
     
-    public ResponsePaginate paginateProduct(Pageable page, PaginateProductRequest request){
+    public ResponsePaginate paginateProduct(Pageable page, PaginateProductRequest request, 
+    		String keyWord, Long fromPrice, Long toPrice, Integer sortBy, String sortType){
     	ResponsePaginate response = new ResponsePaginate();
     	try {
-	    	float totalElement = repo.count();
+    		
+    		int limit = page.getPageSize();
+    		int offset = limit  * (page.getPageNumber() + 1) - limit;
+    		List<Product> listProduct = repo.filterProduct(keyWord, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset);
+	    	float totalElement = repo.countFilterProduct(keyWord, fromPrice, toPrice);
 	    	int totalPage = 0; 
 	    	if(totalElement > 0) {
 	    		totalPage = (int) Math.ceil(totalElement / page.getPageSize());
@@ -66,7 +71,7 @@ public class ProductService {
 	    	response.setTotalPages(totalPage);
 	    	response.setTotalElements(Math.round(totalElement));
 	    	
-	    	List<ProductDetailDto> listProductDeTail = repo.findAll(page).stream().map(product -> {
+	    	List<ProductDetailDto> listProductDeTail = listProduct.stream().map(product -> {
 	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
 	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
 	    	    dto.setCategoryDto(categoryDto);
@@ -90,6 +95,20 @@ public class ProductService {
     	}
     	return response;
     }
+
+	private String generateStrSortBy(Integer sortBy, String sortType) {
+		//1: mới/cũ; 2: Giá; 3: Bán chạy
+		if(sortBy == 1) {
+			return " ORDER BY created_at " + sortType;
+		}
+		if(sortBy == 2) {
+			return " ORDER BY price " + sortType;
+		}
+		if(sortBy == 3) {
+			return " ORDER BY quantity_sold " + sortType;
+		}
+		return "";
+	}
 
 	public ResponsePaginate paginateProductGetByCategory(Integer categoryId, Pageable page, PaginateProductRequest request){
 		ResponsePaginate response = new ResponsePaginate();

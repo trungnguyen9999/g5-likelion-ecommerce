@@ -34,6 +34,9 @@ public class Product {
 	@Column(name = "quantity")
 	private Integer quantity;
 	
+	@Column(name = "quantity_sold")
+	private Integer quantitySold;
+	
 	@Column(name = "description")
 	private String description;
 	

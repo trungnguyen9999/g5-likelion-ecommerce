@@ -31,6 +31,15 @@ public class WebSecurityConfig {
   private AuthEntryPointJwt unauthorizedHandler;
   
   private static final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
+  
+  String[] permitedArray  = new String[] {
+		  "/**",
+		  "/api/auth/**", 
+		  "/api/test/**",
+		  "/swagger-ui/**",
+		  "/v3/api-docs/**",
+		  "*/public/**"
+  };
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -63,12 +72,7 @@ public class WebSecurityConfig {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth ->        
-          auth
-              .requestMatchers("/api/auth/**").permitAll()
-              .requestMatchers("/api/test/**").permitAll()
-              .requestMatchers("/swagger-ui/**").permitAll()
-              .requestMatchers("/v3/api-docs/**").permitAll()
-              .requestMatchers("*/public/**").permitAll()
+          auth.requestMatchers(permitedArray).permitAll()
               .anyRequest().authenticated()
         );
     
