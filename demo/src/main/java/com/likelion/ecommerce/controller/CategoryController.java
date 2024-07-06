@@ -80,7 +80,9 @@ public class CategoryController {
     }
 
     @GetMapping("/public/all")
-    public ResponseEntity<List<CategoryDto>> getCategoryList(@RequestParam(defaultValue = "") String keyWord) {
+    public ResponseEntity<List<CategoryDto>> getCategoryList(
+    		@RequestParam(defaultValue = "") String keyWord) 
+    {
         List<CategoryDto> listCategories = categoryService.getCategoryList(keyWord);
         
         return ResponseEntity.ok()

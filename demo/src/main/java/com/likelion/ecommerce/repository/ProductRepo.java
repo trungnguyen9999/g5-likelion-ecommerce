@@ -23,6 +23,10 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 			+ " and price between :fromPrice and :toPrice ", nativeQuery = true)
 	Integer countFilterProduct(String name, Long fromPrice, Long toPrice);
 	
+	@Query(value =  "SELECT count(1) FROM products where name ilike %:name% and category_id = :categoryId "
+			+ " and price between :fromPrice and :toPrice ", nativeQuery = true)
+	Integer countFilterProductHasCategoryId(String name, Integer categoryId, Long fromPrice, Long toPrice);
+	
 	@Query(value =  "SELECT * FROM products p where category_id = :categoryId",
 			countQuery = "SELECT count(product_id) FROM products where category_id = :categoryId", nativeQuery = true)
 	public Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);

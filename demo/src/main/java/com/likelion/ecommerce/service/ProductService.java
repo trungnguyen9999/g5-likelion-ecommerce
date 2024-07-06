@@ -54,14 +54,18 @@ public class ProductService {
     }
     
     public ResponsePaginate paginateProduct(Pageable page, PaginateProductRequest request, 
-    		String keyWord, Long fromPrice, Long toPrice, Integer sortBy, String sortType){
+    		int categoryId, String keyWord, Long fromPrice, Long toPrice, Integer sortBy, String sortType){
     	ResponsePaginate response = new ResponsePaginate();
     	try {
     		
     		int limit = page.getPageSize();
     		int offset = limit  * (page.getPageNumber() + 1) - limit;
-    		List<Product> listProduct = repo.filterProduct(keyWord, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset);
-	    	float totalElement = repo.countFilterProduct(keyWord, fromPrice, toPrice);
+    		
+    		List<Product> listProduct = repo.filterProduct(keyWord, categoryId, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset);
+	    	float totalElement = categoryId > 0 
+	    			? repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice) 
+	    			: repo.countFilterProduct(keyWord, fromPrice, toPrice);
+	    	
 	    	int totalPage = 0; 
 	    	if(totalElement > 0) {
 	    		totalPage = (int) Math.ceil(totalElement / page.getPageSize());
