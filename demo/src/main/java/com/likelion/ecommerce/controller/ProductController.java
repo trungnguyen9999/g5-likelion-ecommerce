@@ -81,7 +81,7 @@ public class ProductController {
         		.body(productService.paginateProductInWishList(pageable, request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Integer id) 
     {
         return ResponseEntity.ok()
