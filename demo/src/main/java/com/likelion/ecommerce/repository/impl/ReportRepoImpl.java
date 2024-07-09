@@ -52,10 +52,8 @@ public class ReportRepoImpl implements ReportRepo{
             if (result instanceof BigDecimal) {
                 return (BigDecimal) result;
             } else if (result instanceof Number) {
-                // Convert other Number types to BigDecimal if necessary
                 return BigDecimal.valueOf(((Number) result).doubleValue());
             } else {
-                // Handle unexpected result type
                 throw new RuntimeException("Unexpected result type from query");
             }
         } catch (Exception e) {

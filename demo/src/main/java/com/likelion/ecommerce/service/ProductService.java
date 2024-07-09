@@ -77,10 +77,13 @@ public class ProductService {
 	    	
 	    	List<ProductDetailDto> listProductDeTail = listProduct.stream().map(product -> {
 	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-	    	    dto.setCategoryDto(categoryDto);
+	    		
+	    		if(Objects.nonNull(product.getCategoryId())) {
+		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+		    	    dto.setCategoryDto(categoryDto);
+	    		}
 	    	    
-	    	    boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
+	    		boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
 	    	    dto.setInWishList(isInWishList);
 	    	    
 	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
@@ -129,8 +132,11 @@ public class ProductService {
 
 			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page).stream().map(product -> {
 				ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-				CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-				dto.setCategoryDto(categoryDto);
+				
+				if(Objects.nonNull(product.getCategoryId())) {
+		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+		    	    dto.setCategoryDto(categoryDto);
+	    		}
 
 				boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
 				dto.setInWishList(isInWishList);
@@ -177,6 +183,12 @@ public class ProductService {
 	    	List<ProductDetailDto> listProductDeTail = listWL.stream().map(i -> {
 	    		Product product = repo.findById(i.getProductId()).orElse(null);
 	    		ProductDetailDto dto =  modelMapper.map(product, ProductDetailDto.class);
+	    		
+	    		if(Objects.nonNull(product.getCategoryId())) {
+		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+		    	    dto.setCategoryDto(categoryDto);
+	    		}
+	    		
 	    		dto.setInWishList(true);
 	    		dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
 	    		dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
@@ -195,9 +207,12 @@ public class ProductService {
         if(optionalProduct.isPresent()){
         	Optional<ProductDetailDto> productDetails = optionalProduct.map(product -> {
 	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-	    	    dto.setCategoryDto(categoryDto);
-	    	    	    	    
+	    		
+	    		if(Objects.nonNull(product.getCategoryId())) {
+		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+		    	    dto.setCategoryDto(categoryDto);
+	    		}
+	    		
 	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
 	    	                                                    .stream()
 	    	                                                    .map(i -> i.getImagePath())
@@ -231,8 +246,11 @@ public class ProductService {
 	public List<ProductDetailDto> getProductsNewArrival() {
 		List<ProductDetailDto> listProductDeTail = repo.findNewArrival().stream().map(product -> {
     		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-    	    dto.setCategoryDto(categoryDto);
+    		
+    		if(Objects.nonNull(product.getCategoryId())) {
+	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+	    	    dto.setCategoryDto(categoryDto);
+    		}
     	    
     	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
     	                                                    .stream()
@@ -250,8 +268,11 @@ public class ProductService {
 		List<ProductDetailDto> results = repo.findBestSelling().stream().map(p -> {
 			Product product = repo.findById(Integer.valueOf(p.get("product_id").toString())).orElse(null);
 			ProductDetailDto dto = 		modelMapper.map(product, ProductDetailDto.class);
-    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-    	    dto.setCategoryDto(categoryDto);
+    		
+			if(Objects.nonNull(product.getCategoryId())) {
+	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+	    	    dto.setCategoryDto(categoryDto);
+    		}
     	    
     	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
     	                                                    .stream()
