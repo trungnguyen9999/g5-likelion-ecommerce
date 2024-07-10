@@ -46,16 +46,8 @@ public class User {
 	@Column(name = "phonenumber")
 	private String phoneNumber;
 
-	@NotBlank
-	@Size(max = 20)
-	private String username;
-
 	@Column(name = "email")
 	private String email;
-
-	@NotBlank
-	@Size(max = 120)
-	private String password;
 	
 	@Column(name = "birthdate")
 	private String birthdate;
@@ -87,10 +79,10 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
+	public User() {}
+	
 	public User(String username, String email, String password) {
-		this.username = username;
 		this.email = email;
-		this.password = password;
 	}
 
 	public Integer getUserId() {
@@ -202,35 +194,6 @@ public class User {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	/**
 	 * @return the roles
 	 */
