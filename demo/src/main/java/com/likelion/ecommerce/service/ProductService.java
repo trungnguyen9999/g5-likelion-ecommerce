@@ -120,7 +120,7 @@ public class ProductService {
 	public ResponsePaginate paginateProductGetByCategory(Integer categoryId, Pageable page, PaginateProductRequest request){
 		ResponsePaginate response = new ResponsePaginate();
 		try {
-			float totalElement = repo.countByCategoryId(categoryId);
+			float totalElement = repo.countByCategoryIdAndDeletedAtIsNull(categoryId);
 			int totalPage = 0;
 			if(totalElement > 0) {
 				totalPage = (int) Math.ceil(totalElement / page.getPageSize());

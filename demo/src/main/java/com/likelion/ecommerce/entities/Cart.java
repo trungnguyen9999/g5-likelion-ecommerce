@@ -26,7 +26,7 @@ public class Cart {
 	private Integer accountId;
 	
 	@Column(name = "product_id")
-	private String productId;	
+	private Integer productId;	
 	
 	@Column(name = "quantity")
 	private Integer quantity;
@@ -53,11 +53,17 @@ public class Cart {
 		this.accountId = accountId;
 	}
 
-	public String getProductId() {
+	/**
+	 * @return the productId
+	 */
+	public Integer getProductId() {
 		return productId;
 	}
 
-	public void setProductId(String productId) {
+	/**
+	 * @param productId the productId to set
+	 */
+	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
 

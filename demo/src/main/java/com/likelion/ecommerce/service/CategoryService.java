@@ -83,7 +83,7 @@ public class CategoryService {
     public List<CategoryDto> getCategoryList(String keyWord) {
     	List<CategoryDto> listcategoryDto = repo.findByNameContainingIgnoreCase(keyWord).stream().map(item -> {
     		CategoryDto categoryDto = modelMapper.map(item, CategoryDto.class);
-    		categoryDto.setQuantityProduct(repoProduct.countByCategoryId(item.getCategoryId()));
+    		categoryDto.setQuantityProduct(repoProduct.countByCategoryIdAndDeletedAtIsNull(item.getCategoryId()));
     		return categoryDto;
     	}).collect(Collectors.toList());
         return listcategoryDto;
