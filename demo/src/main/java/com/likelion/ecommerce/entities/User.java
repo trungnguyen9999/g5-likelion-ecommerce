@@ -25,11 +25,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "users",
-		uniqueConstraints = {
-				@UniqueConstraint(columnNames = "username"),
-				@UniqueConstraint(columnNames = "email")
-		})
+@Table(name = "users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_user_id_seq")
@@ -79,8 +75,6 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	public User() {}
-	
 	public User(String username, String email, String password) {
 		this.email = email;
 	}
