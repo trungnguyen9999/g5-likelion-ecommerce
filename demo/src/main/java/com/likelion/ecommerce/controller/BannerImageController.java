@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/banner-images")
+@RequestMapping("/api/banner-images")
 @RequiredArgsConstructor
 @Validated
 public class BannerImageController {

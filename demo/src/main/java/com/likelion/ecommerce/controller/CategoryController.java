@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +28,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/categories")
-@RequiredArgsConstructor
+@RequestMapping("/api/categories")
+@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 @Validated
 public class CategoryController {
 	

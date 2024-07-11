@@ -48,6 +48,6 @@ public class UserService {
     }
     
     public User findFirstByAccountId(Integer accountId) {
-    	return userRepo.findFirstByAccountId(accountId);
+        return userRepo.findFirstByAccountId(accountId);
     }
 }

@@ -1,7 +1,7 @@
 package com.likelion.ecommerce.security.services;
 
-import com.likelion.ecommerce.entities.User;
-import com.likelion.ecommerce.repository.UserRepository;
+import com.likelion.ecommerce.entities.Account;
+import com.likelion.ecommerce.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-  private final UserRepository userRepository;
+  private final AccountRepository accountRepository;
 
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username)
+    Account account = accountRepository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-    return UserDetailsImpl.build(user);
+    return UserDetailsImpl.build(account);
   }
 
 }

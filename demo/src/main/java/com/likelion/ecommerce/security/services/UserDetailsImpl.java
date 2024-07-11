@@ -1,7 +1,7 @@
 package com.likelion.ecommerce.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.likelion.ecommerce.entities.User;
+import com.likelion.ecommerce.entities.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,32 +18,28 @@ public class UserDetailsImpl implements UserDetails {
 
   private String username;
 
-  private String email;
-
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public UserDetailsImpl(Integer id, String username, String email, String password,
+  public UserDetailsImpl(Integer id, String username, String password,
       Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.username = username;
-    this.email = email;
     this.password = password;
     this.authorities = authorities;
   }
 
-  public static UserDetailsImpl build(User user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
+  public static UserDetailsImpl build(Account account) {
+    List<GrantedAuthority> authorities = account.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.getName().name()))
         .collect(Collectors.toList());
 
     return new UserDetailsImpl(
-        user.getUserId(),
-        user.getUsername(), 
-        user.getEmail(),
-        user.getPassword(), 
+            account.getAccountId(),
+            account.getUsername(),
+            account.getPassword(),
         authorities);
   }
 
@@ -54,10 +50,6 @@ public class UserDetailsImpl implements UserDetails {
 
   public Integer getId() {
     return id;
-  }
-
-  public String getEmail() {
-    return email;
   }
 
   @Override

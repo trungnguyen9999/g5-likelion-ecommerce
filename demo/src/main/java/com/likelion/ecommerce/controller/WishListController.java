@@ -22,7 +22,7 @@ import com.likelion.ecommerce.service.WishListService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/wishlist")
+@RequestMapping("/api/wishlist")
 @RequiredArgsConstructor
 @Validated
 public class WishListController {

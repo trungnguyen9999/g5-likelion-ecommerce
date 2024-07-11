@@ -20,7 +20,7 @@ import com.likelion.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Validated
 public class UserControlller {

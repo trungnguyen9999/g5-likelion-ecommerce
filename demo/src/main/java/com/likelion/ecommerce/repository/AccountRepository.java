@@ -1,9 +1,9 @@
 package com.likelion.ecommerce.repository;
 
+import com.likelion.ecommerce.entities.Account;
+import com.likelion.ecommerce.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.likelion.ecommerce.entities.User;
 
 import java.util.Optional;
 
@@ -11,8 +11,10 @@ import java.util.Optional;
  * Repository is an interface that provides access to data in a database
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface AccountRepository extends JpaRepository<Account, Integer> {
 
-	User findFirstByAccountId(Integer accountId);
+    Optional<Account> findByUsername(String username);
+
+    Boolean existsByUsername(String username);
 
 }

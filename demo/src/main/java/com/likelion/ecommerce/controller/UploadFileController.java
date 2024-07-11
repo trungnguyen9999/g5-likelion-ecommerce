@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/api/upload")
 @RequiredArgsConstructor
 @Validated
 public class UploadFileController {

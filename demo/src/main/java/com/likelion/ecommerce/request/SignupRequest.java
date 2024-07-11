@@ -1,51 +1,54 @@
 package com.likelion.ecommerce.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+import java.util.Date;
 import java.util.Set;
- 
+
+@Data
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
- 
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
-    
+
     private Set<String> role;
     
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
-  
-    public String getUsername() {
-        return username;
-    }
- 
-    public void setUsername(String username) {
-        this.username = username;
-    }
- 
-    public String getEmail() {
-        return email;
-    }
- 
-    public void setEmail(String email) {
-        this.email = email;
-    }
- 
-    public String getPassword() {
-        return password;
-    }
- 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
+
+    private Integer type;
+
+    private Integer status;
+
+    private Date createdAt;
+
+    private String fullName;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private Date birthdate;
+
+    private String addressLine1;
+
+    private String addressLine2;
+
+    private String apartment;
+
+    private String suburb;
+
+    private String city;
+
+    private String region;
+
+    private String avatar;
+
     public Set<String> getRole() {
       return this.role;
     }
