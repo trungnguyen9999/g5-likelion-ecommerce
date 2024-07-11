@@ -20,23 +20,29 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carts_cart_id_seq")
     @SequenceGenerator(name = "carts_cart_id_seq", sequenceName = "carts_cart_id_seq", allocationSize = 1)
-	private Integer categoryId;
+	private Integer cartId;
 	
 	@Column(name = "account_id")
 	private Integer accountId;
 	
 	@Column(name = "product_id")
-	private String productId;	
+	private Integer productId;	
 	
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	public Integer getCategoryId() {
-		return categoryId;
+	/**
+	 * @return the cartId
+	 */
+	public Integer getCartId() {
+		return cartId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+	/**
+	 * @param cartId the cartId to set
+	 */
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
 	}
 
 	public Integer getAccountId() {
@@ -47,11 +53,17 @@ public class Cart {
 		this.accountId = accountId;
 	}
 
-	public String getProductId() {
+	/**
+	 * @return the productId
+	 */
+	public Integer getProductId() {
 		return productId;
 	}
 
-	public void setProductId(String productId) {
+	/**
+	 * @param productId the productId to set
+	 */
+	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
 

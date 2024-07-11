@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.likelion.ecommerce.entities.BannerImage;
+import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.BannerImageRepo;
 
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,10 @@ public class BannerImageService {
 	
 	public BannerImage saveBannerImage(BannerImage bannerImage) {
 		return repo.save(bannerImage);
+	}
+
+	public BannerImage updateBannerImage(BannerImage bannerImage) {
+		BannerImage updatedBannerImage = repo.save(bannerImage);
+        return updatedBannerImage;
 	}
 }

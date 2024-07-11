@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,16 @@ import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.CategoryRepo;
 import com.likelion.ecommerce.repository.ProductRepo;
 import com.likelion.ecommerce.response.ResponsePaginate;
+import com.likelion.ecommerce.security.WebSecurityConfig;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
+	
+	private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
+	
 	@Autowired
 	private  CategoryRepo repo;
 	
@@ -74,10 +80,10 @@ public class CategoryService {
         repo.deleteById(id);
     }
 
-    public List<CategoryDto> getCategoryList() {
-    	List<CategoryDto> listcategoryDto = repo.findAll().stream().map(item -> {
+    public List<CategoryDto> getCategoryList(String keyWord) {
+    	List<CategoryDto> listcategoryDto = repo.findByNameContainingIgnoreCase(keyWord).stream().map(item -> {
     		CategoryDto categoryDto = modelMapper.map(item, CategoryDto.class);
-    		categoryDto.setQuantityProduct(repoProduct.countByCategoryId(item.getCategoryId()));
+    		categoryDto.setQuantityProduct(repoProduct.countByCategoryIdAndDeletedAtIsNull(item.getCategoryId()));
     		return categoryDto;
     	}).collect(Collectors.toList());
         return listcategoryDto;

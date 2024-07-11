@@ -40,7 +40,7 @@ public class ProductRateController {
         		.body(productRateService.saveProductRate(productRate));
     }
 	
-	@GetMapping("/{productId}")
+	@GetMapping("/public/{productId}")
     public ResponseEntity<List<ProductRateDto>> findAllByProductId(@PathVariable Integer productId) {
         List<ProductRateDto> listProductRate = productRateService.findAllByProductId(productId);
         

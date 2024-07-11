@@ -27,12 +27,18 @@ public class Product {
 	
 	@Column(name = "category_id")
 	private Integer categoryId;
+	
+	@Column(name = "brand_id")
+	private Integer brandId;
 
 	@Column(name = "name")
 	private String name;
 	
 	@Column(name = "quantity")
 	private Integer quantity;
+	
+	@Column(name = "quantity_sold")
+	private Integer quantitySold;
 	
 	@Column(name = "description")
 	private String description;
@@ -175,5 +181,31 @@ public class Product {
 		this.imagePath = imagePath;
 	}
 
-	
+	/**
+	 * @return the brandId
+	 */
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	/**
+	 * @param brandId the brandId to set
+	 */
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
+	}
+
+	/**
+	 * @return the quantitySold
+	 */
+	public Integer getQuantitySold() {
+		return quantitySold;
+	}
+
+	/**
+	 * @param quantitySold the quantitySold to set
+	 */
+	public void setQuantitySold(Integer quantitySold) {
+		this.quantitySold = quantitySold;
+	}
 }

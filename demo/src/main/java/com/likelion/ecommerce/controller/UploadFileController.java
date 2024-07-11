@@ -32,7 +32,8 @@ public class UploadFileController {
 	@PostMapping("/image")
 	public ResponseEntity<LinkedHashMap> uploadImage(
 			@RequestParam("data") MultipartFile data, 
-			@RequestParam("title") String title) throws IOException {
+			@RequestParam("title") String title) throws IOException 
+	{
 	    String url = cloudinaryService.uploadFile(data);
 	    LinkedHashMap response = new LinkedHashMap<>();
 	    response.put("title", title);

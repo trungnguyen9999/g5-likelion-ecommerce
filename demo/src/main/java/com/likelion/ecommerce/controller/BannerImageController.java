@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class BannerImageController {
 	@Autowired
 	private BannerImageService bannerImageService;
 	
-	@GetMapping("/all")
+	@GetMapping("/public/all")
     public ResponseEntity<List<BannerImage>> getBannerImageList() {
         List<BannerImage> listBannerImages = bannerImageService.findAllBannerImage();
         
@@ -38,9 +39,15 @@ public class BannerImageController {
     }
 
 	@PostMapping("/create")
-    public ResponseEntity<BannerImage> saveCategory(@RequestBody BannerImage bannerImage)
+    public ResponseEntity<BannerImage> saveBannerImage(@RequestBody BannerImage bannerImage)
     {
         return ResponseEntity.ok()
         		.body(bannerImageService.saveBannerImage(bannerImage));
+    }
+	@PutMapping("/update")
+    public ResponseEntity<BannerImage> updateBannerImage(@RequestBody BannerImage bannerImage)
+    {
+        return ResponseEntity.ok()
+        		.body(bannerImageService.updateBannerImage(bannerImage));
     }
 }

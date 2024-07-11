@@ -24,6 +24,7 @@ import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.service.ProductService;
 
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
@@ -43,25 +44,31 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping("/paginate")
+	@GetMapping("/public/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(
-    		@RequestParam(name = "page", required = true) Integer page,
-    		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId) {
-		
+    		@RequestParam(defaultValue = "") String keyWord,
+    		@RequestParam(required = true) Integer page,
+    		@RequestParam(defaultValue = "10") Integer pageSize,
+    		@RequestParam(defaultValue = "-1") Integer accountId,
+    		@RequestParam(defaultValue = "-1") Integer categoryId,
+    		@RequestParam(defaultValue = "0") Long fromPrice,
+    		@RequestParam(defaultValue = "1000000") Long toPrice, 
+    		@RequestParam(defaultValue = "1") Integer sortBy,//1: mới/cũ; 2: Giá; 3: Bán chạy
+    		@RequestParam(defaultValue = "ASC") String sortType) //ASC: tăng; DESC: Giảm
+	{		
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
         return ResponseEntity.ok()
-        		.body(productService.paginateProduct(pageable, request));
+        		.body(productService.paginateProduct(pageable, request, categoryId, keyWord, fromPrice, toPrice, sortBy, sortType));
     }
     
-	@GetMapping("/{categoryid}/paginate")
+	@GetMapping("/public/{categoryid}/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(
             @PathVariable Integer categoryid,
             @RequestParam(name = "page", required = true) Integer page,
     		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId) {
-		
+    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId) 
+	{		
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);
         return ResponseEntity.ok()
@@ -69,53 +76,51 @@ public class ProductController {
     }
     
     @GetMapping("/paginate/wishlist")
-    public ResponseEntity<ResponsePaginate> getAllProductInWishList(@RequestBody PaginateProductRequest request) {
+    public ResponseEntity<ResponsePaginate> getAllProductInWishList(@RequestBody PaginateProductRequest request) 
+    {
     	Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
         return ResponseEntity.ok()
         		.body(productService.paginateProductInWishList(pageable, request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Integer id) {
+    @GetMapping("/public/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Integer id) 
+    {
         return ResponseEntity.ok()
         		.body(productService.getProductById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product) 
+    {
     	product.setCreatedAt(new Date());
         return ResponseEntity.ok()
         		.body(productService.saveProduct(product));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) 
+    {
         return ResponseEntity.ok()
         		.body(productService.updateProduct(product));
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProductById(@PathVariable Integer id) {
-    	productService.deleteProductById(id);
+    public ResponseEntity<String> deleteProductById(@PathVariable Integer id) 
+    {
+//    	productService.deleteProductById(id);
         return ResponseEntity.ok()
         		.body("Deleted product successfully");
     }
-    
-    @GetMapping("/new-arrival")
+   
+    @GetMapping("/public/new-arrival")
     public ResponseEntity<?> getProductsNewArrival()
     {
         return ResponseEntity.ok()
         		.body(productService.getProductsNewArrival());
     }
 
-    @GetMapping("/paginate/categoryID")
-    public ResponseEntity<ResponsePaginate> getAllProduct(@RequestBody PaginateProductRequest request,
-            @Param("categoryId") Integer categoryId) {
-        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
-        return ResponseEntity.ok().body(productService.paginateProductGetByCategory(categoryId, pageable, request));
-    }
-
-    @GetMapping("/best-selling")
+    @GetMapping("/public/best-selling")
     public ResponseEntity<?> getProductsBestSelling()
     {
         return ResponseEntity.ok()
