@@ -42,4 +42,6 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 			+ " ORDER by quantity_sold DESC, p.created_at DESC "
 			+ " LIMIT 4",  nativeQuery = true)
 	List<Map> findBestSelling();
+	
+	Integer countByBrandId(Integer brandId);
 }

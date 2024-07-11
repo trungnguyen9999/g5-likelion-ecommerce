@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.dto.ProductDetailDto;
+import com.likelion.ecommerce.entities.Brand;
 import com.likelion.ecommerce.entities.Product;
 import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.repository.ProductRepo;
@@ -45,6 +46,9 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRateService productRateService;
+	
+	@Autowired 
+	private BrandService brandService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -93,6 +97,12 @@ public class ProductService {
 	    	    dto.setImagesPath(listProductImagePath);
 	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
 	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+	    	    
+	    	    Brand br = brandService.findById(product.getBrandId());
+	    	    if(Objects.nonNull(br)) {
+	    	    	dto.setBrand(br);
+	    	    }
+	    	    
 	    		return dto;
 	    	}).collect(Collectors.toList());
 
@@ -148,6 +158,12 @@ public class ProductService {
 				dto.setImagesPath(listProductImagePath);
 				dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
 				dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+				
+				Brand br = brandService.findById(product.getBrandId());
+	    	    if(Objects.nonNull(br)) {
+	    	    	dto.setBrand(br);
+	    	    }
+	    	    
 				return dto;
 			}).collect(Collectors.toList());
 
@@ -192,6 +208,12 @@ public class ProductService {
 	    		dto.setInWishList(true);
 	    		dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
 	    		dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+	    		
+	    		Brand br = brandService.findById(product.getBrandId());
+	    	    if(Objects.nonNull(br)) {
+	    	    	dto.setBrand(br);
+	    	    }
+	    	    
 	    		return dto;
 	    	}).collect(Collectors.toList());
 	    	
@@ -220,6 +242,12 @@ public class ProductService {
 	    	    dto.setImagesPath(listProductImagePath);
 	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
 	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+	    	    
+	    	    Brand br = brandService.findById(product.getBrandId());
+	    	    if(Objects.nonNull(br)) {
+	    	    	dto.setBrand(br);
+	    	    }
+	    	    
 	    		return dto;
 	    	});
         	return productDetails.orElse(null);
@@ -259,6 +287,12 @@ public class ProductService {
     	    dto.setImagesPath(listProductImagePath);
     	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
     	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+    	    
+    	    Brand br = brandService.findById(product.getBrandId());
+    	    if(Objects.nonNull(br)) {
+    	    	dto.setBrand(br);
+    	    }
+    	    
     		return dto;
     	}).collect(Collectors.toList());
 		return listProductDeTail;
@@ -281,10 +315,19 @@ public class ProductService {
     	    dto.setImagesPath(listProductImagePath);
     	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
     	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+    	    
+    	    Brand br = brandService.findById(product.getBrandId());
+    	    if(Objects.nonNull(br)) {
+    	    	dto.setBrand(br);
+    	    }
+    	    
 			return dto;
 		}).collect(Collectors.toList());
 		return results;
 	}
 
+	public Integer countByBrandId(Integer brandId) {
+		return repo.countByBrandId(brandId);
+	}
 	
 }

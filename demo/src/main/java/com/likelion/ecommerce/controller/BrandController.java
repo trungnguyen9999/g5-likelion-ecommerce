@@ -1,6 +1,5 @@
 package com.likelion.ecommerce.controller;
 
-
 import java.util.List;
 import java.util.Objects;
 
@@ -12,35 +11,30 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.likelion.ecommerce.dto.CartDto;
-import com.likelion.ecommerce.entities.Cart;
-import com.likelion.ecommerce.entities.Category;
+import com.likelion.ecommerce.entities.Brand;
 import com.likelion.ecommerce.response.ResponseStandard;
-import com.likelion.ecommerce.service.CartService;
+import com.likelion.ecommerce.service.BrandService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/brand")
 @RequiredArgsConstructor
 @Validated
-public class CartController {
-	
+public class BrandController {
 	@Autowired
-	private CartService cartService;
+	private BrandService brandService;
 	
-	@GetMapping("/get-by-account")
-    public ResponseEntity<ResponseStandard> getCartList(@RequestParam Integer accountId) 
+	@GetMapping("/public/all")
+    public ResponseEntity<ResponseStandard> getBrandList() 
     {
-		List<CartDto> data = cartService.findAllProductInCartByAccountId(accountId);
+		List<Brand> data = brandService.findAll();
 		ResponseStandard rp = new ResponseStandard();
 		rp.setMessage(Objects.isNull(data) ? "Không tìm thấy dữ liệu" : "Thành công");
 		rp.setData(data);
@@ -48,27 +42,20 @@ public class CartController {
     }
 	
 	@PostMapping("/create")
-    public ResponseEntity<ResponseStandard> saveCart(@RequestBody Cart cart)
+    public ResponseEntity<ResponseStandard> saveBrand(@RequestBody Brand brand)
     {
 		ResponseStandard rp = new ResponseStandard();
 		rp.setMessage("Insert successful!");
-		rp.setData(cartService.save(cart));
-        return ResponseEntity.ok().body(rp);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<ResponseStandard> updateCart(@RequestBody Cart cart)
-    {
-    	ResponseStandard rp = new ResponseStandard();
-		rp.setMessage("Update successful!");
-		rp.setData(cartService.update(cart));
+		rp.setData(brandService.save(brand));
         return ResponseEntity.ok().body(rp);
     }
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteProductInCart(@PathVariable Integer id)
+	public ResponseEntity<?> deleteBrand(@RequestParam Integer id)
 	{
-		cartService.deteteById(id);
+		//Kiểm tra brand có sản phẩm không
+		
+		brandService.delete(id);
 		return ResponseEntity.ok().body("Delete successful!");
 	}
 }
