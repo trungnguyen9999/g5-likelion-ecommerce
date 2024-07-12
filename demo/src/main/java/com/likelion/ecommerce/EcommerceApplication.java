@@ -14,7 +14,6 @@ import com.cloudinary.Cloudinary;
 
 
 @SpringBootApplication
-@EnableWebMvc
 public class EcommerceApplication {
 	
 	@Bean
