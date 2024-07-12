@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 @RequiredArgsConstructor
 @Validated
 public class CartController {

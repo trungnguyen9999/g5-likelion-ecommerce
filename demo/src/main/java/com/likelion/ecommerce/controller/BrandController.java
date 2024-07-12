@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/api/brand")
 @RequiredArgsConstructor
 @Validated
 public class BrandController {
