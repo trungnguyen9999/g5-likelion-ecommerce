@@ -13,8 +13,13 @@ import com.likelion.ecommerce.response.MessageResponse;
 import com.likelion.ecommerce.response.UserInfoResponse;
 import com.likelion.ecommerce.security.jwt.JwtUtils;
 import com.likelion.ecommerce.security.services.UserDetailsImpl;
+import com.likelion.ecommerce.service.CategoryService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -47,6 +52,8 @@ public class AuthController {
   private final JwtUtils jwtUtils;
   private final AccountRepository accountRepository;
   private final UserRepository userRepository;
+  
+  private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -72,6 +79,9 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	 
+	  log.info(signUpRequest.getUsername());
+	 
     if (accountRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already in use!"));
     }

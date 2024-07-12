@@ -41,7 +41,7 @@ public class TestController {
   @GetMapping("/categories")
   @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   public ResponseEntity<List<CategoryDto>> getCategoryList() {
-    List<CategoryDto> listCategories = categoryService.getCategoryList();
+    List<CategoryDto> listCategories = categoryService.getCategoryList("");
 
     return ResponseEntity.ok()
             .body(listCategories);
