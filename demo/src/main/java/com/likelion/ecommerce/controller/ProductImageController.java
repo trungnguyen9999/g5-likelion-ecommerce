@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/product-image")
+@RequestMapping("/api/product-image")
 @RequiredArgsConstructor
 @Validated
 public class ProductImageController {

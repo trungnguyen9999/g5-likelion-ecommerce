@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/report-dashboard")
+@RequestMapping("/api/report-dashboard")
 @RequiredArgsConstructor
 @Validated
 public class ReportController {
