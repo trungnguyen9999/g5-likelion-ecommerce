@@ -34,7 +34,7 @@ public class WebSecurityConfig {
 		  "/api/test/**",
 		  "/swagger-ui/**",
 		  "/v3/api-docs/**",
-		  "*/public/**"
+		  "/api/*/public/**"
   };
 
 
