@@ -19,17 +19,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductRateService {
 
-	@Autowired
-	private ProductRateRepo repo;
-	
-	@Autowired
-	private ModelMapper modelMapper;
-	
-	@Autowired
-	private UserService userService;
+	private final ProductRateRepo repo;
+
+	private final ModelMapper modelMapper;
+
+	private final UserService userService;
 	
 	public List<ProductRateDto> findAllByProductId(Integer productId){
-		List<ProductRateDto> listProductRateDto = repo.findAllByProductId(productId).stream().map(i -> {
+        return repo.findAllByProductId(productId).stream().map(i -> {
 			ProductRateDto prDto = modelMapper.map(i, ProductRateDto.class);
 			User u = userService.findFirstByAccountId(prDto.getAccountId());
 			if(Objects.nonNull(u)) {
@@ -38,7 +35,6 @@ public class ProductRateService {
 			}
 			return prDto;
 		}).collect(Collectors.toList());
-		return listProductRateDto;
 	}
 	
 	public List<ProductRate> findBasicAllByProductId(Integer productId){
@@ -46,9 +42,9 @@ public class ProductRateService {
 	}
 	
 	public Float getScoreByProductId(Integer productId) {
-		Float score = 0f;
+		float score = 0f;
 		List<ProductRate> listPR = repo.findAllByProductId(productId);
-		if(Objects.nonNull(listPR) && listPR.size() > 0) {
+		if(Objects.nonNull(listPR) && !listPR.isEmpty()) {
 			float totalScore = 0;
 			for(ProductRate pr : listPR) {
 				totalScore += pr.getScore();

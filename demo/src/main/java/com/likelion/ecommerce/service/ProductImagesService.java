@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductImagesService {
-	@Autowired
-	private  ProductImagesRepo repo;
+
+	private final ProductImagesRepo repo;
 
     public List<ProductImage> getAllProductImage(){
         return repo.findAll();

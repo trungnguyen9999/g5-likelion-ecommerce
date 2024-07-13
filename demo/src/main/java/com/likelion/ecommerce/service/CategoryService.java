@@ -1,39 +1,32 @@
 package com.likelion.ecommerce.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.repository.CategoryRepo;
 import com.likelion.ecommerce.repository.ProductRepo;
 import com.likelion.ecommerce.response.ResponsePaginate;
-import com.likelion.ecommerce.security.WebSecurityConfig;
-
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 	
 	private static final Logger log = LoggerFactory.getLogger(CategoryService.class);
-	
-	@Autowired
-	private  CategoryRepo repo;
-	
-	@Autowired
-	private  ProductRepo repoProduct;
-	
-	@Autowired
-	private ModelMapper modelMapper;
+
+	private final CategoryRepo repo;
+
+	private final ProductRepo repoProduct;
+
+	private final ModelMapper modelMapper;
 
     public List<Category> getAllCategory(){
         return repo.findAll();
@@ -60,20 +53,15 @@ public class CategoryService {
 
     public Category getCategoryById(Integer id){
         Optional<Category> optionalCategory= repo.findById(id);
-        if(optionalCategory.isPresent()){
-            return optionalCategory.get();
-        }
-        return null;
+        return optionalCategory.orElse(null);
     }
 
     public Category saveCategory (Category category){
-        Category savedCategory = repo.save(category);
-        return savedCategory;
+        return repo.save(category);
     }
 
     public Category updateCategory (Category category) {
-        Category updatedCategory = repo.save(category);
-        return updatedCategory;
+        return repo.save(category);
     }
 
     public void deleteCategoryById (Integer id) {

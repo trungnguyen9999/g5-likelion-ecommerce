@@ -1,7 +1,9 @@
 package com.likelion.ecommerce.request;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+@Data
 @RequiredArgsConstructor
 public class PaginateProductRequest {
 	
@@ -10,8 +12,6 @@ public class PaginateProductRequest {
 	private Integer page;
 	
 	private Integer pageSize;
-	
-	
 
 	public PaginateProductRequest(Integer accountId, Integer page, Integer pageSize) {
 		super();
@@ -19,29 +19,4 @@ public class PaginateProductRequest {
 		this.page = page;
 		this.pageSize = pageSize;
 	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public Integer getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
-	}
-	
 }

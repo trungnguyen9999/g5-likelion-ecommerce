@@ -1,7 +1,9 @@
 package com.likelion.ecommerce.service;
 
 import java.util.List;
+import java.util.Objects;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +13,14 @@ import com.likelion.ecommerce.repository.ProductRepo;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BrandService {
-	
-	@Autowired
-	private BrandRepo repo;
-	
-	@Autowired
-	private ProductRepo productRepo;
+
+	private final BrandRepo repo;
+
+	private final ProductRepo productRepo;
 	
 	public Brand findById(Integer id) 
 	{
@@ -33,6 +34,11 @@ public class BrandService {
 	
 	public Brand save(Brand brand) 
 	{
+		Brand temp = repo.findBrandByName(brand.getName());
+		if (Objects.nonNull(temp)) {
+			log.info("Brand exists!!!");
+			return temp;
+		}
 		return repo.save(brand);
 	}
 	

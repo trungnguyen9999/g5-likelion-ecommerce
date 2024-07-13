@@ -1,6 +1,5 @@
 package com.likelion.ecommerce.controller;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.likelion.ecommerce.dto.ProductRateDto;
-import com.likelion.ecommerce.entities.Category;
 import com.likelion.ecommerce.entities.ProductRate;
 import com.likelion.ecommerce.service.ProductRateService;
 

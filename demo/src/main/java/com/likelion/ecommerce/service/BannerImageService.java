@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BannerImageService {
-	@Autowired
-	private BannerImageRepo repo;
+
+	private final BannerImageRepo repo;
 	
 	public List<BannerImage> findAllBannerImage(){
 		return repo.findAllByIsDeleted(false);

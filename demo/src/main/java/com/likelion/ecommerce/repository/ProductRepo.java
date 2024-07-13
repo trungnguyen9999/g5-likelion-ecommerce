@@ -26,7 +26,15 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 	@Query(value =  "SELECT count(1) FROM products p where name ilike %:name% and category_id = :categoryId "
 			+ " and price between :fromPrice and :toPrice and p.deleted_at ISNULL", nativeQuery = true)
 	Integer countFilterProductHasCategoryId(String name, Integer categoryId, Long fromPrice, Long toPrice);
-	
+
+	@Query(value =  "SELECT count(1) FROM products p where name ilike %:name% and brand_id in :brandIds "
+			+ " and price between :fromPrice and :toPrice and p.deleted_at ISNULL", nativeQuery = true)
+	Integer countFilterProductHasBrandIds(String name, List<Integer> brandIds, Long fromPrice, Long toPrice);
+
+	@Query(value =  "SELECT count(1) FROM products p where name ilike %:name% and category_id = :categoryId and brand_id in :brandIds "
+			+ " and price between :fromPrice and :toPrice and p.deleted_at ISNULL", nativeQuery = true)
+	Integer countFilterProductHasCategoryIdAndBrandIds(String name, Integer categoryId, List<Integer> brandIds, Long fromPrice, Long toPrice);
+
 	@Query(value =  "SELECT * FROM products p where category_id = :categoryId and p.deleted_at ISNULL",
 			countQuery = "SELECT count(product_id) FROM products where category_id = :categoryId and p.deleted_at ISNULL", nativeQuery = true)
 	public Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);

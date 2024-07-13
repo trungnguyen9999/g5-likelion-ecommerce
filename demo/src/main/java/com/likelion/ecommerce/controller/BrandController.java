@@ -45,13 +45,14 @@ public class BrandController {
     public ResponseEntity<ResponseStandard> saveBrand(@RequestBody Brand brand)
     {
 		ResponseStandard rp = new ResponseStandard();
+
 		rp.setMessage("Insert successful!");
 		rp.setData(brandService.save(brand));
         return ResponseEntity.ok().body(rp);
     }
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteBrand(@RequestParam Integer id)
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteBrand(@PathVariable Integer id)
 	{
 		//Kiểm tra brand có sản phẩm không
 		

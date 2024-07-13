@@ -1,74 +1,73 @@
 package com.likelion.ecommerce.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.dto.ProductDetailDto;
 import com.likelion.ecommerce.entities.Brand;
 import com.likelion.ecommerce.entities.Product;
+import com.likelion.ecommerce.entities.ProductImage;
 import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.repository.ProductRepo;
 import com.likelion.ecommerce.request.PaginateProductRequest;
-import com.likelion.ecommerce.request.PaginateRequest;
 import com.likelion.ecommerce.response.ResponsePaginate;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ProductService {
-	@Autowired
-	private ProductRepo repo;
-	
-	@Autowired
-	private CategoryService categoryService;
 
-	@Autowired
-	private WishListService wishListService;
-	
-	@Autowired
-	private ProductImagesService productImagesService;
-	
-	@Autowired
-	private ProductRateService productRateService;
-	
-	@Autowired 
-	private BrandService brandService;
-	
-	@Autowired
-	private ModelMapper modelMapper;
+	private final ProductRepo repo;
+
+	private final CategoryService categoryService;
+
+	private final WishListService wishListService;
+
+	private final ProductImagesService productImagesService;
+
+	private final ProductRateService productRateService;
+
+	private final BrandService brandService;
+
+	private final ModelMapper modelMapper;
 
     public List<Product> getAllProduct(){
-        return repo.findAll();
+		return repo.findAll();
     }
     
     public ResponsePaginate paginateProduct(Pageable page, PaginateProductRequest request, 
-    		int categoryId, String keyWord, Long fromPrice, Long toPrice, Integer sortBy, String sortType){
+    		int categoryId, String keyWord, Long fromPrice, Long toPrice, Integer sortBy, String sortType, List<Integer> brandIds){
     	ResponsePaginate response = new ResponsePaginate();
     	try {
     		
     		int limit = page.getPageSize();
     		int offset = limit  * (page.getPageNumber() + 1) - limit;
     		
-    		List<Product> listProduct = repo.filterProduct(keyWord, categoryId, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset);
-	    	float totalElement = categoryId > 0 
-	    			? repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice) 
-	    			: repo.countFilterProduct(keyWord, fromPrice, toPrice);
+    		List<Product> listProduct = repo.filterProduct(keyWord, categoryId, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset, brandIds);
+
+			float totalElement = 0;
+			if(listProduct.size() < page.getPageSize()) {
+				totalElement = listProduct.size();
+			} else {
+				if(categoryId > 0 && !brandIds.isEmpty()) {
+					totalElement = repo.countFilterProductHasCategoryIdAndBrandIds(keyWord, categoryId, brandIds, fromPrice, toPrice);
+				} else if (categoryId > 0) {
+					repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice);
+				} else if (!brandIds.isEmpty()) {
+					repo.countFilterProductHasBrandIds(keyWord, brandIds, fromPrice, toPrice);
+				} else {
+					repo.countFilterProduct(keyWord, fromPrice, toPrice);
+				}
+			}
 	    	
 	    	int totalPage = 0; 
 	    	if(totalElement > 0) {
@@ -153,7 +152,7 @@ public class ProductService {
 
 				List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
 						.stream()
-						.map(i -> i.getImagePath())
+						.map(ProductImage::getImagePath)
 						.collect(Collectors.toList());
 				dto.setImagesPath(listProductImagePath);
 				dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
@@ -237,7 +236,7 @@ public class ProductService {
 	    		
 	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
 	    	                                                    .stream()
-	    	                                                    .map(i -> i.getImagePath())
+	    	                                                    .map(ProductImage::getImagePath)
 	    	                                                    .collect(Collectors.toList());
 	    	    dto.setImagesPath(listProductImagePath);
 	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
@@ -257,14 +256,12 @@ public class ProductService {
 
     public Product saveProduct (Product product){
     	product.setCreatedAt(new Date());
-        Product savedProduct = repo.save(product);
-        return savedProduct;
+        return repo.save(product);
     }
 
     public Product updateProduct (Product product) {
         Optional<Product> existingProduct = repo.findById(product.getProductId());
-        Product updatedProduct = repo.save(product);
-        return updatedProduct;
+        return repo.save(product);
     }
 
     public void deleteProductById (Integer id) {
@@ -282,7 +279,7 @@ public class ProductService {
     	    
     	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
     	                                                    .stream()
-    	                                                    .map(i -> i.getImagePath())
+    	                                                    .map(ProductImage::getImagePath)
     	                                                    .collect(Collectors.toList());
     	    dto.setImagesPath(listProductImagePath);
     	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
@@ -302,7 +299,7 @@ public class ProductService {
 		List<ProductDetailDto> results = repo.findBestSelling().stream().map(p -> {
 			Product product = repo.findById(Integer.valueOf(p.get("product_id").toString())).orElse(null);
 			ProductDetailDto dto = 		modelMapper.map(product, ProductDetailDto.class);
-    		
+
 			if(Objects.nonNull(product.getCategoryId())) {
 	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
 	    	    dto.setCategoryDto(categoryDto);
@@ -310,7 +307,7 @@ public class ProductService {
     	    
     	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
     	                                                    .stream()
-    	                                                    .map(i -> i.getImagePath())
+    	                                                    .map(ProductImage::getImagePath)
     	                                                    .collect(Collectors.toList());
     	    dto.setImagesPath(listProductImagePath);
     	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));

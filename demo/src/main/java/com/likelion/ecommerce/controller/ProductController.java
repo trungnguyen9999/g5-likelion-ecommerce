@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/api/product")
@@ -52,14 +54,15 @@ public class ProductController {
     		@RequestParam(defaultValue = "-1") Integer accountId,
     		@RequestParam(defaultValue = "-1") Integer categoryId,
     		@RequestParam(defaultValue = "0") Long fromPrice,
-    		@RequestParam(defaultValue = "1000000") Long toPrice, 
+    		@RequestParam(defaultValue = "1000000") Long toPrice,
+    		@RequestParam(defaultValue = "") List<Integer> brandIds,
     		@RequestParam(defaultValue = "1") Integer sortBy,//1: mới/cũ; 2: Giá; 3: Bán chạy
     		@RequestParam(defaultValue = "ASC") String sortType) //ASC: tăng; DESC: Giảm
-	{		
+	{
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
     	PaginateProductRequest request = new PaginateProductRequest(accountId, page, pageSize);    	
         return ResponseEntity.ok()
-        		.body(productService.paginateProduct(pageable, request, categoryId, keyWord, fromPrice, toPrice, sortBy, sortType));
+        		.body(productService.paginateProduct(pageable, request, categoryId, keyWord, fromPrice, toPrice, sortBy, sortType, brandIds));
     }
     
 	@GetMapping("/public/{categoryid}/paginate")

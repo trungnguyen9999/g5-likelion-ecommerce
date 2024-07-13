@@ -20,9 +20,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReportService {
-	
-	@Autowired
-	private ReportRepo repo;
+
+	private final ReportRepo repo;
 
 	@SuppressWarnings("unchecked")
 	public Object getReportOfOrder() 

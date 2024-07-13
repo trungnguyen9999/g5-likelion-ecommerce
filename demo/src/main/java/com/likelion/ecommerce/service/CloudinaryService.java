@@ -17,9 +17,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CloudinaryService {
-	
-	@Autowired
-	private Cloudinary cloudinaryConfig;
+
+	private final Cloudinary cloudinaryConfig;
 
 	public String uploadFile(MultipartFile file) {
 	    try {

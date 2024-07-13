@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,23 +21,19 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartService {
 	
-	@Autowired
-	private CartRepo repo;
-	
-	@Autowired
-	private ModelMapper modelMapper;
-	
-	@Autowired
-	private ProductService productService;
-	
-	private static final Logger log = LoggerFactory.getLogger(CartService.class);
-	
+	private final CartRepo repo;
+
+	private final ModelMapper modelMapper;
+
+	private final ProductService productService;
+
 	public List<CartDto> findAllProductInCartByAccountId(Integer accountId)
 	{
 		List<Cart> listCart = repo.findAllByAccountId(accountId);
-		if(Objects.nonNull(listCart) && listCart.size() > 0) {
+		if(Objects.nonNull(listCart) && !listCart.isEmpty()) {
 			List<CartDto> listCartDto = listCart.stream().map(i -> {				
 				CartDto dto = new CartDto();
 				dto.setCartId(i.getCartId());

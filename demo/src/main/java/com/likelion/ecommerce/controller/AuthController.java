@@ -50,7 +50,9 @@ public class AuthController {
   private final PasswordEncoder encoder;
 
   private final JwtUtils jwtUtils;
+  
   private final AccountRepository accountRepository;
+  
   private final UserRepository userRepository;
   
   private static final Logger log = LoggerFactory.getLogger(AuthController.class);

@@ -28,29 +28,4 @@ public class WishList {
 	@Column(name = "product_id")
 	private Integer productId;
 
-	public Integer getWishlistId() {
-		return wishlistId;
-	}
-
-	public void setWishlistId(Integer wishlistId) {
-		this.wishlistId = wishlistId;
-	}
-
-	public Integer getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
-	}
-
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
-	
-	
 }

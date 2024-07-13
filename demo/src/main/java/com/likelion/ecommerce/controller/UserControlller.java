@@ -33,7 +33,8 @@ public class UserControlller {
 	private UserService userService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers()
+    {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
