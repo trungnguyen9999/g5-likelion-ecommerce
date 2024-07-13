@@ -23,14 +23,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class WishListController {
-	
 
-	/**
-	 * author: ntnguyen
-	 */
-	
-	@Autowired
-	private WishListService wishlistService;
+	private final WishListService wishlistService;
 
     @GetMapping("/{id}")
     public ResponseEntity<WishList> getWishlistById(@PathVariable Integer id)

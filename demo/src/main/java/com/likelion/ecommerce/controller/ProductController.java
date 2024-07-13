@@ -38,13 +38,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 public class ProductController {
-	
-	/**
-	 * author: ntnguyen
-	 */
-	
-	@Autowired
-	private ProductService productService;
+
+    private final ProductService productService;
 
 	@GetMapping("/public/paginate")
     public ResponseEntity<ResponsePaginate> getAllProduct(

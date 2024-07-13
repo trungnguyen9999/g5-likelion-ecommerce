@@ -52,4 +52,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 	List<Map> findBestSelling();
 	
 	Integer countByBrandId(Integer brandId);
+
+	Integer countByCategoryId(Integer categoryId);
+
 }

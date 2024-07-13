@@ -26,9 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class BannerImageController {
-	
-	@Autowired
-	private BannerImageService bannerImageService;
+
+	private final BannerImageService bannerImageService;
 	
 	@GetMapping("/public/all")
     public ResponseEntity<List<BannerImage>> getBannerImageList() {

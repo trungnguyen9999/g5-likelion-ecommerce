@@ -265,7 +265,7 @@ public class ProductService {
     }
 
     public void deleteProductById (Integer id) {
-        repo.deleteById(id);
+//        repo.deleteById(id);
     }
 
 	public List<ProductDetailDto> getProductsNewArrival() {
@@ -326,5 +326,8 @@ public class ProductService {
 	public Integer countByBrandId(Integer brandId) {
 		return repo.countByBrandId(brandId);
 	}
-	
+
+	public Integer countByCategoryId(Integer categoryId) {
+		return repo.countByCategoryId(categoryId);
+	}
 }

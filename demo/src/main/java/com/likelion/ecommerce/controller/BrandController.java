@@ -3,6 +3,7 @@ package com.likelion.ecommerce.controller;
 import java.util.List;
 import java.util.Objects;
 
+import com.likelion.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,9 +29,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class BrandController {
-	@Autowired
-	private BrandService brandService;
-	
+
+	private final BrandService brandService;
+
+	private final ProductService productService;
+
 	@GetMapping("/public/all")
     public ResponseEntity<ResponseStandard> getBrandList() 
     {
@@ -54,8 +57,9 @@ public class BrandController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteBrand(@PathVariable Integer id)
 	{
-		//Kiểm tra brand có sản phẩm không
-		
+		if (productService.countByBrandId(id) > 0) {
+			return ResponseEntity.ok().body("Brand has some product!");
+		}
 		brandService.delete(id);
 		return ResponseEntity.ok().body("Delete successful!");
 	}

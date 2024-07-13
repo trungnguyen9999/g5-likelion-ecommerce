@@ -24,9 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class UploadFileController {
-	
-	@Autowired
-	private CloudinaryService cloudinaryService;
+
+	private final CloudinaryService cloudinaryService;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/image")

@@ -33,9 +33,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class CartController {
-	
-	@Autowired
-	private CartService cartService;
+
+	private final CartService cartService;
 	
 	@GetMapping("/get-by-account")
     public ResponseEntity<ResponseStandard> getCartList(@RequestParam Integer accountId) 

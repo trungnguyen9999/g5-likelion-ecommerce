@@ -18,9 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class ReportController {
-	
-	@Autowired
-	private ReportService reportService;
+
+	private final ReportService reportService;
 
 	@GetMapping("/order")
     public ResponseEntity<?> getReportOfOrder()

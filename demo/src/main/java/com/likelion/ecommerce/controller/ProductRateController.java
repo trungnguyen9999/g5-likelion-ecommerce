@@ -27,8 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Validated
 public class ProductRateController {
 
-	@Autowired
-	private ProductRateService productRateService;
+	private final ProductRateService productRateService;
 	
 	@PostMapping("/create")
     public ResponseEntity<ProductRate> saveCategory(@RequestBody ProductRate productRate)

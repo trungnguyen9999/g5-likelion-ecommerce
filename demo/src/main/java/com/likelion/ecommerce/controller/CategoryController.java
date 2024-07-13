@@ -1,6 +1,7 @@
 package com.likelion.ecommerce.controller;
 
 
+import com.likelion.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -29,18 +30,16 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @CrossOrigin
 @RestController
 @RequestMapping("/api/categories")
 @Validated
 public class CategoryController {
-	
-	/**
-	 * author: ntnguyen
-	 */
-	
-	@Autowired
-	private CategoryService categoryService;
+
+	private final CategoryService categoryService;
+
+    private final ProductService productService;
 
 	@GetMapping("/paginate")
     public ResponseEntity<ResponsePaginate> paginateCategory(@RequestBody PaginateRequest request){
@@ -74,9 +73,11 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategoryById(@PathVariable Integer id)
     {
+        if(productService.countByCategoryId(id) > 0) {
+            return ResponseEntity.ok().body("Category has some product!");
+        }
     	categoryService.deleteCategoryById(id);
-        return ResponseEntity.ok()
-        		.body("Deleted category successfully");
+        return ResponseEntity.ok().body("Deleted category successfully");
     }
 
     @GetMapping("/public/all")

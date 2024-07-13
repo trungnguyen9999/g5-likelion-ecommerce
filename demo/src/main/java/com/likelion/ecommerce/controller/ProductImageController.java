@@ -20,9 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class ProductImageController {
-	
-	@Autowired
-	private ProductImagesService service;
+
+	private final ProductImagesService service;
 	
 	@PostMapping("/create")
     public ResponseEntity<ProductImage> saveProductImage(@RequestBody ProductImage pi) 

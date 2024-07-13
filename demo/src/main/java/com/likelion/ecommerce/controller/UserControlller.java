@@ -24,13 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class UserControlller {
-	
-	/**
-	 * author: ntnguyen
-	 */
-	
-	@Autowired
-	private UserService userService;
+
+	private final UserService userService;
 
     @GetMapping("/get-all")
     public ResponseEntity<List<User>> getAllUsers()
