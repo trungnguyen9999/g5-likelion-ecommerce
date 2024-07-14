@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -29,9 +28,6 @@ public class WebSecurityConfig {
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
-
-  @Autowired
-  private ExceptionHandlerFilter exceptionHandlerFilter;
 
   String[] permitedArray  = new String[] {
           "/api/auth/**",
@@ -81,7 +77,6 @@ public class WebSecurityConfig {
     http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    http.addFilterBefore(exceptionHandlerFilter, AuthTokenFilter.class);
 
     return http.build();
   }
