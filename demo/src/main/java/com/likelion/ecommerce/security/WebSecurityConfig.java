@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.security;
 
+import com.likelion.ecommerce.exception.ExceptionHandlerFilter;
 import com.likelion.ecommerce.security.jwt.AuthEntryPointJwt;
 import com.likelion.ecommerce.security.jwt.AuthTokenFilter;
 import com.likelion.ecommerce.security.services.UserDetailsServiceImpl;
@@ -28,15 +29,17 @@ public class WebSecurityConfig {
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
-  
-  String[] permitedArray  = new String[] {
-		  "/api/auth/**", 
-		  "/api/test/**",
-		  "/swagger-ui/**",
-		  "/v3/api-docs/**",
-		  "/api/*/public/**"
-  };
 
+  @Autowired
+  private ExceptionHandlerFilter exceptionHandlerFilter;
+
+  String[] permitedArray  = new String[] {
+          "/api/auth/**",
+          "/api/test/**",
+          "/swagger-ui/**",
+          "/v3/api-docs/**",
+          "/api/*/public/**"
+  };
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -78,9 +81,8 @@ public class WebSecurityConfig {
     http.authenticationProvider(authenticationProvider());
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(exceptionHandlerFilter, AuthTokenFilter.class);
 
     return http.build();
   }
-
 }
-
