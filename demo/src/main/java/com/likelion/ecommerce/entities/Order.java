@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -24,19 +26,19 @@ public class Order {
 	private Integer orderId;
 	
 	@Column(name = "account_id")
-	private String accountId;
+	private Integer accountId;
 	
 	@Column(name = "user_id")
-	private String usertId;
+	private Integer usertId;
 	
 	@Column(name = "total_price")
-	private String totalPrice;
+	private Double totalPrice;
 	
 	@Column(name = "order_time")
-	private String orderTime;
+	private Date orderTime;
 	
 	@Column(name = "payment_type")
-	private String paymentType;
+	private Integer paymentType;
 	
 	@Column(name = "address_line1")
 	private String addressLine1;		
