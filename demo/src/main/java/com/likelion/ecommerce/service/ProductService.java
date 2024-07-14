@@ -61,11 +61,11 @@ public class ProductService {
 				if(categoryId > 0 && !brandIds.isEmpty()) {
 					totalElement = repo.countFilterProductHasCategoryIdAndBrandIds(keyWord, categoryId, brandIds, fromPrice, toPrice);
 				} else if (categoryId > 0) {
-					repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice);
+					totalElement = repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice);
 				} else if (!brandIds.isEmpty()) {
-					repo.countFilterProductHasBrandIds(keyWord, brandIds, fromPrice, toPrice);
+					totalElement = repo.countFilterProductHasBrandIds(keyWord, brandIds, fromPrice, toPrice);
 				} else {
-					repo.countFilterProduct(keyWord, fromPrice, toPrice);
+					totalElement = repo.countFilterProduct(keyWord, fromPrice, toPrice);
 				}
 			}
 	    	
