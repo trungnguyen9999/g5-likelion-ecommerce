@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,9 @@ public class AuthController {
   
   private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
+  @Value("${bezkoder.app.jwtCookieName}")
+  private String keyName;
+
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -73,10 +77,21 @@ public class AuthController {
             .map(item -> item.getAuthority())
             .collect(Collectors.toList());
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+    String token = extractToken(jwtCookie.toString(), keyName);
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.getValue())
             .body(new UserInfoResponse(userDetails.getId(),
                     userDetails.getUsername(),
-                    roles));
+                    roles, token));
+  }
+
+  private static String extractToken(String cookieString, String key) {
+    String prefix = key + "=";
+    int startIndex = cookieString.indexOf(prefix) + prefix.length();
+    int endIndex = cookieString.indexOf(";", startIndex);
+    if (endIndex == -1) {
+      endIndex = cookieString.length();
+    }
+    return cookieString.substring(startIndex, endIndex);
   }
 
   @PostMapping("/signup")
