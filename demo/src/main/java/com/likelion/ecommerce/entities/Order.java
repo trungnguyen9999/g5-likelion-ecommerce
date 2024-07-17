@@ -57,4 +57,13 @@ public class Order {
 	
 	@Column(name = "region")
 	private String region;
+
+	@Column(name = "status")
+	private Integer status;
+
+	@Column(name = "comment")
+	private String comment;
+
+	@Column(name = "coupon_id")
+	private Integer couponId;
 }

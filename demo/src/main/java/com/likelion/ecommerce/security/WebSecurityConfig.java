@@ -1,9 +1,9 @@
 package com.likelion.ecommerce.security;
 
-import com.likelion.ecommerce.exception.ExceptionHandlerFilter;
 import com.likelion.ecommerce.security.jwt.AuthEntryPointJwt;
 import com.likelion.ecommerce.security.jwt.AuthTokenFilter;
 import com.likelion.ecommerce.security.services.UserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+@Slf4j
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -71,7 +72,6 @@ public class WebSecurityConfig {
                     auth.requestMatchers(permitedArray).permitAll()
                             .anyRequest().authenticated()
             );
-
     http.headers(headers -> headers.frameOptions(frameOption -> frameOption.sameOrigin()));
 
     http.authenticationProvider(authenticationProvider());
