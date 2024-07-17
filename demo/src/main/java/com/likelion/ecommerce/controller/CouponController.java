@@ -26,11 +26,15 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping("/paginate")
-    public ResponseEntity<ResponsePaginate> getAllProductInWishList(@RequestBody PaginateProductRequest request)
+    public ResponseEntity<ResponsePaginate> getAllProductInWishList(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "true") Boolean active
+    )
     {
-        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize(), Sort.by("created_at").descending());
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
         return ResponseEntity.ok()
-                .body(couponService.paginateCoupon(pageable));
+                .body(couponService.paginateCoupon(pageable, active));
     }
 
     @PostMapping("/create")

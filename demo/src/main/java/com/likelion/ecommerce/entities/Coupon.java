@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -30,5 +32,5 @@ public class Coupon {
     private Integer quantityUsed;
 
     @Column(name = "created_at")
-    private Integer createdAt;
+    private Date createdAt;
 }

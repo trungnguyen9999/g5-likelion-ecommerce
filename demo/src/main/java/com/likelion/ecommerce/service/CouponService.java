@@ -14,7 +14,7 @@ public class CouponService {
 
     private final CouponRepo repo;
 
-    public ResponsePaginate paginateCoupon(Pageable page){
+    public ResponsePaginate paginateCoupon(Pageable page, Boolean active){
         ResponsePaginate response = new ResponsePaginate();
         try {
             float totalElement = repo.count();
@@ -26,7 +26,7 @@ public class CouponService {
             response.setPageSize(page.getPageSize());
             response.setTotalPages(totalPage);
             response.setTotalElements(Math.round(totalElement));
-            response.setItems(repo.findAll(page).getContent());
+            response.setItems(repo.paginateCoupon(page, active).getContent());
         } catch(Exception e) {
             e.printStackTrace();
         }
