@@ -2,6 +2,8 @@ package com.likelion.ecommerce.controller;
 
 import java.util.List;
 
+import com.likelion.ecommerce.response.UserWithRoleResponse;
+import com.likelion.ecommerce.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,36 +28,12 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminControlller {
 
-    private final UserService userService;
+    private final AdminService adminService;
 
-    @GetMapping("/get-all")
-    public ResponseEntity<List<User>> getAllUsers()
+    @GetMapping("/get-user-role")
+    public ResponseEntity<List<UserWithRoleResponse>> getUserWithRoles()
     {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        return ResponseEntity.ok().body(adminService.getUserWithRoles());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id)
-    {
-        return ResponseEntity.ok().body(userService.getUserById(id));
-    }
-
-    @PostMapping("/them")
-    public ResponseEntity<User> saveUser(@RequestBody User user)
-    {
-        return ResponseEntity.ok().body(userService.saveUser(user));
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user)
-    {
-        return ResponseEntity.ok().body(userService.updateUser(user));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Integer id)
-    {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok().body("Deleted user successfully");
-    }
 }

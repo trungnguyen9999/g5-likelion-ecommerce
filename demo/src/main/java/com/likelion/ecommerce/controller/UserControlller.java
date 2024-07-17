@@ -1,8 +1,11 @@
 package com.likelion.ecommerce.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import com.likelion.ecommerce.dto.UserDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +30,15 @@ public class UserControlller {
 
 	private final UserService userService;
 
-    @GetMapping("/get-all")
-    public ResponseEntity<List<User>> getAllUsers()
+    @GetMapping("/get-all-details")
+    public ResponseEntity<List<UserDetailsDto>> getUserInfoDetails()
     {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        return ResponseEntity.ok().body(userService.getUserInfoDetails(null));
+    }
+
+    @GetMapping("/get-details/{account_id}")
+    public ResponseEntity<List<UserDetailsDto>> getUserInfoDetailById(@PathVariable Integer account_id) {
+        return ResponseEntity.ok().body(userService.getUserInfoDetails(account_id));
     }
 
     @GetMapping("/{id}")
@@ -39,7 +47,7 @@ public class UserControlller {
         return ResponseEntity.ok().body(userService.getUserById(id));
     }
 
-    @PostMapping("/them")
+    @PostMapping("/create")
     public ResponseEntity<User> saveUser(@RequestBody User user)
     {
         return ResponseEntity.ok().body(userService.saveUser(user));
@@ -52,9 +60,13 @@ public class UserControlller {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable Integer id)
+    public ResponseEntity<Object> deleteUserById(@PathVariable Integer id)
     {
-        userService.deleteUserById(id);
-        return ResponseEntity.ok().body("Deleted user successfully");
+        try {
+            userService.deleteUserById(id);
+            return ResponseEntity.ok().body("Deleted user successfully");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

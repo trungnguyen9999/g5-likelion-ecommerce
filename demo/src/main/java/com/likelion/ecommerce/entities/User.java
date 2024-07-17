@@ -11,7 +11,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = "email")
+		})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_user_id_seq")
