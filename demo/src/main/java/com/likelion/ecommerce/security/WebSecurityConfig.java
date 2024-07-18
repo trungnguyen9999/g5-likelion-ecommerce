@@ -31,6 +31,7 @@ public class WebSecurityConfig {
   private AuthEntryPointJwt unauthorizedHandler;
 
   String[] permitedArray  = new String[] {
+//          "/api/**",
           "/api/auth/**",
           "/api/test/**",
           "/swagger-ui/**",

@@ -1,7 +1,6 @@
 package com.likelion.ecommerce.service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -61,5 +60,15 @@ public class ProductRateService {
 	public ProductRate saveProductRate(ProductRate productRate) {
 		return repo.save(productRate);
 	}
-	
+
+	public LinkedHashMap getStartGroupByProductId(Integer productId) {
+		Map data = repo.getStartGroupByProductId(productId);
+		LinkedHashMap rs = new LinkedHashMap();
+		rs.put(5, Integer.valueOf(data.get("s5").toString()));
+		rs.put(4, Integer.valueOf(data.get("s4").toString()));
+		rs.put(3, Integer.valueOf(data.get("s3").toString()));
+		rs.put(2, Integer.valueOf(data.get("s2").toString()));
+		rs.put(1, Integer.valueOf(data.get("s1").toString()));
+		return rs;
+	}
 }

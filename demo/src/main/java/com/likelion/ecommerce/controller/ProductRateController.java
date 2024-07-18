@@ -1,6 +1,7 @@
 package com.likelion.ecommerce.controller;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,11 @@ public class ProductRateController {
     public ResponseEntity<?> getScoreByProductId(@PathVariable Integer productId) {        
         return ResponseEntity.ok()
         		.body(productRateService.getScoreByProductId(productId));
+    }
+
+    @GetMapping("/public/group/{productId}")
+    public ResponseEntity<LinkedHashMap> getStartGroupByProductId(@PathVariable Integer productId) {
+        return ResponseEntity.ok()
+                .body(productRateService.getStartGroupByProductId(productId));
     }
 }
