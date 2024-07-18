@@ -63,7 +63,12 @@ public class CartService {
 		return repo.save(cart);
 	}
 	
-	public Cart update(Cart cart) 
+	public List<Cart> update(List<Cart> listCart)
+	{
+		return listCart.stream().map(this::update).collect(Collectors.toList());
+	}
+
+	public Cart update(Cart cart)
 	{
 		return repo.save(cart);
 	}
