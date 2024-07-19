@@ -3,6 +3,7 @@ package com.likelion.ecommerce.service;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,24 +32,26 @@ public class ProductImagesService {
 
     public ProductImage getProductImageById(Integer id){
         Optional<ProductImage> optionalProductImage= repo.findById(id);
-        if(optionalProductImage.isPresent()){
-            return optionalProductImage.get();
-        }
-        return null;
+        return optionalProductImage.orElse(null);
     }
 
     public ProductImage saveProductImage (ProductImage productImage){
-        ProductImage savedProductImage = repo.save(productImage);
-        return savedProductImage;
+        return repo.save(productImage);
     }
 
     public ProductImage updateProductImage (ProductImage productImage) {
         Optional<ProductImage> existingProductImage = repo.findById(productImage.getId());
-        ProductImage updatedProductImage = repo.save(productImage);
-        return updatedProductImage;
+        return repo.save(productImage);
     }
 
-    public void deleteUserById (Integer id) {
+    public void deleteProductImageById (Integer id) {
         repo.deleteById(id);
     }
+
+    @Transactional
+    public void deleteProductImageByPath (String path) {
+        log.info(path);
+        repo.deleteByImagePath(path);
+    }
+
 }

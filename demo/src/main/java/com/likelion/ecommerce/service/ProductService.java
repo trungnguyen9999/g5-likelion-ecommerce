@@ -55,18 +55,15 @@ public class ProductService {
     		List<Product> listProduct = repo.filterProduct(keyWord, categoryId, fromPrice, toPrice, this.generateStrSortBy(sortBy, sortType), limit, offset, brandIds);
 
 			float totalElement = 0;
-			if(listProduct.size() < page.getPageSize()) {
-				totalElement = listProduct.size();
+
+			if(categoryId > 0 && !brandIds.isEmpty()) {
+				totalElement = repo.countFilterProductHasCategoryIdAndBrandIds(keyWord, categoryId, brandIds, fromPrice, toPrice);
+			} else if (categoryId > 0) {
+				totalElement = repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice);
+			} else if (!brandIds.isEmpty()) {
+				totalElement = repo.countFilterProductHasBrandIds(keyWord, brandIds, fromPrice, toPrice);
 			} else {
-				if(categoryId > 0 && !brandIds.isEmpty()) {
-					totalElement = repo.countFilterProductHasCategoryIdAndBrandIds(keyWord, categoryId, brandIds, fromPrice, toPrice);
-				} else if (categoryId > 0) {
-					totalElement = repo.countFilterProductHasCategoryId(keyWord, categoryId, fromPrice, toPrice);
-				} else if (!brandIds.isEmpty()) {
-					totalElement = repo.countFilterProductHasBrandIds(keyWord, brandIds, fromPrice, toPrice);
-				} else {
-					totalElement = repo.countFilterProduct(keyWord, fromPrice, toPrice);
-				}
+				totalElement = repo.countFilterProduct(keyWord, fromPrice, toPrice);
 			}
 	    	
 	    	int totalPage = 0; 
@@ -79,30 +76,7 @@ public class ProductService {
 	    	response.setTotalElements(Math.round(totalElement));
 	    	
 	    	List<ProductDetailDto> listProductDeTail = listProduct.stream().map(product -> {
-	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-	    		
-	    		if(Objects.nonNull(product.getCategoryId())) {
-		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-		    	    dto.setCategoryDto(categoryDto);
-	    		}
-	    	    
-	    		boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
-	    	    dto.setInWishList(isInWishList);
-	    	    
-	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-	    	                                                    .stream()
-	    	                                                    .map(i -> i.getImagePath())
-	    	                                                    .collect(Collectors.toList());
-	    	    dto.setImagesPath(listProductImagePath);
-	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-	    	    
-	    	    Brand br = brandService.findById(product.getBrandId());
-	    	    if(Objects.nonNull(br)) {
-	    	    	dto.setBrand(br);
-	    	    }
-	    	    
-	    		return dto;
+				return this.convertProduct2Dto(product);
 	    	}).collect(Collectors.toList());
 
 	    	response.setItems(listProductDeTail);
@@ -140,30 +114,7 @@ public class ProductService {
 			response.setTotalElements(Math.round(totalElement));
 
 			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page).stream().map(product -> {
-				ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-				
-				if(Objects.nonNull(product.getCategoryId())) {
-		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-		    	    dto.setCategoryDto(categoryDto);
-	    		}
-
-				boolean isInWishList = Objects.nonNull(wishListService.findFirstByAccountIdAndProductId(request.getAccountId(), product.getProductId()));
-				dto.setInWishList(isInWishList);
-
-				List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-						.stream()
-						.map(ProductImage::getImagePath)
-						.collect(Collectors.toList());
-				dto.setImagesPath(listProductImagePath);
-				dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-				dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-				
-				Brand br = brandService.findById(product.getBrandId());
-	    	    if(Objects.nonNull(br)) {
-	    	    	dto.setBrand(br);
-	    	    }
-	    	    
-				return dto;
+				return this.convertProduct2Dto(product);
 			}).collect(Collectors.toList());
 
 			response.setItems(listProductDeTail);
@@ -197,23 +148,7 @@ public class ProductService {
 	    	
 	    	List<ProductDetailDto> listProductDeTail = listWL.stream().map(i -> {
 	    		Product product = repo.findById(i.getProductId()).orElse(null);
-	    		ProductDetailDto dto =  modelMapper.map(product, ProductDetailDto.class);
-	    		
-	    		if(Objects.nonNull(product.getCategoryId())) {
-		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-		    	    dto.setCategoryDto(categoryDto);
-	    		}
-	    		
-	    		dto.setInWishList(true);
-	    		dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-	    		dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-	    		
-	    		Brand br = brandService.findById(product.getBrandId());
-	    	    if(Objects.nonNull(br)) {
-	    	    	dto.setBrand(br);
-	    	    }
-	    	    
-	    		return dto;
+				return this.convertProduct2Dto(product);
 	    	}).collect(Collectors.toList());
 	    	
 	    	response.setItems(listProductDeTail);
@@ -227,27 +162,7 @@ public class ProductService {
         Optional<Product> optionalProduct= repo.findById(id);
         if(optionalProduct.isPresent()){
         	Optional<ProductDetailDto> productDetails = optionalProduct.map(product -> {
-	    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-	    		
-	    		if(Objects.nonNull(product.getCategoryId())) {
-		    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-		    	    dto.setCategoryDto(categoryDto);
-	    		}
-	    		
-	    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-	    	                                                    .stream()
-	    	                                                    .map(ProductImage::getImagePath)
-	    	                                                    .collect(Collectors.toList());
-	    	    dto.setImagesPath(listProductImagePath);
-	    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-	    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-	    	    
-	    	    Brand br = brandService.findById(product.getBrandId());
-	    	    if(Objects.nonNull(br)) {
-	    	    	dto.setBrand(br);
-	    	    }
-	    	    
-	    		return dto;
+				return this.convertProduct2Dto(product);
 	    	});
         	return productDetails.orElse(null);
         }
@@ -270,27 +185,7 @@ public class ProductService {
 
 	public List<ProductDetailDto> getProductsNewArrival() {
 		List<ProductDetailDto> listProductDeTail = repo.findNewArrival().stream().map(product -> {
-    		ProductDetailDto dto = modelMapper.map(product, ProductDetailDto.class);
-    		
-    		if(Objects.nonNull(product.getCategoryId())) {
-	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-	    	    dto.setCategoryDto(categoryDto);
-    		}
-    	    
-    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-    	                                                    .stream()
-    	                                                    .map(ProductImage::getImagePath)
-    	                                                    .collect(Collectors.toList());
-    	    dto.setImagesPath(listProductImagePath);
-    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-    	    
-    	    Brand br = brandService.findById(product.getBrandId());
-    	    if(Objects.nonNull(br)) {
-    	    	dto.setBrand(br);
-    	    }
-    	    
-    		return dto;
+			return this.convertProduct2Dto(product);
     	}).collect(Collectors.toList());
 		return listProductDeTail;
 	}
@@ -298,27 +193,7 @@ public class ProductService {
 	public List<ProductDetailDto> getProductsBestSelling() {
 		List<ProductDetailDto> results = repo.findBestSelling().stream().map(p -> {
 			Product product = repo.findById(Integer.valueOf(p.get("product_id").toString())).orElse(null);
-			ProductDetailDto dto = 		modelMapper.map(product, ProductDetailDto.class);
-
-			if(Objects.nonNull(product.getCategoryId())) {
-	    		CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
-	    	    dto.setCategoryDto(categoryDto);
-    		}
-    	    
-    	    List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
-    	                                                    .stream()
-    	                                                    .map(ProductImage::getImagePath)
-    	                                                    .collect(Collectors.toList());
-    	    dto.setImagesPath(listProductImagePath);
-    	    dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
-    	    dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
-    	    
-    	    Brand br = brandService.findById(product.getBrandId());
-    	    if(Objects.nonNull(br)) {
-    	    	dto.setBrand(br);
-    	    }
-    	    
-			return dto;
+			return this.convertProduct2Dto(product);
 		}).collect(Collectors.toList());
 		return results;
 	}
@@ -329,5 +204,29 @@ public class ProductService {
 
 	public Integer countByCategoryId(Integer categoryId) {
 		return repo.countByCategoryId(categoryId);
+	}
+
+	private ProductDetailDto convertProduct2Dto(Product product){
+		ProductDetailDto dto = 	modelMapper.map(product, ProductDetailDto.class);
+
+		if(Objects.nonNull(product.getCategoryId())) {
+			CategoryDto categoryDto = modelMapper.map(categoryService.getCategoryById(product.getCategoryId()), CategoryDto.class);
+			dto.setCategoryDto(categoryDto);
+		}
+
+		List<String> listProductImagePath = productImagesService.findAllByProductId(product.getProductId())
+				.stream()
+				.map(ProductImage::getImagePath)
+				.collect(Collectors.toList());
+		dto.setImagesPath(listProductImagePath);
+		dto.setRatingScore(productRateService.getScoreByProductId(product.getProductId()));
+		dto.setRateTotal(productRateService.countAllByProductId(product.getProductId()));
+		if(Objects.nonNull(product.getBrandId())) {
+			Brand br = brandService.findById(product.getBrandId());
+			if (Objects.nonNull(br)) {
+				dto.setBrand(br);
+			}
+		}
+		return dto;
 	}
 }
