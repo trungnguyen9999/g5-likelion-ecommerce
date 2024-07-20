@@ -2,6 +2,7 @@ package com.likelion.ecommerce.controller;
 
 import com.likelion.ecommerce.entities.Account;
 import com.likelion.ecommerce.entities.PasswordResetToken;
+import com.likelion.ecommerce.request.ForgotPassRequest;
 import com.likelion.ecommerce.service.AccountService;
 import com.likelion.ecommerce.service.EmailService;
 import com.likelion.ecommerce.service.PasswordResetService;
@@ -27,8 +28,8 @@ public class PasswordResetController {
     private final EmailService emailService;
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email, @RequestParam String newPassword) {
-        Optional<Account> accountOptional = accountService.findByEmail(email);
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPassRequest forgotPassRequest) {
+        Optional<Account> accountOptional = accountService.findByEmail(forgotPassRequest.getEmail());
 
         if (!accountOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Email not found");
@@ -37,7 +38,7 @@ public class PasswordResetController {
         Account account = accountOptional.get();
         String token = passwordResetService.createPasswordResetTokenForUser(account);
         try {
-            emailService.sendPasswordResetToken(email, token, newPassword);
+            emailService.sendPasswordResetToken(forgotPassRequest.getEmail(), token, forgotPassRequest.getNewPassword());
         } catch (Exception e){
             e.printStackTrace();
         }
