@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 public class SignupRequest {
-    @NotBlank
+
     @Size(min = 3, max = 20)
     private String username;
 
@@ -26,12 +26,16 @@ public class SignupRequest {
 
     private Date createdAt;
 
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
+    @NotBlank
     private String phoneNumber;
 
+    @NotBlank
     private String email;
 
     private Date birthdate;

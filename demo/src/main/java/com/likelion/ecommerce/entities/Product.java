@@ -36,7 +36,6 @@ public class Product {
 	@Column(name = "quantity_sold")
 	private Integer quantitySold;
 
-	@Lob
 	@Column(name = "description")
 	private String description;
 	
