@@ -29,7 +29,8 @@ public class ProductRateService {
 			ProductRateDto prDto = modelMapper.map(i, ProductRateDto.class);
 			User u = userService.findFirstByAccountId(prDto.getAccountId());
 			if(Objects.nonNull(u)) {
-				prDto.setUserFullname(u.getFullName());
+				prDto.setUserFirstName(u.getFirstName());
+				prDto.setUserLastName(u.getLastName());
 				prDto.setAvatar(u.getAvatar());
 			}
 			return prDto;

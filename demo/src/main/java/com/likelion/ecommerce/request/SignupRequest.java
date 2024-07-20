@@ -26,7 +26,9 @@ public class SignupRequest {
 
     private Date createdAt;
 
-    private String fullName;
+    private String firstName;
+
+    private String lastName;
 
     private String phoneNumber;
 

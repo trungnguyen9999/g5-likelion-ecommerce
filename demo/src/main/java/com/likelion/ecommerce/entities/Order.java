@@ -33,6 +33,9 @@ public class Order {
 	
 	@Column(name = "total_price")
 	private Double totalPrice;
+
+	@Column(name = "currency")
+	private Double currency;
 	
 	@Column(name = "order_time")
 	private Date orderTime;
@@ -61,8 +64,8 @@ public class Order {
 	@Column(name = "status")
 	private Integer status;
 
-	@Column(name = "comment")
-	private String comment;
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "coupon_id")
 	private Integer couponId;

@@ -134,7 +134,7 @@ public class AuthController {
     Optional<Account> exitAccount = accountRepository.findByUsername(signUpRequest.getUsername());
 
     if (exitAccount.isPresent()) {
-      User user = new User(signUpRequest.getPhoneNumber(), signUpRequest.getFullName(), signUpRequest.getEmail(), signUpRequest.getBirthdate(),
+      User user = new User(signUpRequest.getPhoneNumber(), signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getBirthdate(),
               signUpRequest.getAddressLine1(), signUpRequest.getAddressLine2(), signUpRequest.getApartment(), signUpRequest.getSuburb(),
               signUpRequest.getCity(), signUpRequest.getRegion(), signUpRequest.getAvatar());
       user.setAccountId(exitAccount.get().getAccountId());

@@ -25,8 +25,11 @@ public class User {
 	@Column(name = "account_id")
 	private Integer accountId;
 	
-	@Column(name = "fullname")
-	private String fullName;
+	@Column(name = "lastname")
+	private String lastName;
+
+	@Column(name = "firstname ")
+	private String firstName;
 
 	@Column(name = "phonenumber")
 	private String phoneNumber;
@@ -58,10 +61,11 @@ public class User {
 	@Column(name = "avatar")
 	private String avatar;
 
-	public User(String phoneNumber, String fullName, String email, Date birthdate, String addressLine1, String addressLine2, String apartment,
+	public User(String phoneNumber, String firstName, String lastName, String email, Date birthdate, String addressLine1, String addressLine2, String apartment,
 			String suburb, String city, String region, String avatar) {
 		this.phoneNumber = phoneNumber;
-		this.fullName = fullName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.birthdate = birthdate;
 		this.addressLine1 = addressLine1;

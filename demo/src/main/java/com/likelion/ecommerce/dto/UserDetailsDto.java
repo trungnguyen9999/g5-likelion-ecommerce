@@ -17,7 +17,9 @@ public interface UserDetailsDto {
 
     public Date getCreatedAt();
 
-    public String getFullName();
+    public String getFirstName();
+
+    public String getLastName();
 
     public String getPhoneNumber();
 

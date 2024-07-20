@@ -12,7 +12,8 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*") // Allow all origins (you can specify specific origins)
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow specific HTTP methods
-                .allowedHeaders("*"); // Allow all headers
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true);
     }
 
 }

@@ -12,7 +12,9 @@ public class ProductRateDto {
 	
 	private Integer accountId;
 	
-	private String userFullname;
+	private String userFirstName;
+
+	private String userLastName;
 	
 	private String avatar;
 	
