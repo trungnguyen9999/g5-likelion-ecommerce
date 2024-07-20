@@ -22,30 +22,12 @@ public class ProductImagesService {
 
 	private final ProductImagesRepo repo;
 
-    public List<ProductImage> getAllProductImage(){
-        return repo.findAll();
-    }
-    
     public List<ProductImage> findAllByProductId(Integer productId){
         return repo.findAllByProductId(productId);
     }
 
-    public ProductImage getProductImageById(Integer id){
-        Optional<ProductImage> optionalProductImage= repo.findById(id);
-        return optionalProductImage.orElse(null);
-    }
-
     public ProductImage saveProductImage (ProductImage productImage){
         return repo.save(productImage);
-    }
-
-    public ProductImage updateProductImage (ProductImage productImage) {
-        Optional<ProductImage> existingProductImage = repo.findById(productImage.getId());
-        return repo.save(productImage);
-    }
-
-    public void deleteProductImageById (Integer id) {
-        repo.deleteById(id);
     }
 
     @Transactional

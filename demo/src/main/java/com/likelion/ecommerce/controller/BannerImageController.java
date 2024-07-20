@@ -32,7 +32,6 @@ public class BannerImageController {
 	@GetMapping("/public/all")
     public ResponseEntity<List<BannerImage>> getBannerImageList() {
         List<BannerImage> listBannerImages = bannerImageService.findAllBannerImage();
-        
         return ResponseEntity.ok()
         		.body(listBannerImages);
     }
