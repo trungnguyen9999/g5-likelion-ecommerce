@@ -38,7 +38,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -51,11 +51,11 @@ public class AuthController {
   private final PasswordEncoder encoder;
 
   private final JwtUtils jwtUtils;
-  
+
   private final AccountRepository accountRepository;
-  
+
   private final UserRepository userRepository;
-  
+
   private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
   @Value("${bezkoder.app.jwtCookieName}")
@@ -96,9 +96,9 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-	 
+
 	  log.info(signUpRequest.getUsername());
-	 
+
     if (accountRepository.existsByUsername(signUpRequest.getUsername())) {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already in use!"));
     }
