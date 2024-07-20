@@ -1,15 +1,11 @@
 package com.likelion.ecommerce.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.likelion.ecommerce.entities.BannerImage;
+import com.likelion.ecommerce.repository.BannerImageRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.likelion.ecommerce.entities.BannerImage;
-import com.likelion.ecommerce.entities.Category;
-import com.likelion.ecommerce.repository.BannerImageRepo;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +22,6 @@ public class BannerImageService {
 	}
 
 	public BannerImage updateBannerImage(BannerImage bannerImage) {
-		BannerImage updatedBannerImage = repo.save(bannerImage);
-        return updatedBannerImage;
+        return repo.save(bannerImage);
 	}
 }

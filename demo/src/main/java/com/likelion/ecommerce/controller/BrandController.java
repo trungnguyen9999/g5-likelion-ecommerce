@@ -48,7 +48,6 @@ public class BrandController {
     public ResponseEntity<ResponseStandard> saveBrand(@RequestBody Brand brand)
     {
 		ResponseStandard rp = new ResponseStandard();
-
 		rp.setMessage("Insert successful!");
 		rp.setData(brandService.save(brand));
         return ResponseEntity.ok().body(rp);

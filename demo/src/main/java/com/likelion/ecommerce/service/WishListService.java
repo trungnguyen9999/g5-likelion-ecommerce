@@ -15,16 +15,8 @@ public class WishListService {
 
     private final WishListRepo repo;
 
-    public List<WishList> findAll() {
-        return repo.findAll();
-    }
-
     public List<WishList> findAllByAccountId(Integer accountId) {
         return repo.findAllByAccountIdOrderByWishlistId(accountId);
-    }
-
-    public WishList findFirstByAccountIdAndProductId(Integer accountId, Integer productId) {
-        return repo.findFirstByAccountIdAndProductIdOrderByWishlistId(accountId, productId);
     }
 
     public WishList findById(Integer id) {
@@ -32,13 +24,11 @@ public class WishListService {
     }
 
     public WishList saveWishList(WishList wishlist) {
-        WishList savedWishList = repo.save(wishlist);
-        return savedWishList;
+        return repo.save(wishlist);
     }
 
     public WishList updateWishList(WishList wishlist) {
-        WishList updatedWishList = repo.save(wishlist);
-        return updatedWishList;
+        return repo.save(wishlist);
     }
 
     public void deleteWishListById(Integer id) {

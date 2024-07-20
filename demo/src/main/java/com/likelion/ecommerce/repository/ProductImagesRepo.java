@@ -12,4 +12,6 @@ import com.likelion.ecommerce.entities.ProductImage;
 public interface ProductImagesRepo extends JpaRepository<ProductImage, Integer> {
 
 	List<ProductImage> findAllByProductId(Integer productId);
+
+	void deleteByImagePath(String imagePath);
 }

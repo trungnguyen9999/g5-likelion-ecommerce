@@ -7,12 +7,14 @@ import com.likelion.ecommerce.service.EmailService;
 import com.likelion.ecommerce.service.PasswordResetService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/public")
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class PasswordResetController {
     private final EmailService emailService;
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email, @RequestParam String newPassword) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<?> forgotPassword(@RequestParam String email, @RequestParam String newPassword) {
         Optional<Account> accountOptional = accountService.findByEmail(email);
 
         if (!accountOptional.isPresent()) {
@@ -34,8 +36,11 @@ public class PasswordResetController {
 
         Account account = accountOptional.get();
         String token = passwordResetService.createPasswordResetTokenForUser(account);
-        emailService.sendPasswordResetToken(email, token, newPassword);
-
+        try {
+            emailService.sendPasswordResetToken(email, token, newPassword);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return ResponseEntity.ok("Password reset email sent");
     }
 

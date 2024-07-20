@@ -18,14 +18,17 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom{
     private EntityManager entityManager;
 	
 	@Override
-	public List<Product> filterProduct(String name, int categoryId, Long fromPrice, Long toPrice, String sort, Integer limit, Integer offset, List<Integer> brandIds) {
-		StringBuilder queryBuilder = new StringBuilder("SELECT * FROM products WHERE name ILIKE :name AND price BETWEEN :fromPrice AND :toPrice");
+	public List<Product> filterProduct(String name, int categoryId, Long fromPrice, Long toPrice, String sort, Integer limit, Integer offset, List<Integer> brandIds, Boolean getAll) {
+		StringBuilder queryBuilder = new StringBuilder("SELECT * FROM products WHERE name ILIKE :name AND price BETWEEN :fromPrice AND :toPrice ");
 
 		if(categoryId > 0) {
 			queryBuilder.append(" AND category_id = :category_id ");
 		}
         if(!brandIds.isEmpty()){
             queryBuilder.append(" AND brand_id IN :brandIds");
+        }
+        if(!getAll){
+            queryBuilder.append(" and deleted_at ISNULL ");
         }
         if (sort != null && !sort.isEmpty()) {
             queryBuilder.append(sort);

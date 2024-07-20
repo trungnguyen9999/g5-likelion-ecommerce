@@ -1,17 +1,14 @@
 package com.likelion.ecommerce.service;
 
-import java.util.List;
-import java.util.Objects;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.likelion.ecommerce.entities.Brand;
 import com.likelion.ecommerce.repository.BrandRepo;
 import com.likelion.ecommerce.repository.ProductRepo;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
