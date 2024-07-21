@@ -42,7 +42,7 @@ public class AccountService {
     }
 
     public Optional<Account> findByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("not found user with email: " + email));
         return accountRepository.findById(user.getAccountId());
     }
 }

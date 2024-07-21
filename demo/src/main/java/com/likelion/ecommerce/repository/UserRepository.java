@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.likelion.ecommerce.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository is an interface that provides access to data in a database
@@ -27,8 +28,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 			"where :accountId is null or a.accountId = :accountId")
 	List<UserDetailsDto> getUserInfoDetails(@Param("accountId") Integer accountId);
 
-	User findByEmail(String email);
-
-	@Query("select u from User u join Account a on u.accountId = a.accountId where a.username = :username")
-	User findByUsername(String username);
+	Optional<User> findByEmail(String email);
 }

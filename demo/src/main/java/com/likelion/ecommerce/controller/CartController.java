@@ -1,31 +1,17 @@
 package com.likelion.ecommerce.controller;
 
+import com.likelion.ecommerce.dto.CartDto;
+import com.likelion.ecommerce.entities.Cart;
+import com.likelion.ecommerce.request.CartRequest;
+import com.likelion.ecommerce.response.ResponseStandard;
+import com.likelion.ecommerce.service.CartService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.likelion.ecommerce.dto.CartDto;
-import com.likelion.ecommerce.entities.Cart;
-import com.likelion.ecommerce.entities.Category;
-import com.likelion.ecommerce.response.ResponseStandard;
-import com.likelion.ecommerce.service.CartService;
-
-import jakarta.websocket.server.PathParam;
-import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
 @RestController
@@ -47,7 +33,7 @@ public class CartController {
     }
 	
 	@PostMapping("/create")
-    public ResponseEntity<ResponseStandard> saveCart(@RequestBody Cart cart)
+    public ResponseEntity<ResponseStandard> saveCart(@RequestBody CartRequest cart)
     {
 		ResponseStandard rp = new ResponseStandard();
 		rp.setMessage("Insert successful!");

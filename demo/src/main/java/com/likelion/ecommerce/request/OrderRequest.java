@@ -1,14 +1,16 @@
 package com.likelion.ecommerce.request;
 
+import com.likelion.ecommerce.entities.ECurrency;
+import com.likelion.ecommerce.entities.EPaymentType;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class OrderRequest {
-    private Double currency;
+    private ECurrency currency;
 
-    private Integer paymentType;
+    private EPaymentType paymentType;
 
     private String addressLine1;
 
@@ -22,11 +24,11 @@ public class OrderRequest {
 
     private String region;
 
-    private Integer status;
+    private String status;
 
     private String description;
 
     private Integer couponId;
 
-    List<OrderDetailRequest> oderDetailRequests;
+    List<OrderDetailRequest> orderDetailRequests;
 }

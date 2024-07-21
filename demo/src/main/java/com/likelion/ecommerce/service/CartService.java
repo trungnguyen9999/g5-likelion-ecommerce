@@ -1,14 +1,20 @@
 package com.likelion.ecommerce.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.likelion.ecommerce.entities.Account;
+import com.likelion.ecommerce.entities.User;
+import com.likelion.ecommerce.repository.AccountRepository;
+import com.likelion.ecommerce.repository.UserRepository;
+import com.likelion.ecommerce.request.CartRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.likelion.ecommerce.dto.CartDto;
@@ -29,6 +35,8 @@ public class CartService {
 	private final ModelMapper modelMapper;
 
 	private final ProductService productService;
+
+	private final AccountRepository accountRepository;
 
 	public List<CartDto> findAllProductInCartByAccountId(Integer accountId)
 	{
@@ -52,14 +60,30 @@ public class CartService {
 		return null;		
 	}
 	
-	public Cart save(Cart cart) 
-	{	
-		Cart cartExists = repo.findByAccountIdAndProductId(cart.getAccountId(), cart.getProductId());
+	public Cart save(CartRequest cartRequest)
+	{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = null;
+		if (authentication != null) {
+			Object principal = authentication.getPrincipal();
+			if (principal instanceof UserDetails) {
+				email = ((UserDetails) principal).getUsername();
+			} else {
+				email = principal.toString();
+			}
+		}
+		Account account = accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Account not found"));
+		Cart cart = new Cart();
+		Cart cartExists = repo.findByAccountIdAndProductId(account.getAccountId(), cartRequest.getProductId());
 		if(Objects.nonNull(cartExists)) {
-			int quantity = cartExists.getQuantity() + cart.getQuantity();
+			int quantity = cartExists.getQuantity() + cartRequest.getQuantity();
 			cart.setQuantity(quantity);
 			cart.setCartId(cartExists.getCartId());
+		} else {
+			cart.setQuantity(cartRequest.getQuantity());
 		}
+		cart.setAccountId(account.getAccountId());
+		cart.setProductId(cartRequest.getProductId());
 		return repo.save(cart);
 	}
 	
@@ -77,5 +101,5 @@ public class CartService {
 	{
 		repo.deleteById(id);
 	}
-	
+
 }

@@ -1,17 +1,12 @@
 package com.likelion.ecommerce.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,15 +29,17 @@ public class Order {
 	@Column(name = "total_price")
 	private Double totalPrice;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "currency")
-	private Double currency;
+	private ECurrency currency;
 	
 	@Column(name = "order_time")
 	private Date orderTime;
-	
+
+	@Enumerated(EnumType.STRING)
 	@Column(name = "payment_type")
-	private Integer paymentType;
-	
+	private EPaymentType paymentType;
+
 	@Column(name = "address_line1")
 	private String addressLine1;		
 	
@@ -62,11 +59,14 @@ public class Order {
 	private String region;
 
 	@Column(name = "status")
-	private Integer status;
+	private String status;
 
 	@Column(name = "description")
 	private String description;
 
 	@Column(name = "coupon_id")
 	private Integer couponId;
+
+	@OneToMany(mappedBy = "order")
+	private List<OrderProduct> orderProducts;
 }

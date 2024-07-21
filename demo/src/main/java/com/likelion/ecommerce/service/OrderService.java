@@ -1,13 +1,14 @@
 package com.likelion.ecommerce.service;
 
+import com.likelion.ecommerce.dto.StatusOrderDto;
+import com.likelion.ecommerce.entities.Account;
 import com.likelion.ecommerce.entities.Order;
 import com.likelion.ecommerce.entities.OrderProduct;
 import com.likelion.ecommerce.entities.User;
-import com.likelion.ecommerce.repository.OrderProductRepository;
-import com.likelion.ecommerce.repository.OrderRepository;
-import com.likelion.ecommerce.repository.UserRepository;
+import com.likelion.ecommerce.repository.*;
 import com.likelion.ecommerce.request.OrderDetailRequest;
 import com.likelion.ecommerce.request.OrderRequest;
+import com.likelion.ecommerce.response.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,37 +27,49 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
+    private final CartRepo cartRepo;
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(OrderResponse::fromOrder)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Order> getOrderById(Integer orderId) {
-        return orderRepository.findById(orderId);
+    public OrderResponse getOrderById(Integer orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new NoSuchElementException("Order not found"));
+        return OrderResponse.fromOrder(order);
+    }
+
+    public List<OrderResponse> getOrdersByAccountId(Integer accountId) {
+        List<Order> orders = orderRepository.findOrdersByAccountId(accountId);
+        return orders.stream()
+                .map(OrderResponse::fromOrder)
+                .collect(Collectors.toList());
     }
 
     public void createOrder(OrderRequest orderRequest) {
         Order order = new Order();
         Double totalPrice = 0.0;
-        for (OrderDetailRequest oderDetailRequest : orderRequest.getOderDetailRequests()) {
+        for (OrderDetailRequest oderDetailRequest : orderRequest.getOrderDetailRequests()) {
             totalPrice += oderDetailRequest.getPrice();
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
+        String email = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
+                email = ((UserDetails) principal).getUsername();
             } else {
-                username = principal.toString();
+                email = principal.toString();
             }
         }
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new NoSuchElementException("User not found");
-        }
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User not found"));
+        Account account = accountRepository.findByUsername(user.getEmail()).orElseThrow(() -> new NoSuchElementException("No exist account"));
         order.setUsertId(user.getUserId());
+        order.setAccountId(account.getAccountId());
         order.setTotalPrice(totalPrice);
         order.setCurrency(orderRequest.getCurrency());
         order.setOrderTime(new Date());
@@ -72,31 +85,22 @@ public class OrderService {
         order.setCouponId(orderRequest.getCouponId());
         orderRepository.save(order);
 
-        Order existingOrder = orderRepository.findTopByOrderByIdDesc().orElseThrow(NoSuchElementException::new);
-        OrderProduct orderProduct = new OrderProduct();
-        for (OrderDetailRequest oderDetailRequest : orderRequest.getOderDetailRequests()) {
-            orderProduct.setOrderId(existingOrder.getOrderId());
+        for (OrderDetailRequest oderDetailRequest : orderRequest.getOrderDetailRequests()) {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setOrder(order);
             orderProduct.setProductId(oderDetailRequest.getProductId());
             orderProduct.setQuantity(oderDetailRequest.getQuantity());
             orderProduct.setPrice(oderDetailRequest.getPrice());
             orderProductRepository.save(orderProduct);
         }
+
+        cartRepo.deleteCartByAccountId(account.getAccountId());
+
     }
 
-    public Order updateOrder(Integer orderId, Order order) {
-        if (orderRepository.existsById(orderId)) {
-            order.setOrderId(orderId);
-            return orderRepository.save(order);
-        } else {
-            throw new NoSuchElementException("Order not found with id " + orderId);
-        }
-    }
-
-    public void deleteOrder(Integer orderId) {
-        if (orderRepository.existsById(orderId)) {
-            orderRepository.deleteById(orderId);
-        } else {
-            throw new NoSuchElementException("Order not found with id " + orderId);
-        }
+    public void updateStatusOrder(StatusOrderDto statusOrder) {
+        Order order = orderRepository.findById(statusOrder.getOrderId()).orElseThrow(() -> new NoSuchElementException("Order not found"));
+        order.setStatus(statusOrder.getStatus());
+        orderRepository.save(order);
     }
 }
