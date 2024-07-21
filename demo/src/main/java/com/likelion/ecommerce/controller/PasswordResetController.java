@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
@@ -46,17 +47,20 @@ public class PasswordResetController {
     }
 
     @GetMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+    public RedirectView resetPassword(@RequestParam String token, @RequestParam String newPassword) {
         Optional<PasswordResetToken> tokenOptional = passwordResetService.getPasswordResetToken(token);
+        RedirectView redirectView = new RedirectView();
 
         if (!tokenOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Invalid token");
+            redirectView.setUrl("http://localhost:3000/error?message=invalid-token");
+            return redirectView;
         }
 
         PasswordResetToken passwordResetToken = tokenOptional.get();
         Account account = passwordResetToken.getAccount();
         passwordResetService.changeUserPassword(account, newPassword);
 
-        return ResponseEntity.ok("Password successfully reset");
+        redirectView.setUrl("http://localhost:3000/success?message=password-successfully-reset");
+        return redirectView;
     }
 }
