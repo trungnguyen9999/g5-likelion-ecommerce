@@ -11,7 +11,6 @@ import java.util.Set;
 @Data
 public class SignupRequest {
 
-    @Size(min = 3, max = 20)
     private String username;
 
     private Set<String> role;
