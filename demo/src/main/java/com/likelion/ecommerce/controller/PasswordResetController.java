@@ -9,6 +9,7 @@ import com.likelion.ecommerce.service.PasswordResetService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,6 +22,9 @@ import java.util.Optional;
 @RequestMapping("/api/public")
 @RequiredArgsConstructor
 public class PasswordResetController {
+
+    @Value("${application.frontend.url}")
+    private String frontendUrl;
 
     private final AccountService accountService;
 
@@ -52,7 +56,7 @@ public class PasswordResetController {
         RedirectView redirectView = new RedirectView();
 
         if (!tokenOptional.isPresent()) {
-            redirectView.setUrl("http://localhost:3000/error?message=invalid-token");
+            redirectView.setUrl(frontendUrl + "/reset-password/fail");
             return redirectView;
         }
 
@@ -60,7 +64,7 @@ public class PasswordResetController {
         Account account = passwordResetToken.getAccount();
         passwordResetService.changeUserPassword(account, newPassword);
 
-        redirectView.setUrl("http://localhost:3000/success?message=password-successfully-reset");
+        redirectView.setUrl(frontendUrl + "/reset-password/success");
         return redirectView;
     }
 }
