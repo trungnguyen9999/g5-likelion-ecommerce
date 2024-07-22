@@ -30,11 +30,11 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 			+ " and price between :fromPrice and :toPrice and (p.deleted_at ISNULL OR :getAll)", nativeQuery = true)
 	Integer countFilterProductHasCategoryIdAndBrandIds(String name, Integer categoryId, List<Integer> brandIds, Long fromPrice, Long toPrice, boolean getAll);
 
-	@Query(value =  "SELECT * FROM products p where category_id = :categoryId and p.deleted_at ISNULL",
-			countQuery = "SELECT count(product_id) FROM products p where category_id = :categoryId and p.deleted_at ISNULL", nativeQuery = true)
-	Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);
+	@Query(value =  "SELECT * FROM products p where category_id = :categoryId and p.deleted_at ISNULL and product_id <> :productId",
+			countQuery = "SELECT count(product_id) FROM products p where category_id = :categoryId and p.deleted_at ISNULL and product_id <> :productId", nativeQuery = true)
+	Page<Product> findAllByCategoryIdAndProductId(Integer categoryId, Pageable pageable, Integer productId);
 	
-	Integer countByCategoryIdAndDeletedAtIsNull(Integer categoryId);
+	Integer countByCategoryIdAndDeletedAtIsNullAndProductIdNot(Integer categoryId, Integer ProductId);
 	
 	@Query(value =  "SELECT * FROM products p where p.deleted_at ISNULL ORDER BY created_at DESC LIMIT 8 ",  nativeQuery = true)
 	List<Product> findNewArrival();
