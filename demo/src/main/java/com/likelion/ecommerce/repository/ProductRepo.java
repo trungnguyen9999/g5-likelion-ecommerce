@@ -32,7 +32,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer>, ProductRep
 
 	@Query(value =  "SELECT * FROM products p where category_id = :categoryId and p.deleted_at ISNULL and product_id <> :product_id",
 			countQuery = "SELECT count(product_id) FROM products p where category_id = :categoryId and p.deleted_at ISNULL and product_id <> :product_id", nativeQuery = true)
-	Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable, Integer productId);
+	Page<Product> findAllByCategoryIdAndProductId(Integer categoryId, Pageable pageable, Integer productId);
 	
 	Integer countByCategoryIdAndDeletedAtIsNullAndProductIdNot(Integer categoryId, Integer ProductId);
 	
