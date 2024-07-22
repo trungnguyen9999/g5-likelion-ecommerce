@@ -1,17 +1,25 @@
 package com.likelion.ecommerce.security.jwt;
 
+import com.likelion.ecommerce.entities.Account;
+import com.likelion.ecommerce.repository.AccountRepository;
 import com.likelion.ecommerce.security.services.UserDetailsImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.NoSuchElementException;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -82,5 +90,19 @@ public class JwtUtils {
                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                .signWith(key(), SignatureAlgorithm.HS256)
                .compact();
+  }
+
+  public static String extractEmail() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = null;
+    if (authentication != null) {
+      Object principal = authentication.getPrincipal();
+      if (principal instanceof UserDetails) {
+        email = ((UserDetails) principal).getUsername();
+      } else {
+        email = principal.toString();
+      }
+    }
+    return email;
   }
 }

@@ -27,7 +27,7 @@ public class CartController {
     {
 		List<CartDto> data = cartService.findAllProductInCartByAccountId(accountId);
 		ResponseStandard rp = new ResponseStandard();
-		rp.setMessage(Objects.isNull(data) ? "Không tìm thấy dữ liệu" : "Thành công");
+		rp.setMessage(Objects.isNull(data) ? "Data not found" : "success");
 		rp.setData(data);
         return ResponseEntity.ok().body(rp);
     }
@@ -55,5 +55,15 @@ public class CartController {
 	{
 		cartService.deteteById(id);
 		return ResponseEntity.ok().body("Delete successful!");
+	}
+
+	@GetMapping("/get-total-items")
+	public ResponseEntity<ResponseStandard> getTotalCartItems()
+	{
+		Integer totalItems =  cartService.getSumQuantityByAccountId();
+		ResponseStandard response = new ResponseStandard();
+		response.setMessage(Objects.isNull(totalItems) ? "Data not found" : "success");
+		response.setData(totalItems);
+		return ResponseEntity.ok().body(response);
 	}
 }

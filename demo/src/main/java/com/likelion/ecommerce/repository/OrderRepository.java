@@ -1,7 +1,6 @@
 package com.likelion.ecommerce.repository;
 
 import com.likelion.ecommerce.entities.Order;
-import com.likelion.ecommerce.response.OrderResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +12,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findTopByOrderByIdDesc();
 
     List<Order> findOrdersByAccountId(Integer accountId);
+
 }

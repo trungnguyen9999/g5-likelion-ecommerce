@@ -9,16 +9,19 @@ import com.likelion.ecommerce.repository.*;
 import com.likelion.ecommerce.request.OrderDetailRequest;
 import com.likelion.ecommerce.request.OrderRequest;
 import com.likelion.ecommerce.response.OrderResponse;
+import com.likelion.ecommerce.response.ResponsePaginate;
+import com.likelion.ecommerce.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Service
 @RequiredArgsConstructor
@@ -30,11 +33,27 @@ public class OrderService {
     private final AccountRepository accountRepository;
     private final CartRepo cartRepo;
 
-    public List<OrderResponse> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream()
+    public ResponsePaginate getAllOrders(Pageable page) {
+        List<Order> orders = orderRepository.findAll(page).getContent();
+        List<OrderResponse> items = orders.stream()
                 .map(OrderResponse::fromOrder)
                 .collect(Collectors.toList());
+        ResponsePaginate response = new ResponsePaginate();
+        try {
+            float totalElement = orderRepository.count();
+            int totalPage = 0;
+            if(totalElement > 0) {
+                totalPage = (int) Math.ceil(totalElement / page.getPageSize());
+            }
+            response.setCurentPage(page.getPageNumber() + 1);
+            response.setPageSize(page.getPageSize());
+            response.setTotalPages(totalPage);
+            response.setTotalElements(Math.round(totalElement));
+            response.setItems(items);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 
     public OrderResponse getOrderById(Integer orderId) {
@@ -56,16 +75,7 @@ public class OrderService {
             totalPrice += oderDetailRequest.getPrice();
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = null;
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                email = ((UserDetails) principal).getUsername();
-            } else {
-                email = principal.toString();
-            }
-        }
+        String email = JwtUtils.extractEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User not found"));
         Account account = accountRepository.findByUsername(user.getEmail()).orElseThrow(() -> new NoSuchElementException("No exist account"));
         order.setUsertId(user.getUserId());

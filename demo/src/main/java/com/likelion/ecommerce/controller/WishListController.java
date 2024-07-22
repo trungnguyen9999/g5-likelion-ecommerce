@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.controller;
 
+import com.likelion.ecommerce.response.ResponseStandard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,8 @@ import com.likelion.ecommerce.entities.WishList;
 import com.likelion.ecommerce.service.WishListService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/wishlist")
@@ -57,5 +60,15 @@ public class WishListController {
     {
     	wishlistService.deleteWishListByAccountIdAndProductId(accountId, productId);
         return ResponseEntity.ok().body("Deleted wishlist successfully");
+    }
+
+    @GetMapping("/get-nunber-wishlist")
+    public ResponseEntity<ResponseStandard> getNumberWishlistByAccountId()
+    {
+        Integer totalItems =  wishlistService.getNumberWishlistByAccountId();
+        ResponseStandard response = new ResponseStandard();
+        response.setMessage(Objects.isNull(totalItems) ? "Data not found" : "success");
+        response.setData(totalItems);
+        return ResponseEntity.ok().body(response);
     }
 }

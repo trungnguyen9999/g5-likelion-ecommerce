@@ -59,7 +59,7 @@ public class Order {
 	private String region;
 
 	@Column(name = "status")
-	private String status;
+	private Integer status;
 
 	@Column(name = "description")
 	private String description;

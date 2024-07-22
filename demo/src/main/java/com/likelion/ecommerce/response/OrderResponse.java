@@ -34,7 +34,7 @@ public class OrderResponse {
 
     private String region;
 
-    private String status;
+    private Integer status;
 
     private String description;
 

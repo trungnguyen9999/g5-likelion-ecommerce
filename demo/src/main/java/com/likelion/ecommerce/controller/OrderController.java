@@ -2,9 +2,14 @@ package com.likelion.ecommerce.controller;
 
 import com.likelion.ecommerce.dto.StatusOrderDto;
 import com.likelion.ecommerce.request.OrderRequest;
+import com.likelion.ecommerce.request.PaginateProductRequest;
 import com.likelion.ecommerce.response.OrderResponse;
+import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +24,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        return ResponseEntity.ok(orderService.getAllOrders());
+    public ResponseEntity<ResponsePaginate> getAllOrders(
+            @RequestParam(required = true) Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize
+    ) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("orderTime").descending());
+        return ResponseEntity.ok().body(orderService.getAllOrders(pageable));
     }
 
     @GetMapping("/{orderId}")

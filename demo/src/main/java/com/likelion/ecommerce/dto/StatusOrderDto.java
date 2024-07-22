@@ -6,5 +6,5 @@ import lombok.Data;
 public class StatusOrderDto {
     private Integer orderId;
 
-    private String status;
+    private Integer status;
 }

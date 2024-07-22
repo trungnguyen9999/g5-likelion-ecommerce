@@ -1,7 +1,9 @@
 package com.likelion.ecommerce.repository;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.likelion.ecommerce.response.SumQuantityCartResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.likelion.ecommerce.entities.Cart;
@@ -19,4 +21,7 @@ public interface CartRepo extends JpaRepository<Cart, Integer> {
 	@Modifying
 	@Query("DELETE FROM Cart c WHERE c.accountId = :accountId")
 	void deleteCartByAccountId(Integer accountId);
+
+	@Query("SELECT SUM(c.quantity) as sumQuantity FROM Cart c WHERE c.accountId = :accountId")
+	Optional<SumQuantityCartResponse> getSumQuantityByAccountId (Integer accountId);
 }
