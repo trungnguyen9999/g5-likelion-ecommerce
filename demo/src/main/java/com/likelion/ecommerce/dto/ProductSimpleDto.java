@@ -1,5 +1,6 @@
 package com.likelion.ecommerce.dto;
 
+import com.likelion.ecommerce.entities.Category;
 import lombok.Data;
 
 @Data
@@ -14,5 +15,7 @@ public class ProductSimpleDto {
 	private String imagePath;
 	
 	private Integer quantity;
+
+	private CategoryDto categoryDto;
 
 }
