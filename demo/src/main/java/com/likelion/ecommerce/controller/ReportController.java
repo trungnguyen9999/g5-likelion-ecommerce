@@ -3,14 +3,13 @@ package com.likelion.ecommerce.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.likelion.ecommerce.service.ReportService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -34,5 +33,14 @@ public class ReportController {
         return ResponseEntity.ok()
         		.body(reportService.getReportOfRevenue());
     }
-	
+
+    @GetMapping("/order-status")
+    public ResponseEntity<?> getReportOfOrderStatus(
+            @RequestParam Date from,
+            @RequestParam Date to
+    )
+    {
+        return ResponseEntity.ok()
+                .body(reportService.getReportOfOrderStatus(from, to));
+    }
 }

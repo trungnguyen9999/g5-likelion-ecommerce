@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -112,5 +113,9 @@ public class OrderService {
         Order order = orderRepository.findById(statusOrder.getOrderId()).orElseThrow(() -> new NoSuchElementException("Order not found"));
         order.setStatus(statusOrder.getStatus());
         orderRepository.save(order);
+    }
+
+    public Map getReportOfOrderStatus(Date from, Date to) {
+        return orderRepository.getReportOfOrderStatus(from, to);
     }
 }

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.likelion.ecommerce.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class ReportService {
 
 	private final ReportRepo repo;
+
+	private final OrderService orderService;
 
 	@SuppressWarnings("unchecked")
 	public Object getReportOfOrder() 
@@ -75,4 +78,7 @@ public class ReportService {
         return Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
+	public Map getReportOfOrderStatus(Date from, Date to) {
+		return orderService.getReportOfOrderStatus(from, to);
+	}
 }
