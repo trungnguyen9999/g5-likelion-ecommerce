@@ -107,7 +107,7 @@ public class ProductService {
 			response.setTotalPages(totalPage);
 			response.setTotalElements(Math.round(totalElement));
 
-			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page, productIdNotInclude).stream().map(this::convertProduct2Dto).collect(Collectors.toList());
+			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryIdAndProductId(categoryId, page, productIdNotInclude).stream().map(this::convertProduct2Dto).collect(Collectors.toList());
 
 			response.setItems(listProductDeTail);
 		} catch(Exception e) {
