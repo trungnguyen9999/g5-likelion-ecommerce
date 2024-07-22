@@ -50,12 +50,23 @@ public class ProductController {
     public ResponseEntity<ResponsePaginate> getAllProduct(
             @PathVariable Integer categoryid,
             @RequestParam(name = "page", required = true) Integer page,
-    		@RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-    		@RequestParam(name = "accountId", required = false, defaultValue = "-1") Integer accountId) 
-	{		
+    		@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+    		@RequestParam(name = "accountId", defaultValue = "-1") Integer accountId)
+	{
     	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("created_at").descending());
         return ResponseEntity.ok()
-        		.body(productService.paginateProductGetByCategory(categoryid, pageable));
+        		.body(productService.paginateProductGetByCategory(categoryid, pageable, 0));
+    }
+
+    @GetMapping("/public/{categoryid}/exclude")
+    public ResponseEntity<ResponsePaginate> getAllProductByCategoryIdExclude(
+            @PathVariable Integer categoryid,
+            @RequestParam(name = "pageSize",  defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "productIdNotInclude", defaultValue = "0") Integer productIdNotInclude)
+    {
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by("created_at").descending());
+        return ResponseEntity.ok()
+                .body(productService.paginateProductGetByCategory(categoryid, pageable, productIdNotInclude));
     }
     
     @GetMapping("/paginate/wishlist")

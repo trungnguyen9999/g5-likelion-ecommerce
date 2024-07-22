@@ -94,10 +94,10 @@ public class ProductService {
 		return "";
 	}
 
-	public ResponsePaginate paginateProductGetByCategory(Integer categoryId, Pageable page){
+	public ResponsePaginate paginateProductGetByCategory(Integer categoryId, Pageable page, Integer productIdNotInclude){
 		ResponsePaginate response = new ResponsePaginate();
 		try {
-			float totalElement = repo.countByCategoryIdAndDeletedAtIsNull(categoryId);
+			float totalElement = repo.countByCategoryIdAndDeletedAtIsNullAndProductIdNot(categoryId, productIdNotInclude);
 			int totalPage = 0;
 			if(totalElement > 0) {
 				totalPage = (int) Math.ceil(totalElement / page.getPageSize());
@@ -107,7 +107,7 @@ public class ProductService {
 			response.setTotalPages(totalPage);
 			response.setTotalElements(Math.round(totalElement));
 
-			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page).stream().map(this::convertProduct2Dto).collect(Collectors.toList());
+			List<ProductDetailDto> listProductDeTail = repo.findAllByCategoryId(categoryId, page, productIdNotInclude).stream().map(this::convertProduct2Dto).collect(Collectors.toList());
 
 			response.setItems(listProductDeTail);
 		} catch(Exception e) {
