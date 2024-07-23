@@ -41,7 +41,7 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<CartRequest> listCart)
+    public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<CartDto> listCart)
     {
     	ResponseStandard rp = new ResponseStandard();
 		rp.setMessage("Update successful!");

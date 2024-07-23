@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -83,8 +84,17 @@ public class CartService {
 		return repo.save(cart);
 	}
 
-	public List<Cart> update(List<CartRequest> listCart)
+	public List<Cart> update(List<CartDto> rq)
 	{
+		List<CartRequest> listCart = new ArrayList<>();
+		for(CartDto dto : rq){
+			CartRequest crq = new CartRequest();
+			crq.setCartId(dto.getCartId());
+			crq.setProductId(dto.getProduct().getProductId());
+			crq.setProductId(dto.getProduct().getQuantity());
+			listCart.add(crq);
+		}
+
 		return listCart.stream().map(this::update).collect(Collectors.toList());
 	}
 
