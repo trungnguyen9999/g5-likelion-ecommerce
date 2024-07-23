@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,12 +37,15 @@ public class BannerImageController {
         		.body(listBannerImages);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
     public ResponseEntity<BannerImage> saveBannerImage(@RequestBody BannerImage bannerImage)
     {
         return ResponseEntity.ok()
         		.body(bannerImageService.saveBannerImage(bannerImage));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update")
     public ResponseEntity<BannerImage> updateBannerImage(@RequestBody BannerImage bannerImage)
     {

@@ -3,6 +3,7 @@ package com.likelion.ecommerce.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class ProductImageController {
 
 	private final ProductImagesService service;
-	
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
     public ResponseEntity<ProductImage> saveProductImage(@RequestBody ProductImage pi) 
     {
@@ -28,6 +30,7 @@ public class ProductImageController {
         		.body(service.saveProductImage(pi));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteProductImageByPath(@RequestParam String path)
     {

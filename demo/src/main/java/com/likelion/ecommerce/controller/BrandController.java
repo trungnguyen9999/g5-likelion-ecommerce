@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.likelion.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +44,8 @@ public class BrandController {
 		rp.setData(data);
         return ResponseEntity.ok().body(rp);
     }
-	
+
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/create")
     public ResponseEntity<ResponseStandard> saveBrand(@RequestBody Brand brand)
     {
@@ -52,7 +54,8 @@ public class BrandController {
 		rp.setData(brandService.save(brand));
         return ResponseEntity.ok().body(rp);
     }
-	
+
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteBrand(@PathVariable Integer id)
 	{
