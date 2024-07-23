@@ -9,6 +9,8 @@ import com.likelion.ecommerce.repository.*;
 import com.likelion.ecommerce.request.OrderDetailRequest;
 import com.likelion.ecommerce.request.OrderRequest;
 import com.likelion.ecommerce.response.OrderResponse;
+import com.likelion.ecommerce.response.OrderStatusCount;
+import com.likelion.ecommerce.response.OrderStatusCountReponse;
 import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -118,5 +120,29 @@ public class OrderService {
 
     public Map getReportOfOrderStatus(Date from, Date to) {
         return orderRepository.getReportOfOrderStatus(from, to);
+    }
+
+    public OrderStatusCountReponse getCountOrdersByStatus() {
+        List<OrderStatusCount> results  = orderRepository.countOrdersByStatus();
+        OrderStatusCountReponse dto = new OrderStatusCountReponse();
+
+        for (OrderStatusCount result : results) {
+            String statusName = result.getOrderStatusName();
+            Integer count = result.getOrderStatusCount();
+
+            switch (statusName) {
+                case "Processing":
+                    dto.setProcessing(count);
+                    break;
+                case "Completed":
+                    dto.setCompleted(count);
+                    break;
+                case "Cancelled":
+                    dto.setCancelled(count);
+                    break;
+            }
+        }
+
+        return dto;
     }
 }

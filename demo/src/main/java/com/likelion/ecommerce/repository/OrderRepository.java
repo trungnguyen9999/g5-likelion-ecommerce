@@ -1,6 +1,7 @@
 package com.likelion.ecommerce.repository;
 
 import com.likelion.ecommerce.entities.Order;
+import com.likelion.ecommerce.response.OrderStatusCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,4 +29,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             " WHERE order_time BETWEEN :from AND :to", nativeQuery = true)
     Map getReportOfOrderStatus(Date from, Date to);
 
+    @Query("SELECT CASE " +
+            "WHEN o.status = 1 THEN 'Processing' " +
+            "WHEN o.status = 2 THEN 'Completed' " +
+            "WHEN o.status = 3 THEN 'Cancelled' " +
+            "END as orderStatusName, COUNT(o) as orderStatusCount " +
+            "FROM Order o " +
+            "GROUP BY o.status")
+    List<OrderStatusCount> countOrdersByStatus();
 }
