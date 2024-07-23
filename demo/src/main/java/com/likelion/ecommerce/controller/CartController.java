@@ -1,7 +1,6 @@
 package com.likelion.ecommerce.controller;
 
 import com.likelion.ecommerce.dto.CartDto;
-import com.likelion.ecommerce.entities.Cart;
 import com.likelion.ecommerce.request.CartRequest;
 import com.likelion.ecommerce.response.ResponseStandard;
 import com.likelion.ecommerce.service.CartService;

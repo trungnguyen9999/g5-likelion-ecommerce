@@ -51,6 +51,7 @@ public class CartService {
 				if (Objects.nonNull(product)) {
 					ProductSimpleDto productSimple = modelMapper.map(product, ProductSimpleDto.class);
 					productSimple.setQuantity(i.getQuantity());
+					productSimple.setSubTotal(i.getQuantity() * Integer.valueOf(product.getPrice() + ""));
 					dto.setProduct(productSimple);
 				}
 				SumQuantityCartResponse response = repo.getSumQuantityByAccountId(account.getAccountId())
