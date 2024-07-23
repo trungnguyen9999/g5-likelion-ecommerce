@@ -23,9 +23,9 @@ public class CartController {
 	private final CartService cartService;
 	
 	@GetMapping("/get-by-account")
-    public ResponseEntity<ResponseStandard> getCartList(@RequestParam Integer accountId) 
+    public ResponseEntity<ResponseStandard> getCartList()
     {
-		List<CartDto> data = cartService.findAllProductInCartByAccountId(accountId);
+		List<CartDto> data = cartService.findAllProductInCartByAccountId();
 		ResponseStandard rp = new ResponseStandard();
 		rp.setMessage(Objects.isNull(data) ? "Data not found" : "success");
 		rp.setData(data);
@@ -42,7 +42,7 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<Cart> listCart)
+    public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<CartRequest> listCart)
     {
     	ResponseStandard rp = new ResponseStandard();
 		rp.setMessage("Update successful!");
@@ -66,4 +66,14 @@ public class CartController {
 		response.setData(totalItems);
 		return ResponseEntity.ok().body(response);
 	}
+	@GetMapping("/get-total-price")
+	public ResponseEntity<ResponseStandard> getTotalPriceInCart()
+	{
+		Integer totalItems =  cartService.getTotalPriceInCart();
+		ResponseStandard response = new ResponseStandard();
+		response.setMessage(Objects.isNull(totalItems) ? "Data not found" : "success");
+		response.setData(totalItems);
+		return ResponseEntity.ok().body(response);
+	}
+
 }

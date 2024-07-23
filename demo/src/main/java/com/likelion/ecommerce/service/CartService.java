@@ -1,6 +1,7 @@
 package com.likelion.ecommerce.service;
 
 import com.likelion.ecommerce.dto.CartDto;
+import com.likelion.ecommerce.dto.CategoryDto;
 import com.likelion.ecommerce.dto.ProductDetailDto;
 import com.likelion.ecommerce.dto.ProductSimpleDto;
 import com.likelion.ecommerce.entities.Account;
@@ -36,7 +37,10 @@ public class CartService {
 
 	private final AccountRepository accountRepository;
 
-	public List<CartDto> findAllProductInCartByAccountId(Integer accountId) {
+	public List<CartDto> findAllProductInCartByAccountId() {
+		String email = JwtUtils.extractEmail();
+		Account account = accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Account not found"));
+		Integer accountId = account.getAccountId();
 		List<Cart> listCart = repo.findAllByAccountId(accountId);
 		if (Objects.nonNull(listCart) && !listCart.isEmpty()) {
 			List<CartDto> listCartDto = listCart.stream().map(i -> {
@@ -75,14 +79,18 @@ public class CartService {
 		return repo.save(cart);
 	}
 
-	public List<Cart> update(List<Cart> listCart)
+	public List<Cart> update(List<CartRequest> listCart)
 	{
 		return listCart.stream().map(this::update).collect(Collectors.toList());
 	}
 
-	public Cart update(Cart cart)
+	public Cart update(CartRequest rq)
 	{
-		return repo.save(cart);
+		String email = JwtUtils.extractEmail();
+		Account account = accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Account not found"));
+		Cart c = modelMapper.map(rq, Cart.class);
+		c.setAccountId(account.getAccountId());
+		return repo.save(c);
 	}
 	
 	public void deteteById(Integer id) 
@@ -96,5 +104,11 @@ public class CartService {
 		SumQuantityCartResponse response = repo.getSumQuantityByAccountId(account.getAccountId())
 				.orElseThrow(() -> new NoSuchElementException("Cart by accoundID: " + account.getAccountId() + " not found!"));
 		return response.getSumQuantity();
+	}
+
+	public Integer getTotalPriceInCart() {
+		String email = JwtUtils.extractEmail();
+		Account account = accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Account not found"));
+        return repo.getTotalPriceInCartByAccountId(account.getAccountId());
 	}
 }
