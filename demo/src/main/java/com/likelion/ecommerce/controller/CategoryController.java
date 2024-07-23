@@ -56,6 +56,7 @@ public class CategoryController {
         		.body(cate);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<Category> saveCategory(@RequestBody Category category)
     {
@@ -63,13 +64,15 @@ public class CategoryController {
         		.body(categoryService.saveCategory(category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Category> updateCategory(@RequestBody Category category)
     {
         return ResponseEntity.ok()
         		.body(categoryService.updateCategory(category));
     }
-    
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategoryById(@PathVariable Integer id)
     {

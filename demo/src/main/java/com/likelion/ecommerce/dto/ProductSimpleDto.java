@@ -18,4 +18,6 @@ public class ProductSimpleDto {
 
 	private CategoryDto categoryDto;
 
+	private Integer subTotal;
+
 }

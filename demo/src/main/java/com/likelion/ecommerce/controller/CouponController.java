@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class CouponController {
                 .body(couponService.paginateCoupon(pageable, active));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ResponseStandard> saveCoupon(@RequestBody Coupon coupon)
     {
@@ -47,6 +49,7 @@ public class CouponController {
         return ResponseEntity.ok().body(rp);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<ResponseStandard> updateCoupon(@RequestBody Coupon coupon)
     {

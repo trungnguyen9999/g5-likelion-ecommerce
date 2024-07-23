@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ public class UploadFileController {
 
 	private final CloudinaryService cloudinaryService;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/image")
 	public ResponseEntity<LinkedHashMap> uploadImage(
 			@RequestParam("data") MultipartFile data, 

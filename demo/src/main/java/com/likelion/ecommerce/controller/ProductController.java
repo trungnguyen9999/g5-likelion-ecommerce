@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,6 +85,7 @@ public class ProductController {
         		.body(productService.getProductById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) 
     {
@@ -92,13 +94,15 @@ public class ProductController {
         		.body(productService.saveProduct(product));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product) 
     {
         return ResponseEntity.ok()
         		.body(productService.updateProduct(product));
     }
-    
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProductById(@PathVariable Integer id) 
     {

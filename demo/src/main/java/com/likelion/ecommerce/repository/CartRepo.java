@@ -24,4 +24,10 @@ public interface CartRepo extends JpaRepository<Cart, Integer> {
 
 	@Query("SELECT SUM(c.quantity) as sumQuantity FROM Cart c WHERE c.accountId = :accountId")
 	Optional<SumQuantityCartResponse> getSumQuantityByAccountId (Integer accountId);
+
+	@Query(value = " SELECT SUM(c.quantity * p.price) AS total_price " +
+			" FROM carts c " +
+			" INNER JOIN products p USING (product_id) " +
+			" WHERE c.account_id = :accountId", nativeQuery = true)
+	Integer getTotalPriceInCartByAccountId (Integer accountId);
 }

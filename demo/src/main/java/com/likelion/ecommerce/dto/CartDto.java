@@ -10,6 +10,9 @@ public class CartDto {
 	
 	private Integer accountId;
 	
-	ProductSimpleDto product;
+	private ProductSimpleDto product;
 
+	private Integer totalItems;
+
+	private Integer totalPrice;
 }
