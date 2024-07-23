@@ -40,14 +40,23 @@ public class CartController {
         return ResponseEntity.ok().body(rp);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<CartDto> listCart)
+    @PutMapping("/update-old")
+    public ResponseEntity<ResponseStandard> updateCartOld(@RequestBody List<CartRequest> listCart)
     {
     	ResponseStandard rp = new ResponseStandard();
 		rp.setMessage("Update successful!");
-		rp.setData(cartService.update(listCart));
+		rp.setData(cartService.updateOld(listCart));
         return ResponseEntity.ok().body(rp);
     }
+
+	@PutMapping("/update")
+	public ResponseEntity<ResponseStandard> updateCart(@RequestBody List<CartDto> listCart)
+	{
+		ResponseStandard rp = new ResponseStandard();
+		rp.setMessage("Update successful!");
+		rp.setData(cartService.update(listCart));
+		return ResponseEntity.ok().body(rp);
+	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteProductInCart(@PathVariable Integer id)

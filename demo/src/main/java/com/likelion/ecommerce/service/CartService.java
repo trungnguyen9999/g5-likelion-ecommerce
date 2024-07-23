@@ -84,6 +84,11 @@ public class CartService {
 		return repo.save(cart);
 	}
 
+	public List<Cart> updateOld(List<CartRequest> listCart)
+	{
+		return listCart.stream().map(this::update).collect(Collectors.toList());
+	}
+
 	public List<Cart> update(List<CartDto> rq)
 	{
 		List<CartRequest> listCart = new ArrayList<>();
