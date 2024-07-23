@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	User findFirstByAccountId(Integer accountId);
 
 	@Query("select u.accountId as accountId, u.userId as userId, u.addressLine1 as addressLine1, u.addressLine2 as addressLine2, " +
-			"u.apartment as apartment,  u.avatar as avatar, u.birthdate as birthdate, u.city as city, u.email as email, " +
+			"u.apartment as apartment, u.avatar as avatar, u.birthdate as birthdate, u.city as city, u.email as email, u.country as country, " +
 			"u.firstName as firstName, u.lastName as lastName, u.phoneNumber as phoneNumber, u.region as region, u.suburb as suburb, " +
 			"a.username as username, a.password as password, a.type as type, a.status as status, a.createdAt as created_at " +
 			"from Account a " +

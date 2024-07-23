@@ -14,6 +14,14 @@ import java.util.stream.Collectors;
 public class OrderResponse {
     private Integer usertId;
 
+    private String country;
+
+    private String phoneNumber;
+
+    private String firstName;
+
+    private String lastName;
+
     private Double totalPrice;
 
     private ECurrency currency;
@@ -59,6 +67,10 @@ public class OrderResponse {
         response.setStatus(order.getStatus());
         response.setDescription(order.getDescription());
         response.setCouponId(order.getCouponId());
+        response.setCountry(order.getCountry());
+        response.setFirstName(order.getFirstName());
+        response.setLastName(order.getLastName());
+        response.setPhoneNumber(order.getPhoneNumber());
         response.setOrderDetailResponses(order.getOrderProducts().stream()
                 .map(OrderDetailResponse::fromOrderProduct)
                 .collect(Collectors.toList()));

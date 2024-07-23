@@ -40,6 +40,9 @@ public class User {
 	@Column(name = "birthdate")
 	private Date birthdate;
 
+	@Column(name = "country")
+	private String country;
+
 	@Column(name = "address_line1")
 	private String addressLine1;
 

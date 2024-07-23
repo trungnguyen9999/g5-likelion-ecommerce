@@ -25,6 +25,8 @@ public interface UserDetailsDto {
 
     public String getEmail();
 
+    public String getCountry();
+
     public Date getBirthdate();
 
     public String getAddressLine1();

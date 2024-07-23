@@ -12,7 +12,6 @@ import com.likelion.ecommerce.response.OrderResponse;
 import com.likelion.ecommerce.response.ResponsePaginate;
 import com.likelion.ecommerce.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +90,10 @@ public class OrderService {
         order.setStatus(orderRequest.getStatus());
         order.setDescription(orderRequest.getDescription());
         order.setCouponId(orderRequest.getCouponId());
+        order.setCountry(orderRequest.getCountry());
+        order.setFirstName(orderRequest.getFirstName());
+        order.setLastName(orderRequest.getLastName());
+        order.setPhoneNumber(orderRequest.getPhoneNumber());
         orderRepository.save(order);
 
         for (OrderDetailRequest oderDetailRequest : orderRequest.getOrderDetailRequests()) {

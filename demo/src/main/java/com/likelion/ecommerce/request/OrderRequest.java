@@ -8,6 +8,14 @@ import java.util.List;
 
 @Data
 public class OrderRequest {
+    private String country;
+
+    private String phoneNumber;
+
+    private String firstName;
+
+    private String lastName;
+
     private ECurrency currency;
 
     private EPaymentType paymentType;
