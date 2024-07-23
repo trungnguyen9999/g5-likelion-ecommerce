@@ -49,7 +49,6 @@ public class CouponController {
         return ResponseEntity.ok().body(rp);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<ResponseStandard> updateCoupon(@RequestBody Coupon coupon)
     {
