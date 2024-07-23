@@ -53,7 +53,10 @@ public class CartService {
 					productSimple.setQuantity(i.getQuantity());
 					dto.setProduct(productSimple);
 				}
-
+				SumQuantityCartResponse response = repo.getSumQuantityByAccountId(account.getAccountId())
+						.orElseThrow(() -> new NoSuchElementException("Cart by accoundID: " + account.getAccountId() + " not found!"));
+				dto.setTotalItems(response.getSumQuantity());
+				dto.setTotalPrice(repo.getTotalPriceInCartByAccountId(account.getAccountId()));
 				return dto;
 			}).collect(Collectors.toList());
 			return listCartDto;
