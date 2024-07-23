@@ -91,7 +91,7 @@ public class CartService {
 			CartRequest crq = new CartRequest();
 			crq.setCartId(dto.getCartId());
 			crq.setProductId(dto.getProduct().getProductId());
-			crq.setProductId(dto.getProduct().getQuantity());
+			crq.setQuantity(dto.getProduct().getQuantity());
 			listCart.add(crq);
 		}
 
