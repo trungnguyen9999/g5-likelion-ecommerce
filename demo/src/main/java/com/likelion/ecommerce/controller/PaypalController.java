@@ -37,8 +37,8 @@ public class PaypalController {
             Double amount = Double.valueOf(paymentData.get("amount"));
             String currency = paymentData.get("currency");
             String description = paymentData.get("description");
-            String cancelUrl = backendUrl + "/api/payment/cancel";
-            String successUrl = backendUrl + "/api/payment/success";
+            String cancelUrl = backendUrl + "/api/payment/public/cancel";
+            String successUrl = backendUrl + "/api/payment/public/success";
             Payment payment = paypalService.createPayment(
                     amount,
                     currency,
@@ -62,7 +62,7 @@ public class PaypalController {
         return response;
     }
 
-    @GetMapping("/success")
+    @GetMapping("/public/success")
     public RedirectView paymentSuccess(
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId
@@ -80,7 +80,7 @@ public class PaypalController {
         return redirectView;
     }
 
-    @GetMapping("/cancel")
+    @GetMapping("/public/cancel")
     public RedirectView paymentSuccess() {
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl(frontendUrl + "/cart/checkout/payment/cancel");
