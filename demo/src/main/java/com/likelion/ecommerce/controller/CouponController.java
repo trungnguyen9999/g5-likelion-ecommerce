@@ -53,7 +53,6 @@ public class CouponController {
     public ResponseEntity<ResponseStandard> updateCoupon(@RequestBody Coupon coupon)
     {
         ResponseStandard rp = new ResponseStandard();
-
         rp.setMessage("Update successful!");
         rp.setData(couponService.update(coupon));
         return ResponseEntity.ok().body(rp);
