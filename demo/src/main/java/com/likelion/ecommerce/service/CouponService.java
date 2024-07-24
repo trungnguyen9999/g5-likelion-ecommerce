@@ -55,6 +55,10 @@ public class CouponService {
             if(Objects.nonNull(coupon.getValue())){
                 c.setValue(coupon.getValue());
             }
+        } else {
+            if(Objects.isNull(coupon.getValue())){
+                throw new NoSuchElementException("Code invalid");
+            }
         }
         return repo.save(c);
     }
