@@ -70,17 +70,12 @@ public class OrderService {
 
     public void createOrder(OrderRequest orderRequest) {
         Order order = new Order();
-        Double totalPrice = 0.0;
-        for (OrderDetailRequest oderDetailRequest : orderRequest.getOrderDetailRequests()) {
-            totalPrice += oderDetailRequest.getPrice();
-        }
-
         String email = JwtUtils.extractEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User not found"));
         Account account = accountRepository.findByUsername(user.getEmail()).orElseThrow(() -> new NoSuchElementException("No exist account"));
         order.setUsertId(user.getUserId());
         order.setAccountId(account.getAccountId());
-        order.setTotalPrice(totalPrice);
+        order.setTotalPrice(orderRequest.getTotalPrice());
         order.setCurrency(orderRequest.getCurrency());
         order.setOrderTime(new Date());
         order.setPaymentType(orderRequest.getPaymentType());

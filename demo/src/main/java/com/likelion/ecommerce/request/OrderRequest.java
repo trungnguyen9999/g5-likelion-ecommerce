@@ -38,5 +38,7 @@ public class OrderRequest {
 
     private Integer couponId;
 
+    private Double totalPrice;
+
     List<OrderDetailRequest> orderDetailRequests;
 }
