@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CartRepo extends JpaRepository<Cart, Integer> {
 	
-	List<Cart> findAllByAccountId(Integer accountId);
+	List<Cart> findAllByAccountIdOrderByCartIdDesc(Integer accountId);
 	
 	Cart findByAccountIdAndProductId(Integer accountId, Integer productId);
 
