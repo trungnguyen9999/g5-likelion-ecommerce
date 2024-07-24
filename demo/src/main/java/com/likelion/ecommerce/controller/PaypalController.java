@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/payment")
+@RequestMapping("/api/payment")
 public class PaypalController {
 
     @Value("${application.backend.url}")
