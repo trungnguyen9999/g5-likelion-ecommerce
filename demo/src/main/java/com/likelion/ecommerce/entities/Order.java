@@ -70,8 +70,9 @@ public class Order {
 	@Column(name = "region")
 	private String region;
 
-	@Column(name = "status")
-	private Integer status;
+	@OneToOne(targetEntity = OrderStatus.class, fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false, name = "status_id")
+	private OrderStatus status;
 
 	@Column(name = "description")
 	private String description;

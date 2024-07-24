@@ -1,10 +1,7 @@
 package com.likelion.ecommerce.service;
 
 import com.likelion.ecommerce.dto.StatusOrderDto;
-import com.likelion.ecommerce.entities.Account;
-import com.likelion.ecommerce.entities.Order;
-import com.likelion.ecommerce.entities.OrderProduct;
-import com.likelion.ecommerce.entities.User;
+import com.likelion.ecommerce.entities.*;
 import com.likelion.ecommerce.repository.*;
 import com.likelion.ecommerce.request.OrderDetailRequest;
 import com.likelion.ecommerce.request.OrderRequest;
@@ -28,6 +25,7 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderStatusRepository orderStatusRepository;
     private final OrderProductRepository orderProductRepository;
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
@@ -85,7 +83,8 @@ public class OrderService {
         order.setSuburb(orderRequest.getSuburb());
         order.setCity(orderRequest.getCity());
         order.setRegion(orderRequest.getRegion());
-        order.setStatus(orderRequest.getStatus());
+        OrderStatus orderStatus = orderStatusRepository.findById(orderRequest.getStatus()).orElseThrow(() -> new NoSuchElementException("Order status not found"));
+        order.setStatus(orderStatus);
         order.setDescription(orderRequest.getDescription());
         order.setCouponId(orderRequest.getCouponId());
         order.setCountry(orderRequest.getCountry());
@@ -109,7 +108,8 @@ public class OrderService {
 
     public void updateStatusOrder(StatusOrderDto statusOrder) {
         Order order = orderRepository.findById(statusOrder.getOrderId()).orElseThrow(() -> new NoSuchElementException("Order not found"));
-        order.setStatus(statusOrder.getStatus());
+        OrderStatus orderStatus = orderStatusRepository.findById(statusOrder.getStatus()).orElseThrow(() -> new NoSuchElementException("Order status not found"));
+        order.setStatus(orderStatus);
         orderRepository.save(order);
     }
 

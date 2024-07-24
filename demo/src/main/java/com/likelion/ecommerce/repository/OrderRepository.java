@@ -18,23 +18,23 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findOrdersByAccountId(Integer accountId);
 
     @Query(value = "SELECT " +
-            "   SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS status1, " +
-            "   SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) AS status2, " +
-            "   SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS status3, " +
-            "   SUM(CASE WHEN status = 4 THEN 1 ELSE 0 END) AS status4, " +
-            "   SUM(CASE WHEN status = 5 THEN 1 ELSE 0 END) AS status5, " +
-            "   SUM(CASE WHEN status = 6 THEN 1 ELSE 0 END) AS status6, " +
-            "   SUM(CASE WHEN status = 7 THEN 1 ELSE 0 END) AS status7 " +
+            "   SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) AS status1, " +
+            "   SUM(CASE WHEN status_id = 2 THEN 1 ELSE 0 END) AS status2, " +
+            "   SUM(CASE WHEN status_id = 3 THEN 1 ELSE 0 END) AS status3, " +
+            "   SUM(CASE WHEN status_id = 4 THEN 1 ELSE 0 END) AS status4, " +
+            "   SUM(CASE WHEN status_id = 5 THEN 1 ELSE 0 END) AS status5, " +
+            "   SUM(CASE WHEN status_id = 6 THEN 1 ELSE 0 END) AS status6, " +
+            "   SUM(CASE WHEN status_id = 7 THEN 1 ELSE 0 END) AS status7 " +
             " FROM orders " +
             " WHERE order_time BETWEEN :from AND :to", nativeQuery = true)
     Map getReportOfOrderStatus(Date from, Date to);
 
     @Query("SELECT CASE " +
-            "WHEN o.status = 1 THEN 'Processing' " +
-            "WHEN o.status = 2 THEN 'Completed' " +
-            "WHEN o.status = 3 THEN 'Cancelled' " +
+            "WHEN o.status.id = 1 THEN 'Processing' " +
+            "WHEN o.status.id = 2 THEN 'Completed' " +
+            "WHEN o.status.id = 3 THEN 'Cancelled' " +
             "END as orderStatusName, COUNT(o) as orderStatusCount " +
             "FROM Order o " +
-            "GROUP BY o.status")
+            "GROUP BY o.status.id ORDER BY o.status.id")
     List<OrderStatusCount> countOrdersByStatus();
 }

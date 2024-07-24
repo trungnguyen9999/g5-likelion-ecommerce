@@ -32,7 +32,7 @@ public class OrderRequest {
 
     private String region;
 
-    private Integer status;
+    private Integer status = 1;
 
     private String description;
 

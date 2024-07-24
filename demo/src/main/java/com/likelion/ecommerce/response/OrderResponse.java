@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 @Data
 public class OrderResponse {
+    private Integer orderId;
+
     private Integer usertId;
 
     private String country;
@@ -53,6 +55,8 @@ public class OrderResponse {
 
     public static OrderResponse fromOrder(Order order) {
         OrderResponse response = new OrderResponse();
+        response.setOrderId(order.getOrderId());
+        System.out.println(order.getOrderId());
         response.setUsertId(order.getUsertId());
         response.setTotalPrice(order.getTotalPrice());
         response.setCurrency(order.getCurrency());
@@ -64,7 +68,7 @@ public class OrderResponse {
         response.setSuburb(order.getSuburb());
         response.setCity(order.getCity());
         response.setRegion(order.getRegion());
-        response.setStatus(order.getStatus());
+        response.setStatus(order.getStatus().getId());
         response.setDescription(order.getDescription());
         response.setCouponId(order.getCouponId());
         response.setCountry(order.getCountry());
