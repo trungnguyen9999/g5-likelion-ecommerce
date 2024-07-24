@@ -37,8 +37,8 @@ public class PaypalController {
             Double amount = Double.valueOf(paymentData.get("amount"));
             String currency = paymentData.get("currency");
             String description = paymentData.get("description");
-            String cancelUrl = backendUrl + "/payment/cancel";
-            String successUrl = backendUrl + "/payment/success";
+            String cancelUrl = backendUrl + "/api/payment/cancel";
+            String successUrl = backendUrl + "/api/payment/success";
             Payment payment = paypalService.createPayment(
                     amount,
                     currency,
