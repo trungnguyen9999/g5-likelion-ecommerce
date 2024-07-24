@@ -7,7 +7,10 @@ import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,9 @@ public class PaypalController {
 
     @Value("${application.backend.url}")
     private String backendUrl;
+
+    @Value("${application.frontend.url}")
+    private String frontendUrl;
 
     private final PaypalService paypalService;
 
@@ -54,6 +60,31 @@ public class PaypalController {
         }
         response.put("error", "Payment creation failed");
         return response;
+    }
+
+    @GetMapping("/success")
+    public RedirectView paymentSuccess(
+            @RequestParam("paymentId") String paymentId,
+            @RequestParam("PayerID") String payerId
+    ) {
+        RedirectView redirectView = new RedirectView();
+        try {
+            Payment payment = paypalService.executePayment(paymentId, payerId);
+            if (payment.getState().equals("approved")) {
+                redirectView.setUrl(frontendUrl + "/cart/checkout/payment/success");
+            }
+        } catch (PayPalRESTException e) {
+            log.error("Error occurred:: ", e);
+            redirectView.setUrl(frontendUrl + "/cart/checkout/payment/cancel");
+        }
+        return redirectView;
+    }
+
+    @GetMapping("/cancel")
+    public RedirectView paymentSuccess() {
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(frontendUrl + "/cart/checkout/payment/cancel");
+        return redirectView;
     }
 
 }
