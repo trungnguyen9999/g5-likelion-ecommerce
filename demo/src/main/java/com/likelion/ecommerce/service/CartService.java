@@ -42,7 +42,7 @@ public class CartService {
 		String email = JwtUtils.extractEmail();
 		Account account = accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Account not found"));
 		Integer accountId = account.getAccountId();
-		List<Cart> listCart = repo.findAllByAccountId(accountId);
+		List<Cart> listCart = repo.findAllByAccountIdOrderByCartIdDesc(accountId);
 		if (Objects.nonNull(listCart) && !listCart.isEmpty()) {
 			List<CartDto> listCartDto = listCart.stream().map(i -> {
 				CartDto dto = new CartDto();
