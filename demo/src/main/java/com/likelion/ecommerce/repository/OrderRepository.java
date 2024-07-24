@@ -30,9 +30,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Map getReportOfOrderStatus(Date from, Date to);
 
     @Query("SELECT CASE " +
-            "WHEN o.status.id = 1 THEN 'Processing' " +
-            "WHEN o.status.id = 2 THEN 'Completed' " +
-            "WHEN o.status.id = 3 THEN 'Cancelled' " +
+            "WHEN o.status.id = 1 THEN 'Order PLaced' " +
+            "WHEN o.status.id = 2 THEN 'In Process' " +
+            "WHEN o.status.id = 3 THEN 'Completed' " +
+            "WHEN o.status.id = 4 THEN 'Cancelled' " +
             "END as orderStatusName, COUNT(o) as orderStatusCount " +
             "FROM Order o " +
             "GROUP BY o.status.id ORDER BY o.status.id")

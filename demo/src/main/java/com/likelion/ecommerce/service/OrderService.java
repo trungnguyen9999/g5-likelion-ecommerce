@@ -108,7 +108,7 @@ public class OrderService {
 
     public void updateStatusOrder(StatusOrderDto statusOrder) {
         Order order = orderRepository.findById(statusOrder.getOrderId()).orElseThrow(() -> new NoSuchElementException("Order not found"));
-        OrderStatus orderStatus = orderStatusRepository.findById(statusOrder.getStatus()).orElseThrow(() -> new NoSuchElementException("Order status not found"));
+        OrderStatus orderStatus = orderStatusRepository.findById(statusOrder.getStatusId()).orElseThrow(() -> new NoSuchElementException("Order status not found"));
         order.setStatus(orderStatus);
         orderRepository.save(order);
     }
@@ -126,7 +126,10 @@ public class OrderService {
             Integer count = result.getOrderStatusCount();
 
             switch (statusName) {
-                case "Processing":
+                case "Order PLaced":
+                    dto.setOrderPLaced(count);
+                    break;
+                case "In Process":
                     dto.setProcessing(count);
                     break;
                 case "Completed":

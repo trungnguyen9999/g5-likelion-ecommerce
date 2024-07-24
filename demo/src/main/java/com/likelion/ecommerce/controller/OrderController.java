@@ -57,7 +57,6 @@ public class OrderController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update-status")
     public ResponseEntity<Void> updateStatusOrder(@RequestBody StatusOrderDto statusOrder) {
         orderService.updateStatusOrder(statusOrder);

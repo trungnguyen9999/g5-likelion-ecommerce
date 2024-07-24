@@ -80,6 +80,6 @@ public class Order {
 	@Column(name = "coupon_id")
 	private Integer couponId;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
 	private List<OrderProduct> orderProducts;
 }
